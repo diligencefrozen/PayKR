@@ -24,6 +24,10 @@
     <script src="i18n.js" defer></script>
     <script src="main.js" defer></script>
 
+<style>
+  html, body, #map { height:100%; margin:0; padding:0; }
+</style>
+
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -134,16 +138,11 @@
 </style>
     
 <body
-    style="
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-    "
-    oncontextmenu="return false"
-    onselectstart="return false"
-    ondragstart="return false"
-    onkeydown="return false">
+  style="user-select:none"
+  oncontextmenu="return false"
+  onselectstart="return false"
+  ondragstart="return false">
+    
 <div id="map"></div>
 
 <div id="search-box">
@@ -814,7 +813,7 @@ document.getElementById('search-input').addEventListener('keypress', function (e
     searchAndMark("VIPS", createMarkerImage(vipsImageUrl)); 
     searchAndMark("제일제면소", createMarkerImage(jaeilImageUrl));
     searchAndMark("더플레이스", createMarkerImage(theplaceImageUrl));
-    searchAndMark("더스테이크하우스", createMarkerImage(thestaekhouseImageUrl));
+    searchAndMark("더스테이크하우스", createMarkerImage(thesteakhouseImageUrl));
     searchAndMark("더테이스터블", createMarkerImage(thetastableImageUrl));
     searchAndMark("파파이스", createMarkerImage(papaImageUrl));
     searchAndMark("신라대학교 미대식당", createMarkerImage(shilaImageUrl));

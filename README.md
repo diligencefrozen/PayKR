@@ -1,4 +1,4 @@
-# ASM -Apple Pay South Korea Map
+<img width="1920" height="914" alt="image" src="https://github.com/user-attachments/assets/0b7be13b-cc53-4f71-a2d0-f227bf2d204b" /># ASM -Apple Pay South Korea Map
 **Explore stores in South Korea that accept Apple Pay—right from your web browser.**
 
 ## Purpose
@@ -22,28 +22,28 @@
 
 ## Screnshots
 ### PC 
-<img src="https://github.com/diligencefrozen/south-korea-apple-pay-map/blob/main/ss/ss1.PNG?raw=true">
+<img src="https://github.com/diligencefrozen/PayKR/blob/main/ss/ss1.PNG?raw=true">
 <br/>
 
-<img src="https://github.com/diligencefrozen/south-korea-apple-pay-map/blob/main/ss/ss2.PNG?raw=true">
+<img src="https://github.com/diligencefrozen/PayKR/blob/main/ss/ss2.PNG?raw=true">
 <br/>
 
-<img src="https://github.com/diligencefrozen/south-korea-apple-pay-map/blob/main/ss/ss3.PNG?raw=true">
+<img src="https://github.com/diligencefrozen/PayKR/blob/main/ss/ss3.PNG?raw=true">
 <br/>
 
-<img src="https://github.com/diligencefrozen/south-korea-apple-pay-map/blob/main/ss/ss4.PNG?raw=true">
+<img src="https://github.com/diligencefrozen/PayKR/blob/main/ss/ss4.PNG?raw=true">
 <br/>
 
-<img src="https://github.com/diligencefrozen/south-korea-apple-pay-map/blob/main/ss/ss5.PNG?raw=true">
+<img src="https://github.com/diligencefrozen/PayKR/blob/main/ss/ss5.PNG?raw=true">
 <br/>
 
-<img src="https://github.com/diligencefrozen/south-korea-apple-pay-map/blob/main/ss/ss6.PNG?raw=true">
+<img src="https://github.com/diligencefrozen/PayKR/blob/main/ss/ss6.PNG?raw=true">
 <br/>
 
-<img src="https://github.com/diligencefrozen/south-korea-apple-pay-map/blob/main/ss/ss7.PNG?raw=true">
+<img src="https://github.com/diligencefrozen/PayKR/blob/main/ss/ss7.PNG?raw=true">
 <br/>
 
 ### Mobile
 
-<img src="https://github.com/diligencefrozen/south-korea-apple-pay-map/blob/main/ss/ss8.PNG?raw=true" alt="Apple Pay South Korea Map" width="300" />
+<img src="https://github.com/diligencefrozen/PayKR/blob/main/ss/ss8.PNG?raw=true" alt="Apple Pay South Korea Map" width="300" />
 <br/>

@@ -72,12 +72,12 @@
   <div id="search-box">
     <input type="text" id="search-input" data-i18n="searchPlaceholder" placeholder="장소를 검색하세요.">
     <button id="search-submit">
-      <img src="https://github.com/diligencefrozen/applepay-southkorea-map/blob/main/logo/searchicon.png?raw=true" alt="Search">
+      <img src="https://github.com/diligencefrozen/PayKR/blob/main/logo/searchicon.png?raw=true" alt="Search">
     </button>
   </div>
 
   <div id="apple-pay-notice">
-    <img src="https://github.com/diligencefrozen/applepay-southkorea-map/blob/main/logo/applepay.png?raw=true" width="30" height="15"> 스티커를 꼭 확인하세요!
+    <img src="https://github.com/diligencefrozen/PayKR/blob/main/logo/applepay.png?raw=true" width="30" height="15"> 스티커를 꼭 확인하세요!
   </div>
 
   <!-- 패치노트 -->
@@ -88,7 +88,36 @@
       <ul>
         <h3><b>패치노트</b></h3>
         <h4><b><font color="999999">Last Update: 01/01/2025 23:32 KST</font></b></h4>
-        <!-- 항목들 유지 -->
+        <li>20230524.1: 초기 버전 출시</li>
+        <li>20230718.7: 사용자 인터페이스 업데이트 및 가맹점 추가 (편의점, 카페)</li>
+        <li>20230720.11: 가맹점 추가 (마트/슈퍼) 및 사용자 인터페이스 개선 (검색 기능 추가)</li>
+        <li>20230721.9: 가맹점 추가 (제과/디저트) 및 사용자 인터페이스 개선 (검색 기능 개선 / 마커 기능 추가) </li>
+        <li>20230723.9: 사용자 인터페이스 개선 (검색 기능 디자인 변경 / 모바일 기기로 접속시 반응하는 인터페이스 개선) </li>
+        <li>20230724.1: 사용자 인터페이스 개선 </li>
+        <li>20230726.16: 가맹점 수정 (롯데마트/롯데백화점/롯데슈퍼) </li>
+        <li>20230802.9: 사용자 인터페이스 개선</li>
+        <li>20230803.11: 가맹점 추가(외식/생활,가전) 및 사용자 인터페이스 개선</li>
+        <li>20230804.4: 가맹점 추가(호텔,리조트) 및 사용자 인터페이스 업데이트</li>
+        <li>20230805.8: 사용자 인터페이스 개선</li>
+        <li>20230808.1: 가맹점 추가(주유,충전)</li>
+        <li>20230809.2: 가맹점 추가(영화, 도서) 및 가맹점 수정(편의점)</li>
+        <li>20230811.1: 가맹점 추가(레저, 여행)</li>
+        <li>20230818.5: 가맹점 추가(약국) 및 수정(외식) 그리고 사용자 인터페이스 개선(패치노트, 필독사항 영역)</li>
+        <li>20230821.3: 사용자 인터페이스 개선 (패치노트 영역, 현재 위치 표시 기능 개선)</li>
+        <li>20230822.1: 가맹점 수정 (기타, 생활&가전)</li>
+        <li>20231008.5: 사용자 인터페이스 수정 (카테고리, 필독사항)</li>
+        <li>20231014.1: 사용자 인터페이스 수정 (화면 비율 수정)</li>
+        <li>20231017.2: 사용자 인터페이스 수정 (검색 버튼 수정)</li>
+        <li>20231105.10: 사용자 인터페이스 개선 ('기타' 메뉴 삭제(약국 삭제), 온라인 메뉴 추가, 문의 메뉴 추가)</li>
+        <li>20231201.6: 가맹점 업데이트 (백화점/쇼핑, 마트/슈퍼, 커피, 외식, 온라인)</li>
+        <li>20231221.3: 가맹점 업데이트 (외식, 온라인)</li>
+        <li>20231226.6: 가맹점 업데이트 (외식, 백화점/쇼핑) 및 사용자 인터페이스 개선</li>
+        <li>20240125.7: 사용자 인터페이스 개선 (사이트 하단에 애플페이 스티커 관련 안내 문구 추가)</li>
+        <li>20240225.2: 가맹점 업데이트 (커피, 외식) </li>
+        <li>20240613.3: 가맹점 업데이트 (커피, 백화점, 온라인) </li>
+        <li>20240914.10: 가맹점 업데이트 및 UI 개선 (편의점, 패션, 카페, 외식) </li>
+        <li>20250101.5: 가맹점 업데이트 (생활/가전, 커피, 제과/디저트, 온라인) </li>
+        <li>20250517.11: 기능 개선 (영어 지원 1/10) </li>
       </ul>
     </div>
   </div>
@@ -176,16 +205,12 @@
       }, { bounds: map.getBounds() });
     }
 
-    // ===== 브랜드별 검색 함수들 (원문 유지) =====
-    // --- 이미지 URL들 선언 (원문 유지/생략 없이) ---
-    // 편의점/카페/백화점 등 URL들 그대로…
-    // ↓↓↓ 원문에 있던 모든 var XXXImageUrl = "..." 라인은 그대로 둡니다 ↓↓↓
+    // ===== 브랜드별 검색 함수들 =====
 
   </script>
 
-  <!-- 원문의 긴 이미지 URL/카테고리 함수들을 다시 포함 -->
   <script>
-  /* ===== 이미지 URL들 (원문 그대로) ===== */
+  /* ===== 이미지 URL들 ===== */
   /* 편의점 */
   var GS25ImageUrl="https://github.com/diligencefrozen/PayKR/blob/main/logo/conveniencestore.png?raw=true";
   var CUImageUrl="https://github.com/diligencefrozen/PayKR/blob/main/logo/conveniencestore.png?raw=true";
@@ -355,7 +380,7 @@
   var jongnoImageUrl="https://github.com/diligencefrozen/PayKR/blob/main/logo/movieandbooks.png?raw=true";
 
   /* ===== 카테고리 실행 함수들 (원문 유지) ===== */
-  function searchConvenienceStoresAndStarbucks(){ /* ...원문 동일... */ 
+  function searchConvenienceStoresAndStarbucks(){ 
     searchAndMark("GS25", createMarkerImage(GS25ImageUrl));
     searchAndMark("CU", createMarkerImage(CUImageUrl));
     searchAndMark("세븐일레븐", createMarkerImage(sevenelevenImageUrl));
@@ -392,7 +417,7 @@
     searchAndMark("하이오커피", createMarkerImage(hioImageUrl));
     searchAndMark("카페봄봄", createMarkerImage(cafebombomImageUrl));
   }
-  function searchDepartmentStoresandShoppingMalls(){ /* 원문 동일 */ 
+  function searchDepartmentStoresandShoppingMalls(){ 
     searchAndMark("롯데백화점", createMarkerImage(lottedepartmentStoreImageUrl));
     searchAndMark("롯데아울렛", createMarkerImage(lotteoutletImageUrl));
     searchAndMark("롯데몰", createMarkerImage(lottemallImageUrl));
@@ -411,7 +436,7 @@
     searchAndMark("스타필드", createMarkerImage(starfieldImageUrl));
     searchAndMark("JDC면세점", createMarkerImage(jdcImageUrl));
   }
-  function searchmartandsuper(){ /* 원문 동일 */ 
+  function searchmartandsuper(){ 
     searchAndMark("코스트코", createMarkerImage(costcoImageUrl));
     searchAndMark("롯데마트", createMarkerImage(lottemartImageUrl));
     searchAndMark("롯데슈퍼", createMarkerImage(lottesuperImageUrl));
@@ -424,7 +449,7 @@
     searchAndMark("고향뜨락", createMarkerImage(gohyangImageUrl));
     searchAndMark("이마트 에브리데이", createMarkerImage(emarteverydayImageUrl));
   }
-  function searchjaegwaanddessert(){ /* 원문 동일 */ 
+  function searchjaegwaanddessert(){ 
     searchAndMark("파리바게뜨", createMarkerImage(parisbagguetteImageUrl));
     searchAndMark("파리크라상", createMarkerImage(parisImageUrl));
     searchAndMark("뚜레주르", createMarkerImage(touslesjoursImageUrl));
@@ -438,7 +463,7 @@
     searchAndMark("쿠키날", createMarkerImage(cookienalImageUrl));
     searchAndMark("쇼콜라팔레트", createMarkerImage(cpImageUrl));
   }
-  function searchrestaurants(){ /* 원문 동일 (오타 수정 반영됨) */ 
+  function searchrestaurants(){ 
     searchAndMark("롯데리아", createMarkerImage(lotteriaImageUrl));
     searchAndMark("맥도날드", createMarkerImage(mcdonaldsImageUrl));
     searchAndMark("KFC", createMarkerImage(kfcImageUrl));
@@ -468,7 +493,7 @@
     searchAndMark("한솥도시락", createMarkerImage(hansotImageUrl));
     searchAndMark("파이브가이즈", createMarkerImage(fiveImageUrl));
   }
-  function searchHomeappliances(){ /* 원문 동일 */ 
+  function searchHomeappliances(){ 
     searchAndMark("이케아", createMarkerImage(ikeaImageUrl));
     searchAndMark("다이소", createMarkerImage(daisoImageUrl));
     searchAndMark("롯데하이마트", createMarkerImage(lottehimartImageUrl));
@@ -483,7 +508,7 @@
     searchAndMark("프린트카페", createMarkerImage(printImageUrl));
     searchAndMark("에이스침대", createMarkerImage(acebedImageUrl));
   }
-  function searchresortandhotel(){ /* 원문 동일 */ 
+  function searchresortandhotel(){ 
     searchAndMark("해비치호텔앤드 리조트", createMarkerImage(haevichiImageUrl));
     searchAndMark("롯데호텔", createMarkerImage(lottehotelImageUrl));
     searchAndMark("호텔신라", createMarkerImage(hotelshillaImageUrl));
@@ -512,7 +537,7 @@
     searchAndMark("세이지우드", createMarkerImage(sageImageUrl));
     searchAndMark("페어몬트 앰배서더 서울", createMarkerImage(seoul2ImageUrl));
   }
-  function searchfasion(){ /* 원문 동일 */ 
+  function searchfasion(){ 
     searchAndMark("올리브영", createMarkerImage(oliveImageUrl));
     searchAndMark("무신사", createMarkerImage(musinsaImageUrl));
     searchAndMark("이니스프리", createMarkerImage(innisImageUrl));

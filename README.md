@@ -1,5 +1,5 @@
-<img width="1920" height="914" alt="image" src="https://github.com/user-attachments/assets/0b7be13b-cc53-4f71-a2d0-f227bf2d204b" /># ASM -Apple Pay South Korea Map
-**Explore stores in South Korea that accept Apple Pay—right from your web browser.**
+<img width="1920" height="914" alt="image" src="https://github.com/user-attachments/assets/0b7be13b-cc53-4f71-a2d0-f227bf2d204b" />
+
 
 ## Purpose
 - **Convenience**: No need to install a separate app to find stores that support Apple Pay.

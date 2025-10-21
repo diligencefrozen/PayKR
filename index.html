@@ -211,15 +211,61 @@
         '</div>';
       const overlay = new kakao.maps.CustomOverlay({ position: pos, content, xAnchor:.5, yAnchor:1.15 });
 
-      // 데스크톱: hover 이벤트
-      kakao.maps.event.addListener(marker, 'mouseover', ()=> {
+      let hideTimeout = null;
+      let isOverMarker = false;
+      let isOverOverlay = false;
+
+      // 오버레이를 표시할 때 이벤트 리스너 추가
+      function showOverlay() {
         closeAllOverlays();
         overlay.setMap(map);
         currentOverlay = overlay;
+
+        // 오버레이가 렌더링된 후 이벤트 리스너 추가
+        setTimeout(() => {
+          const overlayElement = document.querySelector('.infoWindow');
+          if (overlayElement && !overlayElement.dataset.listenerAdded) {
+            overlayElement.dataset.listenerAdded = 'true';
+            
+            overlayElement.addEventListener('mouseenter', () => {
+              isOverOverlay = true;
+              if (hideTimeout) {
+                clearTimeout(hideTimeout);
+                hideTimeout = null;
+              }
+            });
+            
+            overlayElement.addEventListener('mouseleave', () => {
+              isOverOverlay = false;
+              hideTimeout = setTimeout(() => {
+                if (!isOverMarker && !isOverOverlay) {
+                  overlay.setMap(null);
+                  if (currentOverlay === overlay) currentOverlay = null;
+                }
+              }, 200);
+            });
+          }
+        }, 10);
+      }
+
+      // 데스크톱: hover 이벤트
+      kakao.maps.event.addListener(marker, 'mouseover', ()=> {
+        isOverMarker = true;
+        if (hideTimeout) {
+          clearTimeout(hideTimeout);
+          hideTimeout = null;
+        }
+        showOverlay();
       });
-      kakao.maps.event.addListener(marker, 'mouseout',  ()=> {
-        overlay.setMap(null);
-        if (currentOverlay === overlay) currentOverlay = null;
+
+      kakao.maps.event.addListener(marker, 'mouseout', ()=> {
+        isOverMarker = false;
+        hideTimeout = setTimeout(() => {
+          if (!isOverMarker && !isOverOverlay) {
+            overlay.setMap(null);
+            if (currentOverlay === overlay) currentOverlay = null;
+          }
+        }, 200);
       });
       
       // 모바일: click 이벤트 (토글)
@@ -230,9 +276,7 @@
           if (currentOverlay === overlay) currentOverlay = null;
         } else {
           // 다른 오버레이 닫고 새로 열기
-          closeAllOverlays();
-          overlay.setMap(map);
-          currentOverlay = overlay;
+          showOverlay();
         }
       });
     }

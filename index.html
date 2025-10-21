@@ -195,11 +195,19 @@
       const marker = new kakao.maps.Marker({ position: pos, image: markerImage });
       marker.setMap(map);
 
+      // 카카오맵 링크 생성
+      const kakaoMapUrl = `https://map.kakao.com/link/to/${encodeURIComponent(place.place_name)},${place.y},${place.x}`;
+      const kakaoPlaceUrl = place.place_url || `https://place.map.kakao.com/${place.id}`;
+
       const content =
         '<div class="infoWindow">' +
         '<strong>📍 ' + place.place_name + '</strong>' +
         '<div class="info-address">' + (place.address_name || place.road_address_name || '주소 정보 없음') + '</div>' +
-        (place.phone ? '<div class="info-phone">📞 ' + place.phone + '</div>' : '') +
+        '<div class="info-actions">' +
+        (place.phone ? '<a href="tel:' + place.phone + '" class="info-phone">📞 전화</a>' : '') +
+        '<a href="' + kakaoPlaceUrl + '" target="_blank" rel="noopener noreferrer" class="info-review">⭐ 리뷰</a>' +
+        '<a href="' + kakaoMapUrl + '" target="_blank" rel="noopener noreferrer" class="info-navigate">🧭 길찾기</a>' +
+        '</div>' +
         '</div>';
       const overlay = new kakao.maps.CustomOverlay({ position: pos, content, xAnchor:.5, yAnchor:1.15 });
 

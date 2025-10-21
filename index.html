@@ -209,7 +209,13 @@
         '<a href="' + kakaoMapUrl + '" target="_blank" rel="noopener noreferrer" class="info-navigate">🧭 길찾기</a>' +
         '</div>' +
         '</div>';
-      const overlay = new kakao.maps.CustomOverlay({ position: pos, content, xAnchor:.5, yAnchor:1.15 });
+      const overlay = new kakao.maps.CustomOverlay({ 
+        position: pos, 
+        content, 
+        xAnchor:.5, 
+        yAnchor:1.15,
+        clickable: true
+      });
 
       let hideTimeout = null;
       let isOverMarker = false;

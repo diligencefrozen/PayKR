@@ -31,8 +31,8 @@ html, body {
   background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
   padding: 16px 20px;
   border-radius: 12px;
-  min-width: 220px;
-  max-width: 320px;
+  min-width: 240px;
+  max-width: 340px;
   box-shadow: 0 8px 24px rgba(0,0,0,0.15), 0 2px 8px rgba(0,0,0,0.1);
   border: 1px solid rgba(0,0,0,0.08);
   position: relative;
@@ -66,19 +66,72 @@ html, body {
   color: #666;
   line-height: 1.6;
   margin-top: 4px;
+  margin-bottom: 12px;
   padding-left: 2px;
 }
 
+.infoWindow .info-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.infoWindow .info-phone,
+.infoWindow .info-review,
+.infoWindow .info-navigate {
+  flex: 1;
+  display: inline-block;
+  font-size: 12px;
+  font-weight: 600;
+  text-align: center;
+  padding: 8px 10px;
+  border-radius: 8px;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
 .infoWindow .info-phone {
-  display: block;
-  font-size: 13px;
-  color: #007bff;
-  line-height: 1.6;
-  margin-top: 6px;
-  padding: 6px 10px;
-  background-color: rgba(0, 123, 255, 0.05);
-  border-radius: 6px;
-  font-weight: 500;
+  background: linear-gradient(135deg, #28a745 0%, #218838 100%);
+  color: white;
+  box-shadow: 0 2px 6px rgba(40, 167, 69, 0.3);
+}
+
+.infoWindow .info-phone:hover {
+  background: linear-gradient(135deg, #218838 0%, #1e7e34 100%);
+  box-shadow: 0 4px 10px rgba(40, 167, 69, 0.4);
+  transform: translateY(-1px);
+}
+
+.infoWindow .info-review {
+  background: linear-gradient(135deg, #ffc107 0%, #ff9800 100%);
+  color: white;
+  box-shadow: 0 2px 6px rgba(255, 193, 7, 0.3);
+}
+
+.infoWindow .info-review:hover {
+  background: linear-gradient(135deg, #ff9800 0%, #f57c00 100%);
+  box-shadow: 0 4px 10px rgba(255, 193, 7, 0.4);
+  transform: translateY(-1px);
+}
+
+.infoWindow .info-navigate {
+  background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+  color: white;
+  box-shadow: 0 2px 6px rgba(0, 123, 255, 0.3);
+}
+
+.infoWindow .info-navigate:hover {
+  background: linear-gradient(135deg, #0056b3 0%, #004085 100%);
+  box-shadow: 0 4px 10px rgba(0, 123, 255, 0.4);
+  transform: translateY(-1px);
+}
+
+.infoWindow .info-phone:active,
+.infoWindow .info-review:active,
+.infoWindow .info-navigate:active {
+  transform: translateY(0);
 }
 
 @keyframes infoWindowFadeIn {
@@ -95,8 +148,8 @@ html, body {
 /* 모바일에서 정보창 최적화 */
 @media screen and (max-width: 768px) {
   .infoWindow {
-    min-width: 200px;
-    max-width: 280px;
+    min-width: 220px;
+    max-width: 300px;
     padding: 14px 16px;
   }
   
@@ -104,9 +157,19 @@ html, body {
     font-size: 15px;
   }
   
-  .infoWindow .info-address,
-  .infoWindow .info-phone {
+  .infoWindow .info-address {
     font-size: 12px;
+  }
+  
+  .infoWindow .info-actions {
+    gap: 6px;
+  }
+  
+  .infoWindow .info-phone,
+  .infoWindow .info-review,
+  .infoWindow .info-navigate {
+    font-size: 11px;
+    padding: 7px 8px;
   }
 }
 .nav-control {

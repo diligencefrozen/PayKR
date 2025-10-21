@@ -3,7 +3,7 @@
 
 #map {
   width: 100%;
-  height: 90%;
+  height: 100%;
   position: absolute;
   top: 0;
   left: 0;
@@ -63,19 +63,58 @@ html, body {
 */
 .nav-control-categories {
   position: absolute;
-  margin: 10px;
-  z-index: 1;
-  left: 10px;
-  top: calc(30% - 15px);
-  flex-direction: column;
+  top: 60px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: auto;
+  max-width: 90%;
+  z-index: 2;
   display: flex;
+  flex-direction: row;
+  overflow-x: auto;
+  overflow-y: hidden;
+  background-color: transparent;
+  padding: 8px 0;
+  gap: 8px;
+  padding-left: 8px;
+  padding-right: 8px;
+  justify-content: center;
+  /* 스크롤바 스타일 */
+  scrollbar-width: thin;
+  scrollbar-color: #ccc #f0f0f0;
+  /* 모바일에서 부드러운 스크롤 */
+  -webkit-overflow-scrolling: touch;
 }
+
+.nav-control-categories::-webkit-scrollbar {
+  height: 4px;
+}
+
+.nav-control-categories::-webkit-scrollbar-track {
+  background: #f0f0f0;
+}
+
+.nav-control-categories::-webkit-scrollbar-thumb {
+  background: #ccc;
+  border-radius: 2px;
+}
+
 .nav-control-categories button {
-  margin-bottom: 10px;
-  text-align: center;
+  flex-shrink: 0;
+  padding: 8px 12px;
   background-color: white;
   border: 1px solid #ccc;
-  padding: 5px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 13px;
+  white-space: nowrap;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  transition: all 0.2s;
+}
+
+.nav-control-categories button:hover {
+  background-color: #f5f5f5;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
 }        
 body {
   -webkit-user-select:none;
@@ -88,7 +127,7 @@ body {
   top: 10px;
   left: 50%;
   transform: translateX(-50%);
-  z-index: 1;
+  z-index: 3;
   background-color: white;
   padding: 8px 12px;
   border: 1px solid #ccc;
@@ -257,7 +296,8 @@ li {
 /* 모바일 기기에 적용할 스타일 */        
 @media screen and (max-width: 768px) {
   #map {
-    height: calc(100% - 160px);
+    height: 100%;
+    top: 0;
   }  
   .nav-control {
     position: absolute;
@@ -273,8 +313,13 @@ li {
   #search-box {
     position: absolute;
     top: 10px;
-    right: 40px; 
-    z-index: 1;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 3;
+  }
+  .nav-control-categories {
+    top: 60px;
+    z-index: 2;
   }
   /*
   .nav-control {

@@ -172,12 +172,21 @@
   <script>
     // 전역 보관 (중복 선언 금지)
     let map, currentPositionMarker = null;
+    let currentOverlay = null; // 현재 열려있는 오버레이 추적
 
     // 공통 마커 생성
     function createMarkerImage(markerImageUrl) {
       const size = new kakao.maps.Size(24, 35);
       const opts = { spriteOrigin:new kakao.maps.Point(0,0), spriteSize:new kakao.maps.Size(24,35) };
       return new kakao.maps.MarkerImage(markerImageUrl, size, opts);
+    }
+
+    // 모든 오버레이 닫기
+    function closeAllOverlays() {
+      if (currentOverlay) {
+        currentOverlay.setMap(null);
+        currentOverlay = null;
+      }
     }
 
     // 단일 displayMarker (중복 제거)
@@ -191,9 +200,30 @@
         (place.address_name||'') + '</div>';
       const overlay = new kakao.maps.CustomOverlay({ position: pos, content, xAnchor:.5, yAnchor:1 });
 
-      kakao.maps.event.addListener(marker, 'mouseover', ()=> overlay.setMap(map));
-      kakao.maps.event.addListener(marker, 'mouseout',  ()=> overlay.setMap(null));
-      kakao.maps.event.addListener(marker, 'click',     ()=> overlay.setMap(overlay.getMap()?null:map));
+      // 데스크톱: hover 이벤트
+      kakao.maps.event.addListener(marker, 'mouseover', ()=> {
+        closeAllOverlays();
+        overlay.setMap(map);
+        currentOverlay = overlay;
+      });
+      kakao.maps.event.addListener(marker, 'mouseout',  ()=> {
+        overlay.setMap(null);
+        if (currentOverlay === overlay) currentOverlay = null;
+      });
+      
+      // 모바일: click 이벤트 (토글)
+      kakao.maps.event.addListener(marker, 'click', ()=> {
+        if (overlay.getMap()) {
+          // 이미 열려있으면 닫기
+          overlay.setMap(null);
+          if (currentOverlay === overlay) currentOverlay = null;
+        } else {
+          // 다른 오버레이 닫고 새로 열기
+          closeAllOverlays();
+          overlay.setMap(map);
+          currentOverlay = overlay;
+        }
+      });
     }
 
     // 키워드 검색 + 마킹
@@ -573,6 +603,9 @@
       const container = document.getElementById("map");
       const options = { center: new kakao.maps.LatLng(37.34487430629196, 127.93071437137233), level: 3 };
       map = new kakao.maps.Map(container, options);
+
+      // 지도 클릭 시 모든 오버레이 닫기
+      kakao.maps.event.addListener(map, 'click', closeAllOverlays);
 
       // 줌컨트롤
       const zoomControl = new kakao.maps.ZoomControl();

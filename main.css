@@ -129,33 +129,65 @@ body {
   transform: translateX(-50%);
   z-index: 3;
   background-color: white;
-  padding: 8px 12px;
-  border: 1px solid #ccc;
-  border-radius: 3px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+  padding: 6px 8px 6px 16px;
+  border: 2px solid #e0e0e0;
+  border-radius: 30px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.3s ease;
+}
+
+#search-box:focus-within {
+  border-color: #007bff;
+  box-shadow: 0 4px 16px rgba(0, 123, 255, 0.2);
+}
+
+.search-icon {
+  font-size: 18px;
+  color: #666;
   display: flex;
   align-items: center;
 }
+
 #search-input {
-  width: 250px;
+  width: 220px;
   border: none;
   outline: none;
   font-size: 14px;
   box-shadow: none;
-  margin-top: 5px; /* 아래로 이동 */
+  background: transparent;
+  color: #333;
 }
+
+#search-input::placeholder {
+  color: #999;
+}
+
 #search-submit {
-  width: 30px;
-  height: 30px;
+  padding: 8px 20px;
   border: none;
-  background-color: transparent;
+  background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+  color: white;
+  font-size: 14px;
+  font-weight: 600;
+  border-radius: 20px;
   cursor: pointer;
-  margin-left: 8px;
-  margin-top: 5px; /* 아래로 이동 */
+  white-space: nowrap;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 6px rgba(0, 123, 255, 0.3);
 }
-#search-submit img {
-  width: 100%;
-  height: 100%;
+
+#search-submit:hover {
+  background: linear-gradient(135deg, #0056b3 0%, #004085 100%);
+  box-shadow: 0 4px 12px rgba(0, 123, 255, 0.4);
+  transform: translateY(-1px);
+}
+
+#search-submit:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 4px rgba(0, 123, 255, 0.3);
 }
 /* 업데이트 내역 스타일 */
 #patch-notes {
@@ -340,23 +372,20 @@ li {
     z-index: 1;
   }
   */  
-  /*
-  #search-box {    
-    top: 50px; 
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 1;
-    background-color: white;
-    padding: 8px 12px;
-    border: 1px solid #ccc;
-    border-radius: 3px;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
-    display: flex;
-    align-items: center;
+  #search-box {
+    border-radius: 30px;
+    padding: 6px 8px 6px 12px;
+    max-width: 90%;
   }
-  */
+  
   #search-input {
-    width: 100%;
+    width: 150px;
+    font-size: 13px;
+  }
+  
+  #search-submit {
+    padding: 6px 16px;
+    font-size: 13px;
   }
   /*
   #patch-notes-toggle, #notice-toggle {
@@ -365,12 +394,8 @@ li {
     bottom: 10px;
   }
   */
-  #search-submit {
-    align-self: flex-end;
-  }
-  #search-submit img {
-    width: 75%; 
-    height: 75%; 
+  .search-icon {
+    font-size: 16px;
   }
   /* 업데이트 내역 스타일 */
   #patch-notes {

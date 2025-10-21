@@ -65,7 +65,16 @@
   style="user-select:none"
   oncontextmenu="return false"
   onselectstart="return false"
-  ondragstart="return false">
+  ondragstart="return false"  noticeToggle.addEventListener('click', ()=>{
+    noticeContent.style.display='block';
+    noticeToggle.style.display='none';
+    patchNoteToggle2.style.zIndex = 1; // 이 부분
+  });
+  closeNotice.addEventListener('click', ()=>{
+    noticeContent.style.display='none';
+    noticeToggle.style.display='block';
+    patchNoteToggle2.style.zIndex = '';
+  });>
 
   <div id="map"></div>
 
@@ -83,6 +92,7 @@
   <!-- 패치노트 -->
   <div id="patch-notes" class="is-active">
     <button id="patch-notes-toggle">패치노트</button>
+    <button id="notice-toggle">필독사항</button>
     <div id="patch-notes-content" style="display:none;position:fixed;top:10%;left:20%;right:20%;background:#fff;border:1px solid #ccc;padding:20px;z-index:9999;">
       <button id="close-patch-notes" style="position:absolute;top:10px;right:10px;background:none;border:none;font-size:20px;">&times;</button>
       <ul>
@@ -120,21 +130,6 @@
         <li>20250517.11: 기능 개선 (영어 지원 1/10) </li>
       </ul>
     </div>
-  </div>
-
-  <script>
-    // 패치노트 토글
-    const patchNotesToggle = document.getElementById('patch-notes-toggle');
-    const patchNotesContent = document.getElementById('patch-notes-content');
-    const closePatchNotes = document.getElementById('close-patch-notes');
-    patchNotesToggle.addEventListener('click', ()=>{ patchNotesContent.style.display='block'; patchNotesToggle.style.display='none'; });
-    closePatchNotes.addEventListener('click', ()=>{ patchNotesContent.style.display='none'; patchNotesToggle.style.display='block'; });
-  </script>
-
-  <!-- 필독사항 (중복 ID 방지: 패치노트 버튼 id 변경) -->
-  <div id="notice" class="is-active">
-    <button id="notice-toggle">필독사항</button>
-    <button id="patch-notes-toggle-2">패치노트</button>
     <div id="notice-content" style="display:none;position:fixed;top:10%;left:20%;right:20%;background:#fff;border:1px solid gray;padding:20px;z-index:9999;">
       <button id="close-notice" style="position:absolute;top:10px;right:10px;background:none;border:none;font-size:20px;">&times;</button>
       <ul>
@@ -149,23 +144,36 @@
       </ul>
     </div>
   </div>
+
   <script>
+    // 패치노트 토글
+    const patchNotesToggle = document.getElementById('patch-notes-toggle');
+    const patchNotesContent = document.getElementById('patch-notes-content');
+    const closePatchNotes = document.getElementById('close-patch-notes');
     const noticeToggle = document.getElementById('notice-toggle');
     const noticeContent = document.getElementById('notice-content');
     const closeNotice = document.getElementById('close-notice');
-    const patchNoteToggle2 = document.getElementById('patch-notes-toggle-2');
+    
+    patchNotesToggle.addEventListener('click', ()=>{ 
+      patchNotesContent.style.display='block'; 
+      patchNotesToggle.style.display='none';
+      noticeToggle.style.display='block';
+    });
+    closePatchNotes.addEventListener('click', ()=>{ 
+      patchNotesContent.style.display='none'; 
+      patchNotesToggle.style.display='block';
+    });
+    
     noticeToggle.addEventListener('click', ()=>{
       noticeContent.style.display='block';
       noticeToggle.style.display='none';
-      patchNoteToggle2.style.zIndex = 1;
+      patchNotesToggle.style.display='block';
     });
+    
     closeNotice.addEventListener('click', ()=>{
       noticeContent.style.display='none';
       noticeToggle.style.display='block';
-      patchNoteToggle2.style.zIndex = '';
     });
-    // 보조 패치노트 버튼도 동일 동작 연결
-    patchNoteToggle2.addEventListener('click', ()=> patchNotesToggle.click());
   </script>
 
   <!-- 지도/검색 스크립트: SDK 준비 후 실행 -->

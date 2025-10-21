@@ -144,7 +144,7 @@ body {
   z-index: 3; /* 지도 위에 표시 */
   position: absolute;
   bottom: 10px;
-  left: calc(50% - 120px); 
+  left: calc(50% - 140px); 
   transform: translateY(-90%); 
 }
 /* 패치노트 내용 스타일 */
@@ -190,7 +190,7 @@ body {
   z-index: 3;
   position: absolute;
   bottom: 10px;
-  left: calc(50% + 80px);
+  left: calc(50% + 20px);
   transform: translateY(-90%);
 }
 /* 필독사항 영역 내용 스타일 */

@@ -196,9 +196,12 @@
       marker.setMap(map);
 
       const content =
-        '<div class="infoWindow"><strong>' + place.place_name + '</strong><br>' +
-        (place.address_name||'') + '</div>';
-      const overlay = new kakao.maps.CustomOverlay({ position: pos, content, xAnchor:.5, yAnchor:1 });
+        '<div class="infoWindow">' +
+        '<strong>📍 ' + place.place_name + '</strong>' +
+        '<div class="info-address">' + (place.address_name || place.road_address_name || '주소 정보 없음') + '</div>' +
+        (place.phone ? '<div class="info-phone">📞 ' + place.phone + '</div>' : '') +
+        '</div>';
+      const overlay = new kakao.maps.CustomOverlay({ position: pos, content, xAnchor:.5, yAnchor:1.15 });
 
       // 데스크톱: hover 이벤트
       kakao.maps.event.addListener(marker, 'mouseover', ()=> {

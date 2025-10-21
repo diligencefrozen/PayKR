@@ -1,421 +1,930 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-    <meta charset="cp949">
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>애플페이 가맹점 찾기 -온라인</title>
     <meta name="google-site-verification" content="c4eTxK6D1wFIOq01h8LLX02-f44HSO5gXqCsqGhr8AE" />
     <meta name="naver-site-verification" content="6e4589a660b9931c130ae7e4cb83b843534b542c" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <meta name="description" content="대한민국에서 애플페이를 지원하는 온라인 매장을 확인할 수 있습니다.">
     <meta name="author" content="elsannadisney">
-    <meta name="keyword" content="애플페이,애플 페이,Apple Pay,ApplePay,applepay,애플페이 사용처,애플페이지도,애플페이 지도,애플페이사용처,애플페이 가맹점,애플페이가맹점,애플페이 가맹점 지도,애플페이가맹점지도,애플페이맵,애플페이 맵">
-    <link rel="icon" href="https://diligencefrozen.github.io/images/logo.ico" type="image/x-icon" />    
+    <meta name="keyword" content="애플페이,애플 페이,Apple Pay,ApplePay,애플페이 사용처,애플페이 가맹점,온라인 쇼핑">
+    <link rel="icon" href="https://diligencefrozen.github.io/images/logo.ico" type="image/x-icon" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
         body {
             margin: 0;
             padding: 0;
-            background-color: #f7f7f7;
-            font-family: 'Arial', sans-serif;
-        }
-        .container {
-            max-width: 1200px;
-            margin: 20px auto;
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 20px;
-        }
-        .brand {
-            background-color: white;
-            border: 1px solid #eaeaea;
-            border-radius: 4px;
-            text-align: center;
-            padding: 20px;
-        }
-        .brand-logo img {
-            max-width: 100%;
-            height: auto;
-        }
-        .brand-info {
-            margin-top: 10px;
-        }
-        .brand-name {
-            font-weight: bold;
-        }
-        .location-icon {
-            display: inline-block;
-            margin-right: 5px;
-        }
-        .location-icon img {
-            width: 20px;
-            height: 20px;
-        }
-        .site-footer {
-            background-color: #f8f8f8; 
-            color: #333; 
-            padding: 20px 0; 
-            font-size: 14px; 
-        }
-        .footer-disclaimer {
-            text-align: center; 
-            margin: 0 auto; 
-            padding: 20px; 
-        }
-        .footer-disclaimer p {
-            font-weight: bold; 
-            margin-bottom: 10px; 
-        }
-        .footer-disclaimer ul {
-            list-style: none; 
-            padding: 0; 
-            margin: 0; 
-        }
-        .footer-disclaimer li {
-            margin-bottom: 5px; 
+            background: linear-gradient(135deg, #f5f7fa 0%, #e9ecef 100%);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+            min-height: 100vh;
+            color: #1a1a1a;
         }
         
+        /* Header Section */
+        .header {
+            background: linear-gradient(135deg, #000000 0%, #1c1c1e 100%);
+            color: white;
+            padding: 60px 20px 80px;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg width="100" height="100" xmlns="http://www.w3.org/2000/svg"><path d="M0 50 Q 25 25, 50 50 T 100 50" stroke="rgba(255,255,255,0.05)" fill="none"/></svg>') repeat;
+            opacity: 0.3;
+        }
+        
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .apple-pay-logo {
+            font-size: 48px;
+            margin-bottom: 20px;
+            font-weight: 700;
+            letter-spacing: -1px;
+        }
+        
+        .header h1 {
+            font-size: 42px;
+            font-weight: 700;
+            margin-bottom: 15px;
+            line-height: 1.2;
+        }
+        
+        .header p {
+            font-size: 18px;
+            opacity: 0.9;
+            max-width: 700px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+        
+        /* Search and Filter Section */
+        .controls {
+            max-width: 1200px;
+            margin: -40px auto 40px;
+            padding: 0 20px;
+            position: relative;
+            z-index: 10;
+        }
+        
+        .search-container {
+            background: white;
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        .search-box {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+        
+        .search-input {
+            flex: 1;
+            padding: 16px 20px;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            font-size: 16px;
+            font-family: inherit;
+            transition: all 0.3s ease;
+            background: #f8f9fa;
+        }
+        
+        .search-input:focus {
+            outline: none;
+            border-color: #007aff;
+            background: white;
+            box-shadow: 0 0 0 4px rgba(0,122,255,0.1);
+        }
+        
+        .search-input::placeholder {
+            color: #999;
+        }
+        
+        .filter-buttons {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        
+        .filter-btn {
+            padding: 10px 20px;
+            border: 2px solid #e0e0e0;
+            background: white;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            font-family: inherit;
+        }
+        
+        .filter-btn:hover {
+            border-color: #007aff;
+            background: #f0f7ff;
+            transform: translateY(-2px);
+        }
+        
+        .filter-btn.active {
+            background: #007aff;
+            color: white;
+            border-color: #007aff;
+        }
+        
+        /* Stats Section */
+        .stats {
+            max-width: 1200px;
+            margin: 0 auto 40px;
+            padding: 0 20px;
+            text-align: center;
+        }
+        
+        .stats-text {
+            font-size: 16px;
+            color: #666;
+            font-weight: 500;
+        }
+        
+        .stats-number {
+            color: #007aff;
+            font-weight: 700;
+        }
+        
+        /* Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto 60px;
+            padding: 0 20px;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 24px;
+        }
+        
+        /* Brand Card */
+        .brand {
+            background-color: white;
+            border: 1px solid #e8e8e8;
+            border-radius: 16px;
+            text-align: center;
+            padding: 30px 20px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .brand::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #007aff, #00d4ff);
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+        
+        .brand:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 40px rgba(0,0,0,0.12);
+            border-color: #007aff;
+        }
+        
+        .brand:hover::before {
+            transform: scaleX(1);
+        }
+        
+        .brand-logo {
+            width: 100%;
+            height: 120px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+        
+        .brand-logo img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+            transition: transform 0.3s ease;
+        }
+        
+        .brand:hover .brand-logo img {
+            transform: scale(1.05);
+        }
+        
+        .brand-info {
+            margin-top: 15px;
+        }
+        
+        .brand-name {
+            font-weight: 600;
+            font-size: 16px;
+            color: #1a1a1a;
+            line-height: 1.4;
+        }
+        
+        .brand-category {
+            font-size: 12px;
+            color: #666;
+            margin-top: 8px;
+            padding: 4px 12px;
+            background: #f0f0f0;
+            border-radius: 12px;
+            display: inline-block;
+        }
+        
+        /* Footer */
+        .site-footer {
+            background: linear-gradient(135deg, #1c1c1e 0%, #000000 100%);
+            color: white;
+            padding: 60px 20px 40px;
+            margin-top: 80px;
+        }
+        
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        
+        .footer-disclaimer {
+            margin-bottom: 40px;
+        }
+        
+        .footer-disclaimer h3 {
+            font-size: 24px;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+        
+        .footer-disclaimer p {
+            font-size: 16px;
+            line-height: 1.8;
+            opacity: 0.9;
+            margin-bottom: 30px;
+        }
+        
+        .footer-disclaimer ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .footer-disclaimer li {
+            margin-bottom: 15px;
+            font-size: 15px;
+            opacity: 0.85;
+        }
+        
+        .footer-link {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 14px 32px;
+            background: white;
+            color: #000;
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .footer-link:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 24px rgba(255,255,255,0.2);
+        }
+        
+        .footer-bottom {
+            margin-top: 40px;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            font-size: 14px;
+            opacity: 0.7;
+        }
+        
+        /* Loading State */
+        .loading {
+            text-align: center;
+            padding: 60px 20px;
+            font-size: 18px;
+            color: #666;
+        }
+        
+        .no-results {
+            text-align: center;
+            padding: 60px 20px;
+            font-size: 18px;
+            color: #666;
+            grid-column: 1 / -1;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .header {
+                padding: 40px 20px 60px;
+            }
+            
+            .header h1 {
+                font-size: 32px;
+            }
+            
+            .header p {
+                font-size: 16px;
+            }
+            
+            .container {
+                grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+                gap: 16px;
+            }
+            
+            .brand {
+                padding: 20px 15px;
+            }
+            
+            .brand-logo {
+                height: 80px;
+            }
+            
+            .search-box {
+                flex-direction: column;
+            }
+            
+            .filter-buttons {
+                gap: 8px;
+            }
+            
+            .filter-btn {
+                padding: 8px 16px;
+                font-size: 13px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .container {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
     </style>
 </head>
-<body>
-    <body oncontextmenu="return false" onselectstart="return false" ondragstart="return false" onkeydownn="return false">
-    <div class="container">
+<body oncontextmenu="return false" onselectstart="return false" ondragstart="return false">
+    
+    <!-- Header Section -->
+    <header class="header">
+        <div class="header-content">
+            <div class="apple-pay-logo"> Apple Pay</div>
+            <h1>애플페이 가맹점 찾기 -온라인</h1>
+            <p>애플페이를 지원하는 온라인 쇼핑몰과 서비스를 찾아보세요</p>
+        </div>
+    </header>
+    
+    <!-- Search and Filter Controls -->
+    <section class="controls">
+        <div class="search-container">
+            <div class="search-box">
+                <input type="text" 
+                       id="searchInput" 
+                       class="search-input" 
+                       placeholder="🔍 브랜드 검색 (예: 코스트코, 무신사)"
+                       aria-label="브랜드 검색">
+            </div>
+            <div class="filter-buttons">
+                <button class="filter-btn active" data-category="all">전체</button>
+                <button class="filter-btn" data-category="shopping">쇼핑</button>
+                <button class="filter-btn" data-category="food">음식</button>
+                <button class="filter-btn" data-category="travel">여행</button>
+                <button class="filter-btn" data-category="convenience">편의점</button>
+                <button class="filter-btn" data-category="other">기타</button>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Stats Section -->
+    <section class="stats">
+        <p class="stats-text">
+            온라인에서 애플페이를 사용할 수 있는 <span class="stats-number" id="totalCount">36</span>개 가맹점
+        </p>
+    </section>
+    
+    <div class="container" id="merchantContainer">
 
-        <div class="brand">
+        <div class="brand" data-category="food" data-name="배달의민족">
             <div class="brand-logo">
-                <img src="https://github.com/diligencefrozen/PayKR/blob/main/logo_online/logo01.png?raw=true" alt="브랜드01">
+                <img src="https://github.com/diligencefrozen/PayKR/blob/main/logo_online/logo01.png?raw=true" alt="배달의민족">
             </div>
             <div class="brand-info">
                 <span class="brand-name">배달의민족</span>
+                <div class="brand-category">음식 배달</div>
             </div>
         </div>
 
-        <div class="brand">
+        <div class="brand" data-category="shopping" data-name="코스트코">
             <div class="brand-logo">
-                <img src="https://github.com/diligencefrozen/PayKR/blob/main/logo_online/logo02.png?raw=true" alt="브랜드02">
+                <img src="https://github.com/diligencefrozen/PayKR/blob/main/logo_online/logo02.png?raw=true" alt="코스트코">
             </div>
             <div class="brand-info">
                 <span class="brand-name">코스트코</span>
+                <div class="brand-category">쇼핑</div>
             </div>
         </div>
 
-        <div class="brand">
+        <div class="brand" data-category="shopping" data-name="무신사">
             <div class="brand-logo">
-                <img src="https://github.com/diligencefrozen/PayKR/blob/main/logo_online/logo03.png?raw=true" alt="브랜드03">
+                <img src="https://github.com/diligencefrozen/PayKR/blob/main/logo_online/logo03.png?raw=true" alt="무신사">
             </div>
             <div class="brand-info">
                 <span class="brand-name">무신사</span>
+                <div class="brand-category">패션</div>
             </div>
         </div>
 
-        <div class="brand">
+        <div class="brand" data-category="travel" data-name="대한항공">
             <div class="brand-logo">
-                <img src="https://github.com/diligencefrozen/PayKR/blob/main/logo_online/logo04.png?raw=true" alt="브랜드04">
+                <img src="https://github.com/diligencefrozen/PayKR/blob/main/logo_online/logo04.png?raw=true" alt="대한항공">
             </div>
             <div class="brand-info">
                 <span class="brand-name">대한항공</span>
+                <div class="brand-category">항공</div>
             </div>
         </div>
 
-        <div class="brand">
+        <div class="brand" data-category="travel" data-name="진에어">
             <div class="brand-logo">
-                <img src="https://github.com/diligencefrozen/PayKR/blob/main/logo_online/logo05.png?raw=true" alt="브랜드05">
+                <img src="https://github.com/diligencefrozen/PayKR/blob/main/logo_online/logo05.png?raw=true" alt="진에어">
             </div>
             <div class="brand-info">
                 <span class="brand-name">진에어</span>
+                <div class="brand-category">항공</div>
             </div>
         </div>
 
-        <div class="brand">
+        <div class="brand" data-category="shopping" data-name="롯데ON">
             <div class="brand-logo">
-                <img src="https://github.com/diligencefrozen/PayKR/blob/main/logo_online/logo06.png?raw=true" alt="브랜드06">
+                <img src="https://github.com/diligencefrozen/PayKR/blob/main/logo_online/logo06.png?raw=true" alt="롯데ON">
             </div>
             <div class="brand-info">
                 <span class="brand-name">롯데ON</span>
+                <div class="brand-category">이커머스</div>
             </div>
         </div>
 
-        <div class="brand">
+        <div class="brand" data-category="shopping" data-name="티몬">
             <div class="brand-logo">
-                <img src="https://github.com/diligencefrozen/PayKR/blob/main/logo_online/logo07.png?raw=true" alt="브랜드07">
+                <img src="https://github.com/diligencefrozen/PayKR/blob/main/logo_online/logo07.png?raw=true" alt="티몬">
             </div>
             <div class="brand-info">
                 <span class="brand-name">티몬</span>
+                <div class="brand-category">이커머스</div>
             </div>
         </div>
 
-        <div class="brand">
+        <div class="brand" data-category="food" data-name="버거킹">
             <div class="brand-logo">
-                <img src="https://github.com/diligencefrozen/PayKR/blob/main/logo_online/logo08.png?raw=true" alt="브랜드08">
+                <img src="https://github.com/diligencefrozen/PayKR/blob/main/logo_online/logo08.png?raw=true" alt="버거킹">
             </div>
             <div class="brand-info">
                 <span class="brand-name">버거킹</span>
+                <div class="brand-category">패스트푸드</div>
             </div>
         </div>
 
-        <div class="brand">
+        <div class="brand" data-category="food" data-name="폴바셋">
             <div class="brand-logo">
-                <img src="https://github.com/diligencefrozen/PayKR/blob/main/logo_online/logo09.png?raw=true" alt="브랜드09">
+                <img src="https://github.com/diligencefrozen/PayKR/blob/main/logo_online/logo09.png?raw=true" alt="폴바셋">
             </div>
             <div class="brand-info">
                 <span class="brand-name">폴바셋</span>
+                <div class="brand-category">카페</div>
             </div>
         </div>
 
-        <div class="brand">
+        <div class="brand" data-category="convenience" data-name="우리동네 GS">
             <div class="brand-logo">
-                <img src="https://github.com/diligencefrozen/PayKR/blob/main/logo_online/logo10.png?raw=true" alt="브랜드10">
+                <img src="https://github.com/diligencefrozen/PayKR/blob/main/logo_online/logo10.png?raw=true" alt="우리동네 GS">
             </div>
             <div class="brand-info">
                 <span class="brand-name">우리동네 GS</span>
+                <div class="brand-category">배달</div>
             </div>
         </div>  
 
-        <div class="brand">
+        <div class="brand" data-category="convenience" data-name="포켓 CU">
             <div class="brand-logo">
-                <img src="https://github.com/diligencefrozen/PayKR/blob/main/logo_online/logo11.png?raw=true" alt="브랜드11">
+                <img src="https://github.com/diligencefrozen/PayKR/blob/main/logo_online/logo11.png?raw=true" alt="포켓 CU">
             </div>
             <div class="brand-info">
                 <span class="brand-name">포켓 CU</span>
+                <div class="brand-category">편의점</div>
             </div>
         </div>
 
-        <div class="brand">
+        <div class="brand" data-category="shopping" data-name="현대홈쇼핑">
             <div class="brand-logo">
-                <img src="https://github.com/diligencefrozen/PayKR/blob/main/logo_online/logo12.png?raw=true" alt="브랜드12">
+                <img src="https://github.com/diligencefrozen/PayKR/blob/main/logo_online/logo12.png?raw=true" alt="현대홈쇼핑">
             </div>
             <div class="brand-info">
                 <span class="brand-name">현대홈쇼핑</span>
+                <div class="brand-category">홈쇼핑</div>
             </div>
         </div>
 
-        <div class="brand">
+        <div class="brand" data-category="other" data-name="롯데시네마">
             <div class="brand-logo">
-                <img src="https://github.com/diligencefrozen/PayKR/blob/main/logo_online/logo13.png?raw=true" alt="브랜드13">
+                <img src="https://github.com/diligencefrozen/PayKR/blob/main/logo_online/logo13.png?raw=true" alt="롯데시네마">
             </div>
             <div class="brand-info">
                 <span class="brand-name">롯데시네마</span>
+                <div class="brand-category">영화관</div>
             </div>
         </div>
 
-        <div class="brand">
+        <div class="brand" data-category="shopping" data-name="갤러리아몰">
             <div class="brand-logo">
-                <img src="https://github.com/diligencefrozen/PayKR/blob/main/logo_online/logo14.png?raw=true" alt="브랜드14">
+                <img src="https://github.com/diligencefrozen/PayKR/blob/main/logo_online/logo14.png?raw=true" alt="갤러리아몰">
             </div>
             <div class="brand-info">
                 <span class="brand-name">갤러리아몰</span>
+                <div class="brand-category">백화점</div>
             </div>
         </div>
 
-        <div class="brand">
+        <div class="brand" data-category="shopping" data-name="GS SHOP">
             <div class="brand-logo">
-                <img src="https://github.com/diligencefrozen/PayKR/blob/main/logo_online/logo15.png?raw=true" alt="브랜드15">
+                <img src="https://github.com/diligencefrozen/PayKR/blob/main/logo_online/logo15.png?raw=true" alt="GS SHOP">
             </div>
             <div class="brand-info">
                 <span class="brand-name">GS SHOP</span>
+                <div class="brand-category">홈쇼핑</div>
             </div>
         </div>
 
-        <div class="brand">
+        <div class="brand" data-category="shopping" data-name="GS 프레시몰">
             <div class="brand-logo">
-                <img src="https://github.com/diligencefrozen/PayKR/blob/main/logo_online/logo16.png?raw=true" alt="브랜드16">
+                <img src="https://github.com/diligencefrozen/PayKR/blob/main/logo_online/logo16.png?raw=true" alt="GS 프레시몰">
             </div>
             <div class="brand-info">
                 <span class="brand-name">GS 프레시몰</span>
+                <div class="brand-category">식품</div>
             </div>
         </div>
 
-        <div class="brand">
+        <div class="brand" data-category="food" data-name="도미노피자">
             <div class="brand-logo">
-                <img src="https://github.com/diligencefrozen/PayKR/blob/main/logo_online/logo17.png?raw=true" alt="브랜드17">
+                <img src="https://github.com/diligencefrozen/PayKR/blob/main/logo_online/logo17.png?raw=true" alt="도미노피자">
             </div>
             <div class="brand-info">
                 <span class="brand-name">도미노피자</span>
+                <div class="brand-category">음식 배달</div>
             </div>
         </div>
 
-        <div class="brand">
+        <div class="brand" data-category="shopping" data-name="이니스프리">
             <div class="brand-logo">
-                <img src="https://github.com/diligencefrozen/PayKR/blob/main/logo_online/logo18.png?raw=true" alt="브랜드18">
+                <img src="https://github.com/diligencefrozen/PayKR/blob/main/logo_online/logo18.png?raw=true" alt="이니스프리">
             </div>
             <div class="brand-info">
                 <span class="brand-name">이니스프리</span>
+                <div class="brand-category">뷰티</div>
             </div>
         </div>
 
-        <div class="brand">
+        <div class="brand" data-category="shopping" data-name="텐바이텐">
             <div class="brand-logo">
-                <img src="https://github.com/diligencefrozen/PayKR/blob/main/logo_online/logo19.png?raw=true" alt="브랜드19">
+                <img src="https://github.com/diligencefrozen/PayKR/blob/main/logo_online/logo19.png?raw=true" alt="텐바이텐">
             </div>
             <div class="brand-info">
                 <span class="brand-name">텐바이텐</span>
+                <div class="brand-category">라이프스타일</div>
             </div>
         </div>
 
-        <div class="brand">
+        <div class="brand" data-category="travel" data-name="SRT Play">
             <div class="brand-logo">
-                <img src="https://github.com/diligencefrozen/PayKR/blob/main/logo_online/logo20.png?raw=true" alt="브랜드20">
+                <img src="https://github.com/diligencefrozen/PayKR/blob/main/logo_online/logo20.png?raw=true" alt="SRT Play">
             </div>
             <div class="brand-info">
                 <span class="brand-name">SRT Play</span>
+                <div class="brand-category">기차</div>
             </div>
         </div>
 
-        <div class="brand">
+        <div class="brand" data-category="shopping" data-name="현대이지웰">
             <div class="brand-logo">
-                <img src="https://github.com/diligencefrozen/PayKR/blob/main/logo_online/logo21.png?raw=true" alt="브랜드21">
+                <img src="https://github.com/diligencefrozen/PayKR/blob/main/logo_online/logo21.png?raw=true" alt="현대이지웰">
             </div>
             <div class="brand-info">
                 <span class="brand-name">현대이지웰</span>
+                <div class="brand-category">이커머스</div>
             </div>
         </div> 
 
-        <div class="brand">
+        <div class="brand" data-category="shopping" data-name="파스텔몰">
             <div class="brand-logo">
-                <img src="https://github.com/diligencefrozen/PayKR/blob/main/logo_online/logo22.png?raw=true" alt="브랜드22">
+                <img src="https://github.com/diligencefrozen/PayKR/blob/main/logo_online/logo22.png?raw=true" alt="파스텔몰">
             </div>
             <div class="brand-info">
                 <span class="brand-name">파스텔몰</span>
+                <div class="brand-category">뷰티</div>
             </div>
         </div>
 
-        <div class="brand">
+        <div class="brand" data-category="shopping" data-name="하이마트몰">
             <div class="brand-logo">
-                <img src="https://github.com/diligencefrozen/PayKR/blob/main/logo_online/logo23.png?raw=true" alt="브랜드23">
+                <img src="https://github.com/diligencefrozen/PayKR/blob/main/logo_online/logo23.png?raw=true" alt="하이마트몰">
             </div>
             <div class="brand-info">
                 <span class="brand-name">하이마트몰</span>
+                <div class="brand-category">전자제품</div>
             </div>
         </div>
 
-        <div class="brand">
+        <div class="brand" data-category="travel" data-name="모두투어">
             <div class="brand-logo">
-                <img src="https://github.com/diligencefrozen/PayKR/blob/main/logo_online/logo24.png?raw=true" alt="브랜드24">
+                <img src="https://github.com/diligencefrozen/PayKR/blob/main/logo_online/logo24.png?raw=true" alt="모두투어">
             </div>
             <div class="brand-info">
                 <span class="brand-name">모두투어</span>
+                <div class="brand-category">여행사</div>
             </div>
         </div>
 
-        <div class="brand">
+        <div class="brand" data-category="shopping" data-name="S.I. 빌리지">
             <div class="brand-logo">
-                <img src="https://github.com/diligencefrozen/PayKR/blob/main/logo_online/logo25.png?raw=true" alt="브랜드25">
+                <img src="https://github.com/diligencefrozen/PayKR/blob/main/logo_online/logo25.png?raw=true" alt="S.I. 빌리지">
             </div>
             <div class="brand-info">
                 <span class="brand-name">S.I. 빌리지</span>
+                <div class="brand-category">패션</div>
             </div>
         </div>
 
-        <div class="brand">
+        <div class="brand" data-category="shopping" data-name="알라딘 중고서점">
             <div class="brand-logo">
-                <img src="https://github.com/diligencefrozen/PayKR/blob/main/logo_online/logo26.png?raw=true" alt="브랜드26">
+                <img src="https://github.com/diligencefrozen/PayKR/blob/main/logo_online/logo26.png?raw=true" alt="알라딘 중고서점">
             </div>
             <div class="brand-info">
                 <span class="brand-name">알라딘 중고서점</span>
+                <div class="brand-category">서점</div>
             </div>
         </div>
 
-        <div class="brand">
+        <div class="brand" data-category="shopping" data-name="롯데홈쇼핑">
             <div class="brand-logo">
-                <img src="https://github.com/diligencefrozen/PayKR/blob/main/logo_online/logo27.png?raw=true" alt="브랜드27">
+                <img src="https://github.com/diligencefrozen/PayKR/blob/main/logo_online/logo27.png?raw=true" alt="롯데홈쇼핑">
             </div>
             <div class="brand-info">
                 <span class="brand-name">롯데홈쇼핑</span>
+                <div class="brand-category">홈쇼핑</div>
             </div>
         </div>
 
-        <div class="brand">
+        <div class="brand" data-category="shopping" data-name="I'M ALIVE">
             <div class="brand-logo">
-                <img src="https://github.com/diligencefrozen/PayKR/blob/main/logo_online/logo28.png?raw=true" alt="브랜드28">
+                <img src="https://github.com/diligencefrozen/PayKR/blob/main/logo_online/logo28.png?raw=true" alt="I'M ALIVE">
             </div>
             <div class="brand-info">
                 <span class="brand-name">I'M ALIVE</span>
+                <div class="brand-category">패션</div>
             </div>
         </div>
 
-        <div class="brand">
+        <div class="brand" data-category="shopping" data-name="OASiS">
             <div class="brand-logo">
-                <img src="https://github.com/diligencefrozen/PayKR/blob/main/logo_online/logo29.png?raw=true" alt="브랜드29">
+                <img src="https://github.com/diligencefrozen/PayKR/blob/main/logo_online/logo29.png?raw=true" alt="OASiS">
             </div>
             <div class="brand-info">
                 <span class="brand-name">OASiS</span>
+                <div class="brand-category">패션</div>
             </div>
         </div>
 
-        <div class="brand">
+        <div class="brand" data-category="travel" data-name="아시아나항공">
             <div class="brand-logo">
-                <img src="https://github.com/diligencefrozen/PayKR/blob/main/logo_online/logo30.png?raw=true" alt="브랜드30">
+                <img src="https://github.com/diligencefrozen/PayKR/blob/main/logo_online/logo30.png?raw=true" alt="아시아나항공">
             </div>
             <div class="brand-info">
-                <span class="brand-name">ASIANA AIRLINES</span>
+                <span class="brand-name">아시아나항공</span>
+                <div class="brand-category">항공</div>
             </div>
         </div>
 
-        <div class="brand">
+        <div class="brand" data-category="shopping" data-name="안다르">
             <div class="brand-logo">
-                <img src="https://github.com/diligencefrozen/PayKR/blob/main/logo_online/logo31.png?raw=true" alt="브랜드31">
+                <img src="https://github.com/diligencefrozen/PayKR/blob/main/logo_online/logo31.png?raw=true" alt="안다르">
             </div>
             <div class="brand-info">
                 <span class="brand-name">안다르</span>
+                <div class="brand-category">운동복</div>
             </div>
         </div>
 
-        <div class="brand">
+        <div class="brand" data-category="shopping" data-name="라엘">
             <div class="brand-logo">
-                <img src="https://github.com/diligencefrozen/PayKR/blob/main/logo_online/logo32.png?raw=true" alt="브랜드32">
+                <img src="https://github.com/diligencefrozen/PayKR/blob/main/logo_online/logo32.png?raw=true" alt="라엘">
             </div>
             <div class="brand-info">
                 <span class="brand-name">라엘</span>
+                <div class="brand-category">헬스케어</div>
             </div>
         </div>
 
-        <div class="brand">
+        <div class="brand" data-category="shopping" data-name="신세계면세점">
             <div class="brand-logo">
-                <img src="https://github.com/diligencefrozen/PayKR/blob/main/logo_online/logo33.png?raw=true" alt="브랜드33">
+                <img src="https://github.com/diligencefrozen/PayKR/blob/main/logo_online/logo33.png?raw=true" alt="신세계면세점">
             </div>
             <div class="brand-info">
                 <span class="brand-name">신세계면세점</span>
+                <div class="brand-category">면세점</div>
             </div>
         </div>
 
-        <div class="brand">
+        <div class="brand" data-category="other" data-name="쿠캣">
             <div class="brand-logo">
-                <img src="https://github.com/diligencefrozen/PayKR/blob/main/logo_online/logo34.png?raw=true" alt="브랜드34">
+                <img src="https://github.com/diligencefrozen/PayKR/blob/main/logo_online/logo34.png?raw=true" alt="쿠캣">
             </div>
             <div class="brand-info">
                 <span class="brand-name">쿠캣</span>
+                <div class="brand-category">반려동물</div>
             </div>
         </div>
 
-        <div class="brand">
+        <div class="brand" data-category="food" data-name="패스오더">
             <div class="brand-logo">
-                <img src="https://github.com/diligencefrozen/PayKR/blob/main/logo_online/logo35.png?raw=true" alt="브랜드35">
+                <img src="https://github.com/diligencefrozen/PayKR/blob/main/logo_online/logo35.png?raw=true" alt="패스오더">
             </div>
             <div class="brand-info">
                 <span class="brand-name">패스오더</span>
+                <div class="brand-category">음식 배달</div>
             </div>
         </div>     
 
-        <div class="brand">
+        <div class="brand" data-category="shopping" data-name="크림">
             <div class="brand-logo">
-                <img src="https://github.com/diligencefrozen/PayKR/blob/main/logo_online/logo36.png?raw=true" alt="브랜드36">
+                <img src="https://github.com/diligencefrozen/PayKR/blob/main/logo_online/logo36.png?raw=true" alt="크림">
             </div>
             <div class="brand-info">
                 <span class="brand-name">크림</span>
+                <div class="brand-category">패션</div>
             </div>
         </div>        
         
     </div>
 
-<footer class="site-footer">
-  <div class="footer-disclaimer">
-    <p> </p>
-    <ul>
-      <li>위의 내용은 애플페이를 <b>온라인</b>에서 <br/>지원하는 이커머스 업계에 관한 것입니다.</li>
-      <li>애플페이를 지원하는 <b>오프라인 유통가</b>들을 <br/>확인하고 싶으십니까? <a href="https://diligencefrozen.github.io/PayKR/">확인하기</a></li>
-    </ul>
-  </div>
-</footer>
+    <!-- Footer -->
+    <footer class="site-footer">
+        <div class="footer-content">
+            <div class="footer-disclaimer">
+                <h3>💳 애플페이 가맹점 찾기 -온라인</h3>
+                <p>
+                    대한민국에서 애플페이의 <strong>온라인 결제</strong>를 지원하는 쇼핑몰 및 서비스 목록입니다.
+                </p>
+                <ul>
+                    <li>🛍️ 편리하고 안전하게 온라인 쇼핑을 즐기세요</li>
+                    <li>🔒 결제 정보는 안전하게 기기에 보관됩니다</li>
+                    <li>⚡ 빠르고 간편한 결제 경험을 제공합니다</li>
+                </ul>
+                <a href="https://diligencefrozen.github.io/PayKR/" class="footer-link">
+                    🗺️ 오프라인 매장 지도 보기
+                </a>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>
+                    정보는 변경될 수 있으니 구매 전 각 가맹점에 확인하시기 바랍니다.
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Search and Filter Functionality
+        const searchInput = document.getElementById('searchInput');
+        const filterButtons = document.querySelectorAll('.filter-btn');
+        const brandCards = document.querySelectorAll('.brand');
+        const container = document.getElementById('merchantContainer');
+        const totalCount = document.getElementById('totalCount');
+        
+        let currentCategory = 'all';
+        let currentSearchTerm = '';
+
+        // Search functionality
+        searchInput.addEventListener('input', (e) => {
+            currentSearchTerm = e.target.value.toLowerCase().trim();
+            filterBrands();
+        });
+
+        // Filter functionality
+        filterButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                // Update active button
+                filterButtons.forEach(btn => btn.classList.remove('active'));
+                button.classList.add('active');
+                
+                // Update current category
+                currentCategory = button.dataset.category;
+                filterBrands();
+            });
+        });
+
+        // Filter brands based on search and category
+        function filterBrands() {
+            let visibleCount = 0;
+            
+            brandCards.forEach(card => {
+                const category = card.dataset.category;
+                const name = card.dataset.name.toLowerCase();
+                
+                const matchesCategory = currentCategory === 'all' || category === currentCategory;
+                const matchesSearch = currentSearchTerm === '' || name.includes(currentSearchTerm);
+                
+                if (matchesCategory && matchesSearch) {
+                    card.style.display = 'block';
+                    // Add fade-in animation
+                    card.style.animation = 'fadeIn 0.3s ease-in';
+                    visibleCount++;
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+            
+            // Update count
+            totalCount.textContent = visibleCount;
+            
+            // Show no results message if needed
+            const existingNoResults = container.querySelector('.no-results');
+            if (existingNoResults) {
+                existingNoResults.remove();
+            }
+            
+            if (visibleCount === 0) {
+                const noResults = document.createElement('div');
+                noResults.className = 'no-results';
+                noResults.innerHTML = `
+                    <div style="font-size: 48px; margin-bottom: 20px;">🔍</div>
+                    <div style="font-size: 20px; font-weight: 600; margin-bottom: 10px;">검색 결과가 없습니다</div>
+                    <div>검색어나 필터를 조정해보세요</div>
+                `;
+                container.appendChild(noResults);
+            }
+        }
+
+        // Add CSS animation
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes fadeIn {
+                from {
+                    opacity: 0;
+                    transform: translateY(10px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Smooth scroll to top on page load
+        window.addEventListener('load', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        // Add hover effect sound (optional - can be removed)
+        brandCards.forEach(card => {
+            card.addEventListener('mouseenter', () => {
+                card.style.transition = 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)';
+            });
+        });
+    </script>
     
 </body>
 </html>

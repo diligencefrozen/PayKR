@@ -190,7 +190,7 @@ body {
   z-index: 3;
   position: absolute;
   bottom: 10px;
-  left: calc(50% + 20px);
+  left: calc(50% + 80px);
   transform: translateY(-90%);
 }
 /* 필독사항 영역 내용 스타일 */

@@ -65,16 +65,7 @@
   style="user-select:none"
   oncontextmenu="return false"
   onselectstart="return false"
-  ondragstart="return false"  noticeToggle.addEventListener('click', ()=>{
-    noticeContent.style.display='block';
-    noticeToggle.style.display='none';
-    patchNoteToggle2.style.zIndex = 1; // 이 부분
-  });
-  closeNotice.addEventListener('click', ()=>{
-    noticeContent.style.display='none';
-    noticeToggle.style.display='block';
-    patchNoteToggle2.style.zIndex = '';
-  });>
+  ondragstart="return false">
 
   <div id="map"></div>
 
@@ -128,6 +119,7 @@
         <li>20240914.10: 가맹점 업데이트 및 UI 개선 (편의점, 패션, 카페, 외식) </li>
         <li>20250101.5: 가맹점 업데이트 (생활/가전, 커피, 제과/디저트, 온라인) </li>
         <li>20250517.11: 기능 개선 (영어 지원 1/10) </li>
+        <li>20251021.2: 사용자 인터페이스 개선 (모바일 최적화) </li>
       </ul>
     </div>
     <div id="notice-content" style="display:none;position:fixed;top:10%;left:20%;right:20%;background:#fff;border:1px solid gray;padding:20px;z-index:9999;">

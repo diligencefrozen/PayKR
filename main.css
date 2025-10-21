@@ -25,14 +25,89 @@ html, body {
   margin: 0;
   padding: 0;
 }
-/* 팝업 디자인 설정 */
+/* 팝업 디자인 설정 - 개선된 유저 친화적 디자인 */
 .infoWindow {
-  font-family: sans-serif, Arial;
-  background-color: white;
-  padding: 10px;
-  border-radius: 5px;
-  width: 300px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+  font-family: 'Roboto', 'Noto Sans KR', sans-serif;
+  background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+  padding: 16px 20px;
+  border-radius: 12px;
+  min-width: 220px;
+  max-width: 320px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.15), 0 2px 8px rgba(0,0,0,0.1);
+  border: 1px solid rgba(0,0,0,0.08);
+  position: relative;
+  animation: infoWindowFadeIn 0.3s ease-out;
+}
+
+.infoWindow::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #007bff 0%, #0056b3 100%);
+  border-radius: 12px 12px 0 0;
+}
+
+.infoWindow strong {
+  display: block;
+  font-size: 16px;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin-bottom: 8px;
+  line-height: 1.4;
+  letter-spacing: -0.2px;
+}
+
+.infoWindow .info-address {
+  display: block;
+  font-size: 13px;
+  color: #666;
+  line-height: 1.6;
+  margin-top: 4px;
+  padding-left: 2px;
+}
+
+.infoWindow .info-phone {
+  display: block;
+  font-size: 13px;
+  color: #007bff;
+  line-height: 1.6;
+  margin-top: 6px;
+  padding: 6px 10px;
+  background-color: rgba(0, 123, 255, 0.05);
+  border-radius: 6px;
+  font-weight: 500;
+}
+
+@keyframes infoWindowFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 모바일에서 정보창 최적화 */
+@media screen and (max-width: 768px) {
+  .infoWindow {
+    min-width: 200px;
+    max-width: 280px;
+    padding: 14px 16px;
+  }
+  
+  .infoWindow strong {
+    font-size: 15px;
+  }
+  
+  .infoWindow .info-address,
+  .infoWindow .info-phone {
+    font-size: 12px;
+  }
 }
 .nav-control {
   position: absolute;

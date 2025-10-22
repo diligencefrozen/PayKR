@@ -37,7 +37,6 @@ html, body {
   border: 1px solid rgba(0,0,0,0.08);
   position: relative;
   animation: infoWindowFadeIn 0.3s ease-out;
-  pointer-events: auto; /* 클릭 및 호버 가능하도록 설정 */
 }
 
 .infoWindow::before {

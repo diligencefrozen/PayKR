@@ -195,6 +195,7 @@
       const marker = new kakao.maps.Marker({ position: pos, image: markerImage });
       marker.setMap(map);
 
+
       // 카카오맵 링크 생성
       const kakaoMapUrl = `https://map.kakao.com/link/to/${encodeURIComponent(place.place_name)},${place.y},${place.x}`;
       const kakaoPlaceUrl = place.place_url || `https://place.map.kakao.com/${place.id}`;
@@ -203,13 +204,22 @@
       const contentDiv = document.createElement('div');
       contentDiv.className = 'infoWindow';
       contentDiv.innerHTML =
-        '<strong>📍 ' + place.place_name + '</strong>' +
+        '<strong> ' + place.place_name + '</strong>' +
         '<div class="info-address">' + (place.address_name || place.road_address_name || '주소 정보 없음') + '</div>' +
         '<div class="info-actions">' +
-        (place.phone ? '<a href="tel:' + place.phone + '" class="info-phone">📞 전화</a>' : '') +
-        '<a href="' + kakaoPlaceUrl + '" target="_blank" rel="noopener noreferrer" class="info-review">⭐ 리뷰</a>' +
-        '<a href="' + kakaoMapUrl + '" target="_blank" rel="noopener noreferrer" class="info-navigate">🧭 길찾기</a>' +
+        (place.phone ? '<a href="tel:' + place.phone + '" class="info-phone" tabindex="0"> 전화</a>' : '') +
+        '<a href="' + kakaoPlaceUrl + '" target="_blank" rel="noopener noreferrer" class="info-review" tabindex="0"> 리뷰</a>' +
+        '<a href="' + kakaoMapUrl + '" target="_blank" rel="noopener noreferrer" class="info-navigate" tabindex="0"> 길찾기</a>' +
         '</div>';
+
+      // a 태그 클릭 시 이벤트 전파 방지 (모바일에서 오버레이 닫힘 방지)
+      setTimeout(() => {
+        contentDiv.querySelectorAll('a').forEach(a => {
+          a.addEventListener('click', e => {
+            e.stopPropagation();
+          });
+        });
+      }, 0);
 
       const overlay = new kakao.maps.CustomOverlay({ 
         position: pos, 
@@ -217,6 +227,8 @@
         xAnchor: 0.5, 
         yAnchor: 1.15 
       });
+      // pointer-events 보장
+      contentDiv.style.pointerEvents = 'auto';
 
       let hideTimeout = null; // 지연 타이머 저장
 

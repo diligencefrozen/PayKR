@@ -201,77 +201,25 @@
 
       const content =
         '<div class="infoWindow">' +
-        '<strong>📍 ' + place.place_name + '</strong>' +
+        '<strong> ' + place.place_name + '</strong>' +
         '<div class="info-address">' + (place.address_name || place.road_address_name || '주소 정보 없음') + '</div>' +
         '<div class="info-actions">' +
         (place.phone ? '<a href="tel:' + place.phone + '" class="info-phone">📞 전화</a>' : '') +
-        '<a href="' + kakaoPlaceUrl + '" target="_blank" rel="noopener noreferrer" class="info-review">⭐ 리뷰</a>' +
-        '<a href="' + kakaoMapUrl + '" target="_blank" rel="noopener noreferrer" class="info-navigate">🧭 길찾기</a>' +
+        '<a href="' + kakaoPlaceUrl + '" target="_blank" rel="noopener noreferrer" class="info-review"> 리뷰</a>' +
+        '<a href="' + kakaoMapUrl + '" target="_blank" rel="noopener noreferrer" class="info-navigate"> 길찾기</a>' +
         '</div>' +
         '</div>';
-      const overlay = new kakao.maps.CustomOverlay({ 
-        position: pos, 
-        content, 
-        xAnchor:.5, 
-        yAnchor:1.15,
-        clickable: true
-      });
-
-      let hideTimeout = null;
-      let isOverMarker = false;
-      let isOverOverlay = false;
-
-      // 오버레이를 표시할 때 이벤트 리스너 추가
-      function showOverlay() {
-        closeAllOverlays();
-        overlay.setMap(map);
-        currentOverlay = overlay;
-
-        // 오버레이가 렌더링된 후 이벤트 리스너 추가
-        setTimeout(() => {
-          const overlayElement = document.querySelector('.infoWindow');
-          if (overlayElement && !overlayElement.dataset.listenerAdded) {
-            overlayElement.dataset.listenerAdded = 'true';
-            
-            overlayElement.addEventListener('mouseenter', () => {
-              isOverOverlay = true;
-              if (hideTimeout) {
-                clearTimeout(hideTimeout);
-                hideTimeout = null;
-              }
-            });
-            
-            overlayElement.addEventListener('mouseleave', () => {
-              isOverOverlay = false;
-              hideTimeout = setTimeout(() => {
-                if (!isOverMarker && !isOverOverlay) {
-                  overlay.setMap(null);
-                  if (currentOverlay === overlay) currentOverlay = null;
-                }
-              }, 700);
-            });
-          }
-        }, 10);
-      }
+      const overlay = new kakao.maps.CustomOverlay({ position: pos, content, xAnchor:.5, yAnchor:1.15 });
 
       // 데스크톱: hover 이벤트
       kakao.maps.event.addListener(marker, 'mouseover', ()=> {
-        isOverMarker = true;
-        if (hideTimeout) {
-          clearTimeout(hideTimeout);
-          hideTimeout = null;
-        }
-        showOverlay();
+        closeAllOverlays();
+        overlay.setMap(map);
+        currentOverlay = overlay;
       });
-
-      kakao.maps.event.addListener(marker, 'mouseout', ()=> {
-        isOverMarker = false;
-        hideTimeout = setTimeout(() => {
-          if (!isOverMarker && !isOverOverlay) {
-            overlay.setMap(null);
-            if (currentOverlay === overlay) currentOverlay = null;
-          }
-        }, 500);
+      kakao.maps.event.addListener(marker, 'mouseout',  ()=> {
+        overlay.setMap(null);
+        if (currentOverlay === overlay) currentOverlay = null;
       });
       
       // 모바일: click 이벤트 (토글)
@@ -282,7 +230,9 @@
           if (currentOverlay === overlay) currentOverlay = null;
         } else {
           // 다른 오버레이 닫고 새로 열기
-          showOverlay();
+          closeAllOverlays();
+          overlay.setMap(map);
+          currentOverlay = overlay;
         }
       });
     }

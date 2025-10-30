@@ -10,15 +10,24 @@
   z-index: 1; 
 }
 #apple-pay-notice {
+  display: flex;
+  align-items: center;
+  font-size: 12px;
+  color: #333;
+}
+
+#apple-pay-notice-mobile {
   position: absolute;
-  right: 10px;     /* 오른쪽 간격 */
-  bottom: 10px;    /* 하단 간격 */
-  background-color: rgba(255, 255, 255, 0.8); /* 반투명한 흰색 배경 */
+  right: 10px;
+  bottom: 10px;
+  background-color: rgba(255, 255, 255, 0.8);
   padding: 5px;
   border-radius: 5px;
   font-size: 12px;
-  color: #333;     /* 글꼴 색상 */
-  z-index: 2;    /* 지도 위에 표시 */
+  color: #333;
+  z-index: 2;
+  display: flex;
+  align-items: center;
 }
 html, body {
   height: 100%;
@@ -200,13 +209,6 @@ html, body {
 }  
 */
 .nav-control-categories {
-  position: absolute;
-  top: 60px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: auto;
-  max-width: 90%;
-  z-index: 2;
   display: flex;
   flex-direction: row;
   overflow-x: auto;
@@ -222,6 +224,17 @@ html, body {
   scrollbar-color: #ccc #f0f0f0;
   /* 모바일에서 부드러운 스크롤 */
   -webkit-overflow-scrolling: touch;
+}
+
+/* 모바일 카테고리 위치 */
+#mobile-categories {
+  position: absolute;
+  top: 60px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: auto;
+  max-width: 90%;
+  z-index: 2;
 }
 
 .nav-control-categories::-webkit-scrollbar {
@@ -260,12 +273,10 @@ body {
   -ms-user-select:none;
   user-select:none
 }
-#search-box {
-  position: absolute;
-  top: 10px;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 3;
+
+/* 기본 검색박스 스타일 (공통) */
+#search-box,
+#search-box-mobile {
   background-color: white;
   padding: 6px 8px 6px 16px;
   border: 2px solid #e0e0e0;
@@ -277,7 +288,8 @@ body {
   transition: all 0.3s ease;
 }
 
-#search-box:focus-within {
+#search-box:focus-within,
+#search-box-mobile:focus-within {
   border-color: #007bff;
   box-shadow: 0 4px 16px rgba(0, 123, 255, 0.2);
 }
@@ -289,7 +301,8 @@ body {
   align-items: center;
 }
 
-#search-input {
+#search-input,
+#search-input-mobile {
   width: 220px;
   border: none;
   outline: none;
@@ -299,11 +312,13 @@ body {
   color: #333;
 }
 
-#search-input::placeholder {
+#search-input::placeholder,
+#search-input-mobile::placeholder {
   color: #999;
 }
 
-#search-submit {
+#search-submit,
+#search-submit-mobile {
   padding: 8px 20px;
   border: none;
   background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
@@ -317,15 +332,26 @@ body {
   box-shadow: 0 2px 6px rgba(0, 123, 255, 0.3);
 }
 
-#search-submit:hover {
+#search-submit:hover,
+#search-submit-mobile:hover {
   background: linear-gradient(135deg, #0056b3 0%, #004085 100%);
   box-shadow: 0 4px 12px rgba(0, 123, 255, 0.4);
   transform: translateY(-1px);
 }
 
-#search-submit:active {
+#search-submit:active,
+#search-submit-mobile:active {
   transform: translateY(0);
   box-shadow: 0 2px 4px rgba(0, 123, 255, 0.3);
+}
+
+/* 모바일용 검색박스 위치 */
+#search-box-mobile {
+  position: absolute;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 3;
 }
 /* 업데이트 내역 스타일 */
 #patch-notes {
@@ -463,12 +489,265 @@ li {
     margin-bottom: 8px;
 }
 
+/* 데스크탑 레이아웃 (구글맵 스타일) */
+@media screen and (min-width: 769px) {
+  /* 카카오맵 줌 컨트롤 우측 고정 */
+  div[style*="position: absolute"][style*="right"] {
+    position: fixed !important;
+    right: 10px !important;
+  }
+  
+  /* 왼쪽 사이드바 - 축소/확장 */
+  #sidebar {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 80px; /* 72px에서 80px로 증가 */
+    height: 100%;
+    background: white;
+    z-index: 10;
+    box-shadow: 2px 0 8px rgba(0,0,0,0.1);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    transition: width 0.3s ease;
+  }
+  
+  #sidebar:hover {
+    width: 350px; /* 확장된 상태 */
+  }
+  
+  /* 사이드바 헤더 (검색 영역) */
+  #sidebar-header {
+    padding: 16px;
+    border-bottom: 1px solid #e0e0e0;
+  }
+  
+  /* 사이드바 내 검색창 */
+  #search-box {
+    position: relative;
+    top: 0;
+    left: 0;
+    transform: none;
+    width: 100%;
+    margin-bottom: 0;
+    padding: 8px 12px;
+    white-space: nowrap;
+  }
+  
+  #sidebar:not(:hover) #search-box {
+    padding: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  #sidebar:not(:hover) #search-input,
+  #sidebar:not(:hover) #search-submit {
+    display: none;
+  }
+  
+  #sidebar:not(:hover) .search-icon {
+    font-size: 24px;
+    margin: 0;
+  }
+  
+  #search-input {
+    flex: 1;
+    min-width: 0;
+  }
+  
+  /* 사이드바 콘텐츠 영역 */
+  #sidebar-content {
+    flex: 1;
+    overflow-y: auto;
+    padding: 16px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+  
+  #sidebar:hover #sidebar-content {
+    opacity: 1;
+  }
+  
+  /* 데스크탑 카테고리 래퍼 */
+  .desktop-category-wrapper {
+    position: absolute;
+    top: 16px;
+    left: 96px; /* 80px + 16px 여백 */
+    right: 16px;
+    z-index: 5;
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    transition: left 0.3s ease;
+  }
+  
+  body:has(#sidebar:hover) .desktop-category-wrapper {
+    left: 366px;
+  }
+  
+  /* 데스크탑 홈 버튼 */
+  .home-button-desktop {
+    flex-shrink: 0;
+    width: 40px;
+    height: 40px;
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    transition: all 0.2s;
+  }
+  
+  .home-button-desktop:hover {
+    background-color: #f5f5f5;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+  }
+  
+  /* 데스크탑 카테고리 - 검색창 우측에 가로 배치 */
+  #desktop-categories {
+    flex: 1;
+    display: flex;
+    flex-direction: row;
+    gap: 8px;
+    padding: 0;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scrollbar-width: thin;
+    scrollbar-color: #ccc #f0f0f0;
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  #desktop-categories::-webkit-scrollbar {
+    height: 4px;
+  }
+
+  #desktop-categories::-webkit-scrollbar-track {
+    background: #f0f0f0;
+  }
+
+  #desktop-categories::-webkit-scrollbar-thumb {
+    background: #ccc;
+    border-radius: 2px;
+  }
+  
+  #desktop-categories button {
+    flex-shrink: 0;
+    padding: 8px 16px;
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 13px;
+    white-space: nowrap;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    transition: all 0.2s;
+  }
+  
+  #desktop-categories button:hover {
+    background-color: #f5f5f5;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+  }
+  
+  /* 지도 영역 조정 */
+  #map {
+    position: absolute;
+    left: 80px; /* 72px에서 80px로 */
+    top: 0;
+    width: calc(100% - 80px);
+    height: 100%;
+    transition: left 0.3s ease, width 0.3s ease;
+  }
+  
+  body:has(#sidebar:hover) #map {
+    left: 350px;
+    width: calc(100% - 350px);
+  }
+  
+  /* 홈 버튼 위치 조정 - 모바일 전용으로 숨김 */
+  .nav-control {
+    left: 100px;
+    bottom: 120px;
+    transition: left 0.3s ease;
+    display: none; /* 데스크탑에서 숨김 */
+  }
+  
+  body:has(#sidebar:hover) .nav-control {
+    display: none; /* 데스크탑에서 계속 숨김 */
+  }
+  
+  /* 패치노트/필독사항 버튼 - 사이드바보다 위에 */
+  #patch-notes-toggle {
+    left: 100px; /* 92px에서 100px로 */
+    bottom: 10px;
+    transform: translateY(-90%);
+    z-index: 15; /* 사이드바(10)보다 높게 */
+    transition: left 0.3s ease;
+  }
+  
+  body:has(#sidebar:hover) #patch-notes-toggle {
+    left: 370px;
+  }
+  
+  #notice-toggle {
+    left: 260px; /* 252px에서 260px로 */
+    bottom: 10px;
+    transform: translateY(-90%);
+    z-index: 15;
+    transition: left 0.3s ease;
+  }
+  
+  body:has(#sidebar:hover) #notice-toggle {
+    left: 530px;
+  }
+  
+  #patch-notes-content,
+  #notice-content {
+    z-index: 20 !important; /* 사이드바와 모든 요소보다 위에 */
+  }
+  
+  /* 모바일 전용 요소 숨김 */
+  #search-box-mobile,
+  #mobile-categories,
+  #apple-pay-notice-mobile {
+    display: none !important;
+  }
+  
+  /* 데스크탑 전용 요소 표시 */
+  .desktop-category-wrapper {
+    display: flex !important;
+  }
+}
+
 /* 모바일 기기에 적용할 스타일 */        
 @media screen and (max-width: 768px) {
+  /* 사이드바 숨기기 */
+  #sidebar {
+    display: none !important;
+  }
+  
+  /* 데스크탑 전용 요소 숨기기 */
+  .desktop-category-wrapper {
+    display: none !important;
+  }
+  
+  /* 모바일 홈 버튼 표시 */
+  .nav-control {
+    display: block !important;
+  }
+  
   #map {
     height: 100%;
     top: 0;
+    left: 0;
+    width: 100%;
   }  
+  
   .nav-control {
     position: absolute;
     bottom: 40px;
@@ -479,7 +758,20 @@ li {
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
     cursor: pointer;
     transition: background-color 0.3s;
-}
+  }
+  
+  #search-box-mobile {
+    position: absolute;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 3;
+  }
+  
+  #mobile-categories {
+    top: 60px;
+    z-index: 2;
+  }
   #search-box {
     position: absolute;
     top: 10px;
@@ -510,18 +802,19 @@ li {
     z-index: 1;
   }
   */  
-  #search-box {
+  
+  #search-box-mobile {
     border-radius: 30px;
     padding: 6px 8px 6px 12px;
     max-width: 90%;
   }
   
-  #search-input {
+  #search-input-mobile {
     width: 150px;
     font-size: 13px;
   }
   
-  #search-submit {
+  #search-submit-mobile {
     padding: 6px 16px;
     font-size: 13px;
   }

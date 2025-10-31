@@ -81,8 +81,28 @@
     </div>
     
     <div id="sidebar-content">
-      <div id="apple-pay-notice" style="position: relative; right: auto; bottom: auto; margin-top: 20px;">
-        <img src="https://github.com/diligencefrozen/PayKR/blob/main/logo/applepay.png?raw=true" width="30" height="15"> 스티커를 꼭 확인하세요!
+      <!-- 검색 결과 리스트 -->
+      <div id="search-results">
+        <div id="search-results-header" style="display: none;">
+          <h3 id="search-results-title"></h3>
+          <p id="search-results-count"></p>
+        </div>
+        <div id="search-results-list"></div>
+      </div>
+      
+      <!-- 기본 안내 문구 -->
+      <div id="sidebar-welcome">
+        <div id="apple-pay-notice" style="position: relative; right: auto; bottom: auto; margin-top: 20px;">
+          <img src="https://github.com/diligencefrozen/PayKR/blob/main/logo/applepay.png?raw=true" width="30" height="15"> 스티커를 꼭 확인하세요!
+        </div>
+        <div style="margin-top: 30px; padding: 0 10px; color: #666; font-size: 14px; line-height: 1.6;">
+          <p><strong>💡 사용 방법</strong></p>
+          <ul style="padding-left: 20px; margin-top: 10px;">
+            <li>검색창에 매장명을 입력하세요</li>
+            <li>카테고리 버튼을 클릭하세요</li>
+            <li>마우스 휠로 지도를 확대/축소하세요</li>
+          </ul>
+        </div>
       </div>
     </div>
   </div>
@@ -782,6 +802,67 @@
       
       let searchMarker = null;
       
+      // 검색 결과를 사이드바에 표시하는 함수
+      function displaySearchResults(data, keyword) {
+        const resultsList = document.getElementById('search-results-list');
+        const resultsHeader = document.getElementById('search-results-header');
+        const resultsTitle = document.getElementById('search-results-title');
+        const resultsCount = document.getElementById('search-results-count');
+        const sidebarWelcome = document.getElementById('sidebar-welcome');
+        
+        // 환영 메시지 숨기기
+        if(sidebarWelcome) sidebarWelcome.style.display = 'none';
+        
+        // 헤더 표시
+        resultsHeader.style.display = 'block';
+        resultsTitle.textContent = `"${keyword}" 검색 결과`;
+        resultsCount.textContent = `${data.length}개의 장소를 찾았습니다`;
+        
+        // 기존 결과 초기화
+        resultsList.innerHTML = '';
+        
+        // 결과 리스트 생성
+        data.forEach((place, index) => {
+          const item = document.createElement('div');
+          item.className = 'search-result-item';
+          
+          const distance = place.distance ? `${place.distance}m` : '';
+          
+          item.innerHTML = `
+            <div class="result-number">${index + 1}</div>
+            <div class="result-info">
+              <h4 class="result-name">${place.place_name}</h4>
+              <p class="result-address">${place.address_name || place.road_address_name || ''}</p>
+              ${place.phone ? `<p class="result-phone">📞 ${place.phone}</p>` : ''}
+              ${distance ? `<p class="result-distance">📍 ${distance}</p>` : ''}
+            </div>
+          `;
+          
+          // 클릭 이벤트
+          item.addEventListener('click', () => {
+            const pos = new kakao.maps.LatLng(place.y, place.x);
+            map.setCenter(pos);
+            map.setLevel(3);
+            
+            // 기존 검색 마커 제거
+            if(searchMarker) searchMarker.setMap(null);
+            
+            // 새 마커 생성
+            searchMarker = new kakao.maps.Marker({
+              position: pos,
+              image: createMarkerImage('https://github.com/diligencefrozen/PayKR/blob/main/logo/marker.png?raw=true')
+            });
+            searchMarker.setMap(map);
+            
+            // 리스트 아이템 활성화 표시
+            document.querySelectorAll('.search-result-item').forEach(el => el.classList.remove('active'));
+            item.classList.add('active');
+          });
+          
+          resultsList.appendChild(item);
+        });
+      }
+      
       function searchPlaces(inputElement){
         const keyword = inputElement.value.trim();
         if(!keyword){ alert('키워드를 입력해주세요.'); return; }
@@ -789,9 +870,16 @@
         const places = new kakao.maps.services.Places(map);
         places.keywordSearch(keyword, (data, status)=>{
           if(status===kakao.maps.services.Status.OK){
+            // 첫 번째 결과로 지도 이동
             const p = data[0];
             const pos = new kakao.maps.LatLng(p.y, p.x);
             map.setCenter(pos);
+            map.setLevel(5); // 약간 줌 아웃해서 주변 결과도 보이게
+            
+            // 검색 결과를 사이드바에 표시
+            displaySearchResults(data, keyword);
+            
+            // 첫 번째 결과 마커 표시
             searchMarker = new kakao.maps.Marker({
               position: pos,
               image: createMarkerImage('https://github.com/diligencefrozen/PayKR/blob/main/logo/marker.png?raw=true')

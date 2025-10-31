@@ -703,10 +703,6 @@
       // 지도 클릭 시 모든 오버레이 닫기
       kakao.maps.event.addListener(map, 'click', closeAllOverlays);
 
-      // 줌컨트롤
-      const zoomControl = new kakao.maps.ZoomControl();
-      map.addControl(zoomControl, kakao.maps.ControlPosition.RIGHT);
-
       // 현재위치 이동 함수
       function goToCurrentLocation() {
         navigator.geolocation.getCurrentPosition(pos=>{
@@ -755,43 +751,6 @@
         { name:'온라인', emoji:'온라인', action: searchonline },
         { name:'문의하기', emoji:'문의하기', action: searchcontact },
       ];
-      
-      // 데스크탑에서 줌 컨트롤을 계속 감시하고 고정
-      if(window.innerWidth > 768) {
-        // 줌 컨트롤 고정 함수
-        function fixZoomControl() {
-          const mapContainer = document.getElementById('map');
-          if(!mapContainer) return;
-          
-          const controls = mapContainer.querySelectorAll('div[style*="position"]');
-          controls.forEach(control => {
-            const style = control.style;
-            // right 속성이 있고 position이 absolute인 컨트롤 요소
-            if(style.right && style.position === 'absolute' && (style.zIndex === '1' || style.zIndex === 1)) {
-              control.style.position = 'fixed';
-              control.style.right = '10px';
-            }
-          });
-        }
-        
-        // MutationObserver로 스타일 변경 계속 감시
-        const observer = new MutationObserver(fixZoomControl);
-        const mapContainer = document.getElementById('map');
-        if(mapContainer) {
-          observer.observe(mapContainer, {
-            attributes: true,
-            attributeFilter: ['style'],
-            subtree: true,
-            childList: true
-          });
-        }
-        
-        // 정기적으로도 체크 (보험용)
-        setInterval(fixZoomControl, 100);
-        
-        // 초기 실행
-        setTimeout(fixZoomControl, 500);
-      }
       
       // 데스크탑과 모바일 모두에 카테고리 추가
       const desktopContainer = document.getElementById('desktop-categories');

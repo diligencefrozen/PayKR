@@ -491,12 +491,6 @@ li {
 
 /* 데스크탑 레이아웃 (구글맵 스타일) */
 @media screen and (min-width: 769px) {
-  /* 카카오맵 줌 컨트롤 우측 고정 */
-  div[style*="position: absolute"][style*="right"] {
-    position: fixed !important;
-    right: 10px !important;
-  }
-  
   /* 왼쪽 사이드바 - 축소/확장 */
   #sidebar {
     position: absolute;

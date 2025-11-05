@@ -34,6 +34,37 @@ body {
     align-items: center;
 }
 
+.header-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.btn-home {
+    background: #f0f0f0;
+    border: none;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    font-size: 20px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.btn-home:hover {
+    background: #e0e0e0;
+    transform: scale(1.05);
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
+}
+
+.btn-home:active {
+    transform: scale(0.95);
+}
+
 .logo {
     font-size: 24px;
     font-weight: 600;
@@ -460,7 +491,18 @@ body {
     }
     
     .logo {
-        font-size: 20px;
+        font-size: 18px;
+    }
+    
+    .btn-home {
+        width: 36px;
+        height: 36px;
+        font-size: 18px;
+    }
+    
+    .btn-write {
+        padding: 6px 12px;
+        font-size: 13px;
     }
     
     .warning-banner {

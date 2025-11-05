@@ -141,7 +141,7 @@
       <button id="close-patch-notes" style="position:absolute;top:10px;right:10px;background:none;border:none;font-size:20px;">&times;</button>
       <ul>
         <h3><b>패치노트</b></h3>
-        <h4><b><font color="999999">Last Update: 10/31/2025 16:16 KST</font></b></h4>
+        <h4><b><font color="999999">Last Update: 11/05/2025 15:22 KST</font></b></h4>
         <li>20230524.1: 초기 버전 출시</li>
         <li>20230718.7: 사용자 인터페이스 업데이트 및 가맹점 추가 (편의점, 카페)</li>
         <li>20230720.11: 가맹점 추가 (마트/슈퍼) 및 사용자 인터페이스 개선 (검색 기능 추가)</li>
@@ -175,6 +175,7 @@
         <li>20251021.2: 사용자 인터페이스 개선 (모바일 최적화) </li>
         <li>20251030.1: 사용자 인터페이스 개선 (데스크탑 최적화) </li>
         <li>20251031.2: 사용자 인터페이스 개선 (검색 결과 표시 방식 개선)</li>
+        <li>20251105.1: 사용자 편의성 업데이트 (💬 포럼 기능 추가)</li>
       </ul>
     </div>
     <div id="notice-content" style="display:none;position:fixed;top:10%;left:20%;right:20%;background:#fff;border:1px solid gray;padding:20px;z-index:9999;">
@@ -188,7 +189,7 @@
         <li>⚠️ 동일 건물 내 요소는 같은 장소로 묶일 수 있습니다.</li>
         <li>⭐ 마커 좌클릭으로 세부정보 보기.</li>
         <li>⭐ 분류는 현대카드 애플페이 문서를 참고.</li>
-        <li>⚠️ 지도 사이즈 조정 기능이 이상한 위치에 있다면 좌측 사이드바에 마우스 포인터를 빨리 가져다댔다가 떼어보세요.</li>
+        <li>💬 버튼을 클릭하면 커뮤니티 사이트로 이동합니다. 소통해보세요!</li>
       </ul>
     </div>
   </div>
@@ -711,6 +712,7 @@
     searchAndMark("성문안 컨트리클럽", createMarkerImage(sungmunanImageUrl));
   }
   function searchonline(){ window.location.href="https://diligencefrozen.github.io/PayKR/online.html"; }
+  function searchforum(){ window.location.href="forum/index.html"; }
   function searchcontact(){ window.location.href="https://github.com/diligencefrozen/PayKR/issues"; }
   </script>
 
@@ -771,6 +773,7 @@
         { name:'레저/여행', emoji:'레저/여행', action: searchleisure },
         { name:'온라인', emoji:'온라인', action: searchonline },
         { name:'문의하기', emoji:'문의하기', action: searchcontact },
+        { name:'커뮤니티', emoji:'💬', action: searchforum },
       ];
       
       // 데스크탑과 모바일 모두에 카테고리 추가

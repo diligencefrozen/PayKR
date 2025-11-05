@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>커뮤니티</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <!-- 헤더 -->
+        <header class="header">
+            <div class="header-content">
+                <h1 class="logo">📱 커뮤니티</h1>
+                <button class="btn-write" onclick="openWriteModal()">✏️ 글쓰기</button>
+            </div>
+        </header>
+
+        <!-- 경고 배너 -->
+        <div class="warning-banner">
+            <span class="warning-icon">⚠️</span>
+            <span class="warning-text">자유로운 대화방입니다. 삭제 기능이 없으니 개인정보나 민감한 내용은 올리지 말아주세요!</span>
+        </div>
+
+        <!-- 게시글 목록 -->
+        <main class="main-feed">
+            <div id="posts-container">
+                <!-- 게시글들이 여기에 동적으로 추가됩니다 -->
+            </div>
+        </main>
+
+        <!-- 글쓰기 모달 -->
+        <div id="write-modal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>새 게시글</h2>
+                    <span class="close" onclick="closeWriteModal()">&times;</span>
+                </div>
+                <div class="modal-body">
+                    <input type="text" id="write-nickname" placeholder="닉네임" maxlength="20">
+                    <input type="text" id="write-title" placeholder="제목" maxlength="100">
+                    <textarea id="write-content" placeholder="내용을 입력하세요..." rows="10"></textarea>
+                    <button class="btn-submit" onclick="submitPost()">게시하기</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 댓글 모달 -->
+        <div id="comment-modal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>댓글</h2>
+                    <span class="close" onclick="closeCommentModal()">&times;</span>
+                </div>
+                <div class="modal-body">
+                    <div id="comments-list"></div>
+                    <div class="comment-input-section">
+                        <input type="text" id="comment-nickname" placeholder="닉네임" maxlength="20">
+                        <textarea id="comment-content" placeholder="댓글을 입력하세요..." rows="3"></textarea>
+                        <button class="btn-submit" onclick="submitComment()">댓글 작성</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 게시글 상세 모달 -->
+        <div id="detail-modal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>게시글</h2>
+                    <span class="close" onclick="closeDetailModal()">&times;</span>
+                </div>
+                <div class="modal-body">
+                    <div id="detail-content"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="config.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

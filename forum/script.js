@@ -4,6 +4,11 @@ let posts = [];
 let currentPostId = null;
 let userIP = null;
 
+// 메인 페이지로 이동
+function goToHome() {
+    window.location.href = '../index.html';
+}
+
 // 페이지 로드 시 초기화
 document.addEventListener('DOMContentLoaded', async () => {
     // Supabase 초기화

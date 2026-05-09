@@ -141,7 +141,7 @@
       <button id="close-patch-notes" style="position:absolute;top:10px;right:10px;background:none;border:none;font-size:20px;">&times;</button>
       <ul>
         <h3><b>패치노트</b></h3>
-        <h4><b><font color="999999">Last Update: 11/05/2025 15:22 KST</font></b></h4>
+        <h4><b><font color="999999">Last Update: 05/10/2026 0:58 KST</font></b></h4>
         <li>20230524.1: 초기 버전 출시</li>
         <li>20230718.7: 사용자 인터페이스 업데이트 및 가맹점 추가 (편의점, 카페)</li>
         <li>20230720.11: 가맹점 추가 (마트/슈퍼) 및 사용자 인터페이스 개선 (검색 기능 추가)</li>
@@ -176,6 +176,7 @@
         <li>20251030.1: 사용자 인터페이스 개선 (데스크탑 최적화) </li>
         <li>20251031.2: 사용자 인터페이스 개선 (검색 결과 표시 방식 개선)</li>
         <li>20251105.3: 사용자 편의성 업데이트 (💬 포럼 기능 추가)</li>
+        <li>20260510.1: 사용자 편의성 개선 (현재 위치를 불러오지 못하면, IP 주소로 사용자 위치를 확인 시도함.)</li>
       </ul>
     </div>
     <div id="notice-content" style="display:none;position:fixed;top:10%;left:20%;right:20%;background:#fff;border:1px solid gray;padding:20px;z-index:9999;">
@@ -527,6 +528,16 @@
   var aladinImageUrl="https://github.com/diligencefrozen/PayKR/blob/main/logo/movieandbooks.png?raw=true";
   var jongnoImageUrl="https://github.com/diligencefrozen/PayKR/blob/main/logo/movieandbooks.png?raw=true";
 
+  /* 레저/여행 */
+  var seoullandImageUrl="https://github.com/diligencefrozen/PayKR/blob/main/logo/leisure.png?raw=true";
+  var aquaImageUrl="https://github.com/diligencefrozen/PayKR/blob/main/logo/leisure.png?raw=true";
+  var waterpiaImageUrl="https://github.com/diligencefrozen/PayKR/blob/main/logo/leisure.png?raw=true";
+  var NseoultowerImageUrl="https://github.com/diligencefrozen/PayKR/blob/main/logo/leisure.png?raw=true";
+  var airplaneImageUrl="https://github.com/diligencefrozen/PayKR/blob/main/logo/leisure.png?raw=true";
+  var matina1ImageUrl="https://github.com/diligencefrozen/PayKR/blob/main/logo/leisure.png?raw=true";
+  var matina2ImageUrl="https://github.com/diligencefrozen/PayKR/blob/main/logo/leisure.png?raw=true";
+  var sungmunanImageUrl="https://github.com/diligencefrozen/PayKR/blob/main/logo/leisure.png?raw=true";
+
   /* ===== 카테고리 실행 함수들 (원문 유지) ===== */
   function searchConvenienceStoresAndStarbucks(){ 
     searchAndMark("GS25", createMarkerImage(GS25ImageUrl));
@@ -726,22 +737,92 @@
       // 지도 클릭 시 모든 오버레이 닫기
       kakao.maps.event.addListener(map, 'click', closeAllOverlays);
 
-      // 현재위치 이동 함수
-      function goToCurrentLocation() {
-        navigator.geolocation.getCurrentPosition(pos=>{
-          const { latitude:lat, longitude:lng } = pos.coords;
-          const ll = new kakao.maps.LatLng(lat, lng);
-          map.setCenter(ll);
-          if(currentPositionMarker) currentPositionMarker.setMap(null);
-          currentPositionMarker = new kakao.maps.Marker({
-            position: ll, map,
-            image: new kakao.maps.MarkerImage(
-              'https://github.com/diligencefrozen/PayKR/blob/main/logo/mylocation.png?raw=true',
-              new kakao.maps.Size(50,45),
-              { offset:new kakao.maps.Point(25,45), alt:"현재 위치" }
-            )
+      // 현재위치 이동 함수: 1순위 GPS / 2순위 IP 기반 위치 fallback
+      function moveToCurrentLocation(lat, lng, source = 'gps') {
+        const ll = new kakao.maps.LatLng(lat, lng);
+        map.setCenter(ll);
+
+        // IP 기반 위치는 도시/통신망 단위로 오차가 크므로 너무 확대하지 않습니다.
+        map.setLevel(source === 'ip' ? 7 : 3);
+
+        if(currentPositionMarker) currentPositionMarker.setMap(null);
+        currentPositionMarker = new kakao.maps.Marker({
+          position: ll, map,
+          image: new kakao.maps.MarkerImage(
+            'https://github.com/diligencefrozen/PayKR/blob/main/logo/mylocation.png?raw=true',
+            new kakao.maps.Size(50,45),
+            { offset:new kakao.maps.Point(25,45), alt: source === 'ip' ? 'IP 기반 현재 위치' : '현재 위치' }
+          )
+        });
+      }
+
+      function getGpsLocation() {
+        return new Promise((resolve, reject) => {
+          if (!navigator.geolocation) {
+            reject(new Error('이 브라우저는 Geolocation을 지원하지 않습니다.'));
+            return;
+          }
+
+          navigator.geolocation.getCurrentPosition(
+            pos => {
+              resolve({
+                lat: pos.coords.latitude,
+                lng: pos.coords.longitude,
+                accuracy: pos.coords.accuracy
+              });
+            },
+            reject,
+            {
+              maximumAge: 120000,
+              timeout: 7000,
+              enableHighAccuracy: false
+            }
+          );
+        });
+      }
+
+      async function getIpLocationFallback() {
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 4000);
+
+        try {
+          // ipapi.co는 요청자의 public IP를 기준으로 대략적인 위도/경도를 반환합니다.
+          const res = await fetch('https://ipapi.co/json/', {
+            signal: controller.signal,
+            cache: 'no-store'
           });
-        }, console.error, { maximumAge:60000, timeout:10000, enableHighAccuracy:true });
+
+          if (!res.ok) throw new Error(`IP 위치 API 오류: ${res.status}`);
+
+          const data = await res.json();
+          const lat = Number(data.latitude);
+          const lng = Number(data.longitude);
+
+          if (!Number.isFinite(lat) || !Number.isFinite(lng)) {
+            throw new Error('IP 위치 응답에 좌표가 없습니다.');
+          }
+
+          return { lat, lng, city: data.city, country: data.country_name };
+        } finally {
+          clearTimeout(timeoutId);
+        }
+      }
+
+      async function goToCurrentLocation() {
+        try {
+          const gps = await getGpsLocation();
+          moveToCurrentLocation(gps.lat, gps.lng, 'gps');
+        } catch (gpsError) {
+          console.warn('GPS 위치 확인 실패. IP 기반 위치로 대체합니다.', gpsError);
+
+          try {
+            const ipLocation = await getIpLocationFallback();
+            moveToCurrentLocation(ipLocation.lat, ipLocation.lng, 'ip');
+          } catch (ipError) {
+            console.error('IP 기반 위치 확인도 실패했습니다.', ipError);
+            alert('현재 위치를 가져오지 못했습니다. 위치 권한 또는 네트워크 상태를 확인해주세요.');
+          }
+        }
       }
 
       // 모바일 홈(현재위치) 버튼

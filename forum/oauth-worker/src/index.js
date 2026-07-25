@@ -246,7 +246,7 @@ async function listIssueComments(url, env, githubToken, issueNumber) {
 
 async function createIssueComment(request, env, githubToken, issueNumber) {
   assertIssueNumber(issueNumber);
-  await requireForumIssue(env, githubToken, issueNumber);
+  await requireRepositoryIssue(env, githubToken, issueNumber);
   const payload = await readJsonBody(request, 8_000);
   const content = requireString(payload.content, '댓글', 1, 2_000).trim();
 
@@ -260,7 +260,7 @@ async function createIssueComment(request, env, githubToken, issueNumber) {
 
 async function toggleIssueReaction(env, session, issueNumber) {
   assertIssueNumber(issueNumber);
-  await requireForumIssue(env, session.githubToken, issueNumber);
+  await requireRepositoryIssue(env, session.githubToken, issueNumber);
 
   const reactionPath = `${repositoryApiPath(env)}/issues/${issueNumber}/reactions`;
   const reactionList = await githubApi(
@@ -289,11 +289,11 @@ async function toggleIssueReaction(env, session, issueNumber) {
   };
 }
 
-async function requireForumIssue(env, githubToken, issueNumber) {
+async function requireRepositoryIssue(env, githubToken, issueNumber) {
   const result = await githubApi(githubToken, `${repositoryApiPath(env)}/issues/${issueNumber}`);
   const issue = result.data;
-  if (issue.pull_request || typeof issue.body !== 'string' || !issue.body.includes(FORUM_MARKER)) {
-    throw new HttpError(403, '커뮤니티 게시글에만 이 작업을 수행할 수 있습니다.');
+  if (issue.pull_request) {
+    throw new HttpError(403, 'Pull Request에는 커뮤니티 작업을 수행할 수 없습니다.');
   }
   if (issue.locked) {
     throw new HttpError(423, '잠긴 게시글에는 이 작업을 수행할 수 없습니다.');

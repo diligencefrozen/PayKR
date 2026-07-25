@@ -13,7 +13,7 @@
     oauthState: 'paykr.forum.oauth.state.v1',
     pkceVerifier: 'paykr.forum.oauth.pkce.v1',
     pendingAction: 'paykr.forum.pending-action.v1',
-    issueCache: 'paykr.forum.issues-cache.v1'
+    issueCache: 'paykr.forum.issues-cache.v2'
   });
 
   const limits = Object.freeze({
@@ -360,14 +360,17 @@
     if (loggedIn) {
       authButtonLabel.textContent = '로그아웃';
       elements['auth-button'].title = 'GitHub 로그아웃';
+      elements['auth-button'].href = '#';
       elements['compose-author-name'].textContent = `@${state.user.login}`;
     } else if (oauthIsConfigured()) {
       authButtonLabel.textContent = 'GitHub 로그인';
       elements['auth-button'].title = 'GitHub로 로그인';
+      elements['auth-button'].href = '#';
       elements['compose-author-name'].textContent = '현재 GitHub 계정';
     } else {
-      authButtonLabel.textContent = 'GitHub에서 참여';
-      elements['auth-button'].title = 'GitHub Issues 열기';
+      authButtonLabel.textContent = 'GitHub 로그인';
+      elements['auth-button'].title = 'GitHub 로그인 페이지로 이동';
+      elements['auth-button'].href = githubLoginUrl();
       elements['compose-author-name'].textContent = 'GitHub 계정';
     }
 
@@ -387,18 +390,18 @@
     }
   }
 
-  function handleAuthButtonClick() {
+  function handleAuthButtonClick(event) {
+    if (!state.session && !oauthIsConfigured()) {
+      return;
+    }
+
+    event.preventDefault();
+
     if (state.session) {
       clearStoredSession();
       updateAuthUI();
       showToast('GitHub에서 로그아웃했습니다.');
       loadIssues({ force: true }).catch((error) => console.warn('로그아웃 후 새로고침 실패:', error));
-      return;
-    }
-
-    if (!oauthIsConfigured()) {
-      window.open(`${repositoryUrl}/issues`, '_blank', 'noopener,noreferrer');
-      showToast('GitHub 로그인 설정 전이어서 저장소의 Issues를 열었습니다.');
       return;
     }
 
@@ -532,7 +535,7 @@
       }
 
       state.issues = rawIssues
-        .filter((issue) => !issue.pull_request && isForumBody(issue.body))
+        .filter((issue) => !issue.pull_request)
         .map(normalizeIssue)
         .filter(Boolean);
 
@@ -565,10 +568,6 @@
     }
 
     return githubRequest(`${issueApiPath}?${params}`);
-  }
-
-  function isForumBody(body) {
-    return typeof body === 'string' && body.includes(`<!-- ${config.forumMarker} -->`);
   }
 
   function normalizeIssue(issue) {
@@ -1101,6 +1100,13 @@
     );
     window.open(url.toString(), '_blank', 'noopener,noreferrer');
     showToast('앱 로그인 설정 전이어서 GitHub 글쓰기 화면을 열었습니다.');
+  }
+
+  function githubLoginUrl() {
+    const returnPath = `/${config.repository.owner}/${config.repository.name}/issues`;
+    const url = new URL('https://github.com/login');
+    url.searchParams.set('return_to', returnPath);
+    return url.toString();
   }
 
   async function workerRequest(path, { method = 'GET', body, includeSession = true } = {}) {

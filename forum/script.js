@@ -1,494 +1,1342 @@
-// Supabase 클라이언트 초기화
-let supabase;
-let posts = [];
-let currentPostId = null;
-let userIP = null;
+(() => {
+  'use strict';
 
-// 메인 페이지로 이동
-function goToHome() {
-    window.location.href = '../index.html';
-}
+  const config = window.PAYKR_FORUM_CONFIG;
 
-// 페이지 로드 시 초기화
-document.addEventListener('DOMContentLoaded', async () => {
-    // Supabase 초기화
-    if (typeof SUPABASE_URL === 'undefined' || SUPABASE_URL === 'YOUR_SUPABASE_URL_HERE') {
-        alert('⚠️ config.js 파일에서 Supabase 설정을 완료해주세요!\n\nSUPABASE_SETUP.md 파일을 참고하세요.');
-        return;
+  if (!config || !config.repository?.owner || !config.repository?.name) {
+    throw new Error('PAYKR_FORUM_CONFIG 저장소 설정이 올바르지 않습니다.');
+  }
+
+  const STORAGE = Object.freeze({
+    session: 'paykr.forum.session.v1',
+    user: 'paykr.forum.user.v1',
+    oauthState: 'paykr.forum.oauth.state.v1',
+    pkceVerifier: 'paykr.forum.oauth.pkce.v1',
+    pendingAction: 'paykr.forum.pending-action.v1',
+    issueCache: 'paykr.forum.issues-cache.v1'
+  });
+
+  const limits = Object.freeze({
+    title: 120,
+    body: 5000,
+    comment: 2000
+  });
+
+  const state = {
+    issues: [],
+    visibleIssues: [],
+    comments: [],
+    currentIssue: null,
+    currentPage: 1,
+    category: 'all',
+    query: '',
+    sort: 'new',
+    session: null,
+    user: null,
+    pendingAction: null,
+    issueLoadSequence: 0,
+    commentLoadSequence: 0
+  };
+
+  const elements = {};
+  const categoryMap = new Map(config.categories.map((category) => [category.slug, category.label]));
+  const repositoryUrl = `https://github.com/${encodeURIComponent(config.repository.owner)}/${encodeURIComponent(config.repository.name)}`;
+  const issueApiPath = `/repos/${encodeURIComponent(config.repository.owner)}/${encodeURIComponent(config.repository.name)}/issues`;
+
+  class ForumError extends Error {
+    constructor(message, status = 0, details = null) {
+      super(message);
+      this.name = 'ForumError';
+      this.status = status;
+      this.details = details;
     }
-    
-    supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-    
-    await getUserIP();
-    loadUserCredentials();
-    await loadPosts();
-    
-    // 실시간 구독 설정
-    setupRealtimeSubscription();
-    
-    // 오래된 게시글 자동 삭제 (6개월)
-    await cleanOldPosts();
-});
+  }
 
-// IP 주소 가져오기
-async function getUserIP() {
-    try {
-        const response = await fetch('https://api.ipify.org?format=json');
-        const data = await response.json();
-        const fullIP = data.ip;
-        
-        const ipParts = fullIP.split('.');
-        if (ipParts.length >= 2) {
-            userIP = ipParts.slice(0, 2).join('.');
-        } else {
-            userIP = fullIP.substring(0, 8);
+  document.addEventListener('DOMContentLoaded', () => {
+    init().catch((error) => {
+      console.error('커뮤니티 초기화 실패:', error);
+      setSyncStatus('커뮤니티를 불러오지 못했습니다', 'error');
+      renderFeedError(error);
+    });
+  });
+
+  async function init() {
+    cacheElements();
+    bindEvents();
+    renderCategoryTabs();
+    populateComposeCategories();
+    configureRepositoryLinks();
+
+    await handleOAuthCallback();
+    await restoreSession();
+    updateAuthUI();
+    await loadIssues();
+    restorePendingAction();
+  }
+
+  function cacheElements() {
+    const ids = [
+      'auth-user',
+      'auth-avatar',
+      'auth-login',
+      'auth-button',
+      'write-button',
+      'sync-status',
+      'category-tabs',
+      'contributor-ranking',
+      'feed-search-input',
+      'feed-sort-select',
+      'forum-feed',
+      'feed-pagination',
+      'github-repository-link',
+      'compose-dialog',
+      'compose-form',
+      'compose-category',
+      'compose-title',
+      'compose-title-count',
+      'compose-content',
+      'compose-content-count',
+      'compose-author-name',
+      'compose-submit',
+      'post-dialog',
+      'post-detail-category',
+      'post-detail-title',
+      'post-detail-author',
+      'post-detail-body',
+      'post-reaction-button',
+      'post-reaction-count',
+      'post-github-link',
+      'comments-count',
+      'comments-list',
+      'comment-form',
+      'comment-content',
+      'comment-content-count',
+      'comment-submit',
+      'comment-login-button',
+      'auth-dialog',
+      'auth-continue-button',
+      'toast-region',
+      'empty-state-template'
+    ];
+
+    for (const id of ids) {
+      const element = document.getElementById(id);
+      if (!element) {
+        throw new Error(`필수 UI 요소를 찾을 수 없습니다: #${id}`);
+      }
+      elements[id] = element;
+    }
+  }
+
+  function bindEvents() {
+    elements['auth-button'].addEventListener('click', handleAuthButtonClick);
+    elements['write-button'].addEventListener('click', handleWriteRequest);
+    elements['auth-continue-button'].addEventListener('click', beginGitHubLogin);
+    elements['comment-login-button'].addEventListener('click', () => requestAuthentication(`post:${state.currentIssue?.number ?? ''}`));
+    elements['compose-form'].addEventListener('submit', submitPost);
+    elements['comment-form'].addEventListener('submit', submitComment);
+    elements['post-reaction-button'].addEventListener('click', toggleReaction);
+
+    elements['feed-search-input'].addEventListener('input', (event) => {
+      state.query = event.target.value.trim().toLocaleLowerCase('ko');
+      state.currentPage = 1;
+      applyFiltersAndRender();
+    });
+
+    elements['feed-sort-select'].addEventListener('change', (event) => {
+      state.sort = event.target.value;
+      state.currentPage = 1;
+      applyFiltersAndRender();
+    });
+
+    bindCounter(elements['compose-title'], elements['compose-title-count']);
+    bindCounter(elements['compose-content'], elements['compose-content-count']);
+    bindCounter(elements['comment-content'], elements['comment-content-count']);
+
+    document.querySelectorAll('[data-close-dialog]').forEach((button) => {
+      button.addEventListener('click', () => closeDialog(document.getElementById(button.dataset.closeDialog)));
+    });
+
+    document.querySelectorAll('dialog').forEach((dialog) => {
+      dialog.addEventListener('click', (event) => {
+        if (event.target === dialog) {
+          closeDialog(dialog);
         }
-        
-        if (!getCookie('userNickname')) {
-            document.getElementById('write-nickname').value = userIP;
-            document.getElementById('comment-nickname').value = userIP;
+      });
+
+      dialog.addEventListener('close', () => {
+        syncDialogBodyState();
+        if (dialog === elements['auth-dialog']) {
+          state.pendingAction = null;
+          sessionStorage.removeItem(STORAGE.pendingAction);
         }
-    } catch (error) {
-        console.log('IP를 가져올 수 없습니다:', error);
-        userIP = Math.random().toString(36).substring(2, 8);
-    }
-}
+        if (dialog === elements['post-dialog'] && state.currentIssue) {
+          state.currentIssue = null;
+          state.comments = [];
+          clearPostHash();
+        }
+      });
+    });
 
-// 쿠키에서 사용자 정보 로드
-function loadUserCredentials() {
-    const nickname = getCookie('userNickname');
-    
-    if (nickname) {
-        document.getElementById('write-nickname').value = nickname;
-        document.getElementById('comment-nickname').value = nickname;
-    } else if (userIP) {
-        document.getElementById('write-nickname').value = userIP;
-        document.getElementById('comment-nickname').value = userIP;
-    }
-}
+    window.addEventListener('popstate', () => {
+      const issueNumber = issueNumberFromHash();
+      if (issueNumber) {
+        openIssue(issueNumber, { updateHistory: false });
+      } else if (elements['post-dialog'].open) {
+        closeDialog(elements['post-dialog'], { updateHistory: false });
+      }
+    });
+  }
 
-// 쿠키 설정
-function setCookie(name, value, days = 365) {
-    const expires = new Date();
-    expires.setTime(expires.getTime() + days * 24 * 60 * 60 * 1000);
-    document.cookie = `${name}=${value};expires=${expires.toUTCString()};path=/`;
-}
-
-// 쿠키 가져오기
-function getCookie(name) {
-    const nameEQ = name + "=";
-    const ca = document.cookie.split(';');
-    for (let i = 0; i < ca.length; i++) {
-        let c = ca[i];
-        while (c.charAt(0) === ' ') c = c.substring(1, c.length);
-        if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length, c.length);
-    }
-    return null;
-}
-
-// Supabase에서 게시글 로드
-async function loadPosts() {
-    try {
-        const { data, error } = await supabase
-            .from('posts')
-            .select(`
-                *,
-                comments (
-                    id,
-                    nickname,
-                    ip,
-                    content,
-                    created_at
-                )
-            `)
-            .order('created_at', { ascending: false });
-        
-        if (error) throw error;
-        
-        posts = data || [];
-        renderPosts();
-    } catch (error) {
-        console.error('게시글 로드 실패:', error);
-        alert('게시글을 불러오는데 실패했습니다.');
-    }
-}
-
-// 실시간 구독 설정
-function setupRealtimeSubscription() {
-    // 게시글 변경 감지
-    supabase
-        .channel('posts_channel')
-        .on('postgres_changes', 
-            { event: '*', schema: 'public', table: 'posts' },
-            () => loadPosts()
-        )
-        .on('postgres_changes',
-            { event: '*', schema: 'public', table: 'comments' },
-            () => loadPosts()
-        )
-        .subscribe();
-}
-
-// 게시글 렌더링
-function renderPosts() {
-    const container = document.getElementById('posts-container');
-    
-    if (posts.length === 0) {
-        container.innerHTML = `
-            <div class="empty-state">
-                <div class="empty-state-icon">📝</div>
-                <div class="empty-state-text">아직 게시글이 없습니다</div>
-                <div class="empty-state-subtext">첫 번째 게시글을 작성해보세요!</div>
-            </div>
-        `;
-        return;
-    }
-    
-    container.innerHTML = posts.map(post => {
-        const likeCount = post.likes ? post.likes.length : 0;
-        const commentCount = post.comments ? post.comments.length : 0;
-        const isLiked = post.likes && post.likes.includes(getDeviceId());
-        
-        return `
-            <div class="post-card">
-                <div class="post-header">
-                    <div class="post-author">
-                        <div class="author-avatar">${post.nickname.charAt(0)}</div>
-                        <div class="author-info">
-                            <div class="author-name">
-                                ${escapeHtml(post.nickname)}
-                                ${post.ip ? `<span class="user-ip">(${escapeHtml(post.ip)})</span>` : ''}
-                            </div>
-                            <div class="post-date">${formatDate(post.created_at)}</div>
-                        </div>
-                    </div>
-                </div>
-                <div class="post-title" onclick="viewPost(${post.id})">${escapeHtml(post.title)}</div>
-                <div class="post-content" onclick="viewPost(${post.id})">${escapeHtml(post.content.substring(0, 200))}${post.content.length > 200 ? '...' : ''}</div>
-                <div class="post-stats">
-                    <span>👁️ ${post.views}</span>
-                    <span>❤️ ${likeCount}</span>
-                    <span>💬 ${commentCount}</span>
-                </div>
-                <div class="post-actions">
-                    <button class="action-btn ${isLiked ? 'liked' : ''}" onclick="toggleLike(${post.id})">
-                        ${isLiked ? '❤️' : '🤍'} 추천
-                    </button>
-                    <button class="action-btn" onclick="openCommentModal(${post.id})">
-                        💬 댓글
-                    </button>
-                </div>
-            </div>
-        `;
-    }).join('');
-}
-
-// 게시글 상세보기
-async function viewPost(postId) {
-    const post = posts.find(p => p.id === postId);
-    if (!post) return;
-    
-    // 조회수 증가
-    try {
-        await supabase
-            .from('posts')
-            .update({ views: post.views + 1 })
-            .eq('id', postId);
-        
-        post.views++;
-    } catch (error) {
-        console.error('조회수 업데이트 실패:', error);
-    }
-    
-    const likeCount = post.likes ? post.likes.length : 0;
-    const commentCount = post.comments ? post.comments.length : 0;
-    
-    document.getElementById('detail-content').innerHTML = `
-        <div class="detail-post">
-            <div class="detail-title">${escapeHtml(post.title)}</div>
-            <div class="detail-author">
-                <div class="author-avatar">${post.nickname.charAt(0)}</div>
-                <div class="author-info">
-                    <div class="author-name">
-                        ${escapeHtml(post.nickname)}
-                        ${post.ip ? `<span class="user-ip">(${escapeHtml(post.ip)})</span>` : ''}
-                    </div>
-                    <div class="post-date">${formatDate(post.created_at)}</div>
-                </div>
-            </div>
-            <div class="detail-content-text">${escapeHtml(post.content)}</div>
-            <div class="post-stats">
-                <span>👁️ ${post.views}</span>
-                <span>❤️ ${likeCount}</span>
-                <span>💬 ${commentCount}</span>
-            </div>
-        </div>
-    `;
-    
-    document.getElementById('detail-modal').style.display = 'block';
-    renderPosts();
-}
-
-// 글쓰기 모달 열기
-function openWriteModal() {
-    document.getElementById('write-modal').style.display = 'block';
-}
-
-// 글쓰기 모달 닫기
-function closeWriteModal() {
-    document.getElementById('write-modal').style.display = 'none';
-}
-
-// 상세 모달 닫기
-function closeDetailModal() {
-    document.getElementById('detail-modal').style.display = 'none';
-}
-
-// 게시글 작성
-async function submitPost() {
-    const nickname = document.getElementById('write-nickname').value.trim();
-    const title = document.getElementById('write-title').value.trim();
-    const content = document.getElementById('write-content').value.trim();
-    
-    if (!nickname || !title || !content) {
-        alert('모든 항목을 입력해주세요.');
-        return;
-    }
-    
-    try {
-        const { error } = await supabase
-            .from('posts')
-            .insert([{
-                nickname: nickname,
-                ip: userIP,
-                title: title,
-                content: content,
-                views: 0,
-                likes: []
-            }]);
-        
-        if (error) throw error;
-        
-        // 쿠키에 저장
-        setCookie('userNickname', nickname);
-        
-        // 폼 초기화
-        document.getElementById('write-title').value = '';
-        document.getElementById('write-content').value = '';
-        
-        closeWriteModal();
-        alert('게시글이 작성되었습니다!');
-        
-        // 게시글 다시 로드
-        await loadPosts();
-    } catch (error) {
-        console.error('게시글 작성 실패:', error);
-        alert('게시글 작성에 실패했습니다.');
-    }
-}
-
-// 추천 토글
-async function toggleLike(postId) {
-    const post = posts.find(p => p.id === postId);
-    if (!post) return;
-    
-    const deviceId = getDeviceId();
-    let newLikes = post.likes || [];
-    
-    const likeIndex = newLikes.indexOf(deviceId);
-    
-    if (likeIndex > -1) {
-        newLikes.splice(likeIndex, 1);
-    } else {
-        newLikes.push(deviceId);
-    }
-    
-    try {
-        const { error } = await supabase
-            .from('posts')
-            .update({ likes: newLikes })
-            .eq('id', postId);
-        
-        if (error) throw error;
-        
-        post.likes = newLikes;
-        renderPosts();
-    } catch (error) {
-        console.error('추천 업데이트 실패:', error);
-    }
-}
-
-// 디바이스 ID 생성 (추천 중복 방지)
-function getDeviceId() {
-    let deviceId = localStorage.getItem('deviceId');
-    if (!deviceId) {
-        deviceId = 'device_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
-        localStorage.setItem('deviceId', deviceId);
-    }
-    return deviceId;
-}
-
-// 댓글 모달 열기
-function openCommentModal(postId) {
-    currentPostId = postId;
-    const post = posts.find(p => p.id === postId);
-    if (!post) return;
-    
-    document.getElementById('comment-modal').style.display = 'block';
-    renderComments(post);
-}
-
-// 댓글 모달 닫기
-function closeCommentModal() {
-    document.getElementById('comment-modal').style.display = 'none';
-    currentPostId = null;
-}
-
-// 댓글 렌더링
-function renderComments(post) {
-    const commentsList = document.getElementById('comments-list');
-    
-    if (!post.comments || post.comments.length === 0) {
-        commentsList.innerHTML = `
-            <div class="empty-state">
-                <div class="empty-state-icon">💬</div>
-                <div class="empty-state-text">첫 댓글을 작성해보세요!</div>
-            </div>
-        `;
-        return;
-    }
-    
-    // 최신순 정렬
-    const sortedComments = [...post.comments].sort((a, b) => 
-        new Date(b.created_at) - new Date(a.created_at)
-    );
-    
-    commentsList.innerHTML = sortedComments.map(comment => `
-        <div class="comment-item">
-            <div class="comment-header">
-                <div class="comment-author">
-                    <div class="comment-avatar">${comment.nickname.charAt(0)}</div>
-                    <div>
-                        <div class="comment-name">
-                            ${escapeHtml(comment.nickname)}
-                            ${comment.ip ? `<span class="user-ip">(${escapeHtml(comment.ip)})</span>` : ''}
-                        </div>
-                        <div class="comment-date">${formatDate(comment.created_at)}</div>
-                    </div>
-                </div>
-            </div>
-            <div class="comment-content">${escapeHtml(comment.content)}</div>
-        </div>
-    `).join('');
-}
-
-// 댓글 작성
-async function submitComment() {
-    if (!currentPostId) return;
-    
-    const nickname = document.getElementById('comment-nickname').value.trim();
-    const content = document.getElementById('comment-content').value.trim();
-    
-    if (!nickname || !content) {
-        alert('모든 항목을 입력해주세요.');
-        return;
-    }
-    
-    try {
-        const { error } = await supabase
-            .from('comments')
-            .insert([{
-                post_id: currentPostId,
-                nickname: nickname,
-                ip: userIP,
-                content: content
-            }]);
-        
-        if (error) throw error;
-        
-        // 쿠키에 저장
-        setCookie('userNickname', nickname);
-        
-        // 폼 초기화
-        document.getElementById('comment-content').value = '';
-        
-        alert('댓글이 작성되었습니다!');
-        
-        // 게시글 다시 로드
-        await loadPosts();
-        
-        // 댓글 다시 렌더링
-        const post = posts.find(p => p.id === currentPostId);
-        if (post) renderComments(post);
-    } catch (error) {
-        console.error('댓글 작성 실패:', error);
-        alert('댓글 작성에 실패했습니다.');
-    }
-}
-
-// 날짜 포맷팅
-function formatDate(dateString) {
-    const date = new Date(dateString);
-    const now = new Date();
-    const diff = Math.floor((now - date) / 1000);
-    
-    if (diff < 60) return '방금 전';
-    if (diff < 3600) return `${Math.floor(diff / 60)}분 전`;
-    if (diff < 86400) return `${Math.floor(diff / 3600)}시간 전`;
-    if (diff < 604800) return `${Math.floor(diff / 86400)}일 전`;
-    
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, '0');
-    const day = String(date.getDate()).padStart(2, '0');
-    return `${year}.${month}.${day}`;
-}
-
-// HTML 이스케이프
-function escapeHtml(text) {
-    const map = {
-        '&': '&amp;',
-        '<': '&lt;',
-        '>': '&gt;',
-        '"': '&quot;',
-        "'": '&#039;'
+  function bindCounter(input, output) {
+    const update = () => {
+      output.textContent = String(input.value.length);
     };
-    return text.replace(/[&<>"']/g, m => map[m]);
-}
+    input.addEventListener('input', update);
+    update();
+  }
 
-// 오래된 게시글 자동 삭제 (6개월 이상)
-async function cleanOldPosts() {
+  function configureRepositoryLinks() {
+    elements['github-repository-link'].href = `${repositoryUrl}/issues`;
+  }
+
+  function renderCategoryTabs() {
+    elements['category-tabs'].replaceChildren();
+    const categories = [{ slug: 'all', label: '전체' }, ...config.categories];
+
+    for (const category of categories) {
+      const button = createElement('button', 'category-tab', category.label);
+      button.type = 'button';
+      button.dataset.category = category.slug;
+      button.classList.toggle('is-active', state.category === category.slug);
+      button.setAttribute('aria-pressed', String(state.category === category.slug));
+      button.addEventListener('click', () => {
+        state.category = category.slug;
+        state.currentPage = 1;
+        renderCategoryTabs();
+        applyFiltersAndRender();
+      });
+      elements['category-tabs'].append(button);
+    }
+  }
+
+  function populateComposeCategories() {
+    elements['compose-category'].replaceChildren();
+    for (const category of config.categories) {
+      const option = createElement('option', '', category.label);
+      option.value = category.slug;
+      elements['compose-category'].append(option);
+    }
+  }
+
+  function oauthIsConfigured() {
+    const clientId = String(config.githubAppClientId || '').trim();
+    const workerUrl = String(config.oauthWorkerUrl || '').trim();
+    if (!clientId || !workerUrl) return false;
+
     try {
-        // 6개월 전 날짜 계산
-        const sixMonthsAgo = new Date();
-        sixMonthsAgo.setMonth(sixMonthsAgo.getMonth() - 6);
-        
-        // 6개월 지난 게시글 삭제
-        const { data, error } = await supabase
-            .from('posts')
-            .delete()
-            .lt('created_at', sixMonthsAgo.toISOString());
-        
-        if (error) {
-            console.log('오래된 게시글 정리 중 오류:', error);
-        } else {
-            console.log('오래된 게시글 정리 완료 (6개월 이상 된 글 삭제)');
-        }
-    } catch (error) {
-        console.error('자동 정리 실패:', error);
+      const parsed = new URL(workerUrl);
+      return parsed.protocol === 'https:' || parsed.hostname === '127.0.0.1' || parsed.hostname === 'localhost';
+    } catch {
+      return false;
     }
-}
+  }
 
-// 모달 외부 클릭 시 닫기
-window.onclick = function(event) {
-    const writeModal = document.getElementById('write-modal');
-    const commentModal = document.getElementById('comment-modal');
-    const detailModal = document.getElementById('detail-modal');
-    
-    if (event.target === writeModal) {
-        closeWriteModal();
-    } else if (event.target === commentModal) {
-        closeCommentModal();
-    } else if (event.target === detailModal) {
-        closeDetailModal();
+  function workerBaseUrl() {
+    return String(config.oauthWorkerUrl || '').trim().replace(/\/+$/, '');
+  }
+
+  async function handleOAuthCallback() {
+    const url = new URL(window.location.href);
+    const code = url.searchParams.get('code');
+    const returnedState = url.searchParams.get('state');
+    const oauthError = url.searchParams.get('error');
+
+    if (!code && !oauthError) return;
+
+    removeOAuthQueryParameters(url);
+
+    if (oauthError) {
+      const description = url.searchParams.get('error_description') || 'GitHub 인증이 취소되었습니다.';
+      showToast(description, 'error');
+      clearOAuthTransaction();
+      return;
     }
-}
+
+    if (!oauthIsConfigured()) {
+      clearOAuthTransaction();
+      showToast('GitHub 로그인 설정이 완료되지 않았습니다.', 'error');
+      return;
+    }
+
+    const expectedState = sessionStorage.getItem(STORAGE.oauthState);
+    const verifier = sessionStorage.getItem(STORAGE.pkceVerifier);
+
+    if (!expectedState || !verifier || !returnedState || !constantTimeEqual(expectedState, returnedState)) {
+      clearOAuthTransaction();
+      showToast('로그인 요청을 확인할 수 없습니다. 다시 시도해주세요.', 'error');
+      return;
+    }
+
+    try {
+      setSyncStatus('GitHub 로그인을 확인하는 중');
+      const result = await workerRequest('/oauth/token', {
+        method: 'POST',
+        includeSession: false,
+        body: {
+          code,
+          codeVerifier: verifier,
+          redirectUri: oauthRedirectUri()
+        }
+      });
+
+      if (!result.session || !result.user?.login) {
+        throw new ForumError('로그인 서버가 올바른 세션을 반환하지 않았습니다.');
+      }
+
+      state.session = result.session;
+      state.user = normalizeSessionUser(result.user);
+      sessionStorage.setItem(STORAGE.session, result.session);
+      sessionStorage.setItem(STORAGE.user, JSON.stringify(state.user));
+      showToast(`${state.user.login} 계정으로 로그인했습니다.`);
+    } catch (error) {
+      console.error('OAuth 콜백 처리 실패:', error);
+      clearStoredSession();
+      showToast(toUserMessage(error, 'GitHub 로그인에 실패했습니다.'), 'error');
+    } finally {
+      clearOAuthTransaction();
+    }
+  }
+
+  function removeOAuthQueryParameters(url) {
+    const cleanUrl = new URL(url);
+    for (const key of ['code', 'state', 'error', 'error_description', 'error_uri']) {
+      cleanUrl.searchParams.delete(key);
+    }
+    window.history.replaceState({}, '', `${cleanUrl.pathname}${cleanUrl.search}${cleanUrl.hash}`);
+  }
+
+  async function restoreSession() {
+    const storedSession = sessionStorage.getItem(STORAGE.session);
+    const storedUser = safeParseJson(sessionStorage.getItem(STORAGE.user));
+
+    if (!storedSession || !storedUser?.login || !oauthIsConfigured()) {
+      clearStoredSession();
+      return;
+    }
+
+    state.session = storedSession;
+    state.user = normalizeSessionUser(storedUser);
+
+    try {
+      const result = await workerRequest('/api/session', { method: 'GET' });
+      state.user = normalizeSessionUser(result.user);
+      sessionStorage.setItem(STORAGE.user, JSON.stringify(state.user));
+    } catch (error) {
+      console.warn('저장된 GitHub 세션이 만료되었습니다:', error);
+      clearStoredSession();
+      showToast('GitHub 로그인 세션이 만료되었습니다. 다시 로그인해주세요.');
+    }
+  }
+
+  function normalizeSessionUser(user) {
+    return {
+      id: Number(user.id) || 0,
+      login: String(user.login || ''),
+      avatarUrl: String(user.avatarUrl || user.avatar_url || ''),
+      htmlUrl: String(user.htmlUrl || user.html_url || `https://github.com/${encodeURIComponent(user.login || '')}`)
+    };
+  }
+
+  function updateAuthUI() {
+    const loggedIn = Boolean(state.session && state.user?.login);
+    const authButtonLabel = elements['auth-button'].querySelector('span');
+
+    elements['auth-user'].hidden = !loggedIn;
+    elements['auth-avatar'].src = loggedIn && state.user.avatarUrl ? state.user.avatarUrl : '../favicon.svg';
+    elements['auth-avatar'].alt = loggedIn ? `${state.user.login} 프로필` : '';
+    elements['auth-login'].textContent = loggedIn ? state.user.login : '';
+
+    if (loggedIn) {
+      authButtonLabel.textContent = '로그아웃';
+      elements['auth-button'].title = 'GitHub 로그아웃';
+      elements['compose-author-name'].textContent = `@${state.user.login}`;
+    } else if (oauthIsConfigured()) {
+      authButtonLabel.textContent = 'GitHub 로그인';
+      elements['auth-button'].title = 'GitHub로 로그인';
+      elements['compose-author-name'].textContent = '현재 GitHub 계정';
+    } else {
+      authButtonLabel.textContent = 'GitHub에서 참여';
+      elements['auth-button'].title = 'GitHub Issues 열기';
+      elements['compose-author-name'].textContent = 'GitHub 계정';
+    }
+
+    const commentAllowed = loggedIn && !state.currentIssue?.locked;
+    elements['comment-form'].hidden = !commentAllowed;
+    elements['comment-login-button'].hidden = commentAllowed;
+
+    if (state.currentIssue?.locked) {
+      elements['comment-login-button'].hidden = false;
+      elements['comment-login-button'].disabled = true;
+      elements['comment-login-button'].querySelector('strong').textContent = 'GitHub에서 잠긴 게시글입니다.';
+      elements['comment-login-button'].querySelector('span').textContent = '댓글을 작성할 수 없습니다.';
+    } else {
+      elements['comment-login-button'].disabled = false;
+      elements['comment-login-button'].querySelector('strong').textContent = '댓글을 남기려면 GitHub 로그인이 필요합니다.';
+      elements['comment-login-button'].querySelector('span').textContent = 'GitHub로 계속하기 →';
+    }
+  }
+
+  function handleAuthButtonClick() {
+    if (state.session) {
+      clearStoredSession();
+      updateAuthUI();
+      showToast('GitHub에서 로그아웃했습니다.');
+      loadIssues({ force: true }).catch((error) => console.warn('로그아웃 후 새로고침 실패:', error));
+      return;
+    }
+
+    if (!oauthIsConfigured()) {
+      window.open(`${repositoryUrl}/issues`, '_blank', 'noopener,noreferrer');
+      showToast('GitHub 로그인 설정 전이어서 저장소의 Issues를 열었습니다.');
+      return;
+    }
+
+    requestAuthentication('');
+  }
+
+  function handleWriteRequest() {
+    if (state.session) {
+      openComposeDialog();
+      return;
+    }
+
+    if (!oauthIsConfigured()) {
+      openDirectIssueComposer();
+      return;
+    }
+
+    requestAuthentication('compose');
+  }
+
+  function requestAuthentication(pendingAction) {
+    state.pendingAction = pendingAction || '';
+    if (pendingAction) {
+      sessionStorage.setItem(STORAGE.pendingAction, pendingAction);
+    } else {
+      sessionStorage.removeItem(STORAGE.pendingAction);
+    }
+
+    if (!oauthIsConfigured()) {
+      if (pendingAction.startsWith('post:') && state.currentIssue) {
+        window.open(state.currentIssue.htmlUrl, '_blank', 'noopener,noreferrer');
+      } else {
+        openDirectIssueComposer();
+      }
+      return;
+    }
+
+    showDialog(elements['auth-dialog']);
+  }
+
+  async function beginGitHubLogin() {
+    if (!oauthIsConfigured()) {
+      showToast('GitHub App과 OAuth Worker 설정이 필요합니다.', 'error');
+      return;
+    }
+
+    const oauthState = randomBase64Url(32);
+    const verifier = randomBase64Url(64);
+    const challenge = await sha256Base64Url(verifier);
+
+    sessionStorage.setItem(STORAGE.oauthState, oauthState);
+    sessionStorage.setItem(STORAGE.pkceVerifier, verifier);
+
+    const authorizeUrl = new URL('https://github.com/login/oauth/authorize');
+    authorizeUrl.searchParams.set('client_id', config.githubAppClientId.trim());
+    authorizeUrl.searchParams.set('redirect_uri', oauthRedirectUri());
+    authorizeUrl.searchParams.set('state', oauthState);
+    authorizeUrl.searchParams.set('code_challenge', challenge);
+    authorizeUrl.searchParams.set('code_challenge_method', 'S256');
+    authorizeUrl.searchParams.set('allow_signup', 'true');
+
+    window.location.assign(authorizeUrl.toString());
+  }
+
+  function oauthRedirectUri() {
+    return `${window.location.origin}${window.location.pathname}`;
+  }
+
+  function clearOAuthTransaction() {
+    sessionStorage.removeItem(STORAGE.oauthState);
+    sessionStorage.removeItem(STORAGE.pkceVerifier);
+  }
+
+  function clearStoredSession() {
+    state.session = null;
+    state.user = null;
+    sessionStorage.removeItem(STORAGE.session);
+    sessionStorage.removeItem(STORAGE.user);
+  }
+
+  function restorePendingAction() {
+    const pendingAction = sessionStorage.getItem(STORAGE.pendingAction) || state.pendingAction;
+    sessionStorage.removeItem(STORAGE.pendingAction);
+    state.pendingAction = null;
+
+    if (!state.session || !pendingAction) {
+      const hashIssue = issueNumberFromHash();
+      if (hashIssue) openIssue(hashIssue, { updateHistory: false });
+      return;
+    }
+
+    if (pendingAction === 'compose') {
+      openComposeDialog();
+      return;
+    }
+
+    if (pendingAction.startsWith('post:')) {
+      const issueNumber = Number(pendingAction.slice(5));
+      if (Number.isInteger(issueNumber) && issueNumber > 0) {
+        openIssue(issueNumber);
+      }
+    }
+  }
+
+  async function loadIssues({ force = false } = {}) {
+    const sequence = ++state.issueLoadSequence;
+    setSyncStatus('GitHub에서 불러오는 중');
+    elements['forum-feed'].setAttribute('aria-busy', 'true');
+
+    if (!force) {
+      const cache = readIssueCache();
+      if (cache) {
+        state.issues = cache;
+        applyFiltersAndRender();
+        setSyncStatus('GitHub Issues와 동기화됨', 'ready');
+        elements['forum-feed'].setAttribute('aria-busy', 'false');
+        loadContributorRanking().catch((error) => console.warn('활동 랭킹 로드 실패:', error));
+        return;
+      }
+    }
+
+    try {
+      const rawIssues = [];
+      const perPage = 100;
+
+      for (let page = 1; page <= config.maxIssuePages; page += 1) {
+        const pageIssues = await fetchIssuePage(page, perPage);
+        if (sequence !== state.issueLoadSequence) return;
+        rawIssues.push(...pageIssues);
+        if (pageIssues.length < perPage) break;
+      }
+
+      state.issues = rawIssues
+        .filter((issue) => !issue.pull_request && isForumBody(issue.body))
+        .map(normalizeIssue)
+        .filter(Boolean);
+
+      writeIssueCache(state.issues);
+      applyFiltersAndRender();
+      setSyncStatus('GitHub Issues와 동기화됨', 'ready');
+      loadContributorRanking().catch((error) => console.warn('활동 랭킹 로드 실패:', error));
+    } catch (error) {
+      console.error('게시글 로드 실패:', error);
+      setSyncStatus('GitHub 동기화 실패', 'error');
+      renderFeedError(error);
+    } finally {
+      if (sequence === state.issueLoadSequence) {
+        elements['forum-feed'].setAttribute('aria-busy', 'false');
+      }
+    }
+  }
+
+  async function fetchIssuePage(page, perPage) {
+    const params = new URLSearchParams({
+      state: 'all',
+      sort: 'created',
+      direction: 'desc',
+      per_page: String(perPage),
+      page: String(page)
+    });
+
+    if (state.session && oauthIsConfigured()) {
+      return workerRequest(`/api/issues?${params}`);
+    }
+
+    return githubRequest(`${issueApiPath}?${params}`);
+  }
+
+  function isForumBody(body) {
+    return typeof body === 'string' && body.includes(`<!-- ${config.forumMarker} -->`);
+  }
+
+  function normalizeIssue(issue) {
+    const issueNumber = Number(issue.number);
+    if (!Number.isInteger(issueNumber) || issueNumber <= 0) return null;
+
+    const body = String(issue.body || '');
+    const category = extractCategory(body, issue.title);
+    const reactions = Number(issue.reactions?.total_count || issue.reactionsCount || 0);
+
+    return {
+      number: issueNumber,
+      title: stripIssueTitle(String(issue.title || '제목 없음')),
+      body: stripForumMetadata(body),
+      category,
+      author: normalizeAuthor(issue.user || issue.author),
+      createdAt: String(issue.created_at || issue.createdAt || ''),
+      updatedAt: String(issue.updated_at || issue.updatedAt || issue.created_at || ''),
+      commentsCount: Number(issue.comments ?? issue.commentsCount ?? 0),
+      reactionsCount: Number.isFinite(reactions) ? reactions : 0,
+      htmlUrl: String(issue.html_url || issue.htmlUrl || `${repositoryUrl}/issues/${issueNumber}`),
+      locked: Boolean(issue.locked),
+      state: String(issue.state || 'open')
+    };
+  }
+
+  function normalizeAuthor(author) {
+    const login = String(author?.login || 'github-user');
+    return {
+      id: Number(author?.id) || 0,
+      login,
+      avatarUrl: String(author?.avatar_url || author?.avatarUrl || ''),
+      htmlUrl: String(author?.html_url || author?.htmlUrl || `https://github.com/${encodeURIComponent(login)}`)
+    };
+  }
+
+  function extractCategory(body, title = '') {
+    const bodyMatch = body.match(/<!--\s*paykr-category:([a-z0-9-]+)\s*-->/i);
+    if (bodyMatch && categoryMap.has(bodyMatch[1])) return bodyMatch[1];
+
+    const titleMatch = String(title).match(/^\[(?:커뮤니티|거지방):([a-z0-9-]+)\]/i);
+    if (titleMatch && categoryMap.has(titleMatch[1])) return titleMatch[1];
+    return 'free';
+  }
+
+  function stripIssueTitle(title) {
+    return title.replace(/^\[(?:커뮤니티|거지방):[a-z0-9-]+\]\s*/i, '').trim() || '제목 없음';
+  }
+
+  function stripForumMetadata(body) {
+    return body
+      .replace(new RegExp(`<!--\\s*${escapeRegExp(config.forumMarker)}\\s*-->`, 'gi'), '')
+      .replace(/<!--\s*paykr-category:[a-z0-9-]+\s*-->/gi, '')
+      .trim();
+  }
+
+  function applyFiltersAndRender() {
+    const filtered = state.issues.filter((issue) => {
+      const categoryMatches = state.category === 'all' || issue.category === state.category;
+      const queryMatches = !state.query
+        || issue.title.toLocaleLowerCase('ko').includes(state.query)
+        || issue.body.toLocaleLowerCase('ko').includes(state.query)
+        || issue.author.login.toLocaleLowerCase('ko').includes(state.query);
+      return categoryMatches && queryMatches;
+    });
+
+    filtered.sort(issueSorter(state.sort));
+    state.visibleIssues = filtered;
+
+    const pageCount = Math.max(1, Math.ceil(filtered.length / config.pageSize));
+    state.currentPage = Math.min(Math.max(1, state.currentPage), pageCount);
+    renderFeed();
+    renderPagination(pageCount);
+  }
+
+  function issueSorter(sort) {
+    if (sort === 'updated') {
+      return (a, b) => dateValue(b.updatedAt) - dateValue(a.updatedAt);
+    }
+    if (sort === 'comments') {
+      return (a, b) => b.commentsCount - a.commentsCount || dateValue(b.createdAt) - dateValue(a.createdAt);
+    }
+    if (sort === 'reactions') {
+      return (a, b) => b.reactionsCount - a.reactionsCount || dateValue(b.createdAt) - dateValue(a.createdAt);
+    }
+    return (a, b) => dateValue(b.createdAt) - dateValue(a.createdAt);
+  }
+
+  function renderFeed() {
+    elements['forum-feed'].replaceChildren();
+
+    if (state.visibleIssues.length === 0) {
+      const fragment = elements['empty-state-template'].content.cloneNode(true);
+      if (state.issues.length > 0) {
+        fragment.querySelector('h3').textContent = '조건에 맞는 게시글이 없습니다.';
+        fragment.querySelector('p').textContent = '검색어나 카테고리를 바꿔보세요.';
+      }
+      fragment.querySelector('[data-empty-write]').addEventListener('click', handleWriteRequest);
+      elements['forum-feed'].append(fragment);
+      return;
+    }
+
+    const start = (state.currentPage - 1) * config.pageSize;
+    const pageIssues = state.visibleIssues.slice(start, start + config.pageSize);
+    const fragment = document.createDocumentFragment();
+
+    for (const issue of pageIssues) {
+      fragment.append(renderFeedItem(issue));
+    }
+
+    elements['forum-feed'].append(fragment);
+  }
+
+  function renderFeedItem(issue) {
+    const article = createElement('article', 'post-feed-item');
+    const openButton = createElement('button', 'post-feed-open');
+    openButton.type = 'button';
+    openButton.setAttribute('aria-label', `${issue.title} 게시글 열기`);
+    openButton.addEventListener('click', () => openIssue(issue.number));
+
+    const topLine = createElement('div', 'post-feed-item-topline');
+    const category = createElement('span', 'category-badge', categoryLabel(issue.category));
+    const title = createElement('h3', 'post-feed-item-title', issue.title);
+    topLine.append(category, title);
+
+    const excerpt = createElement('p', 'post-feed-item-excerpt', issue.body || '내용이 없습니다.');
+
+    const meta = createElement('div', 'post-feed-item-meta');
+    const avatar = createAvatar(issue.author, 20);
+    const author = createElement('span', 'post-feed-item-author', issue.author.login);
+    const separator = createElement('span', '', '·');
+    const time = createElement('time', '', formatRelativeTime(issue.createdAt));
+    time.dateTime = issue.createdAt;
+    time.title = formatAbsoluteTime(issue.createdAt);
+    meta.append(avatar, author, separator, time);
+
+    openButton.append(topLine, excerpt, meta);
+
+    const stats = createElement('div', 'post-feed-item-stats');
+    stats.setAttribute('aria-label', `공감 ${issue.reactionsCount}개, 댓글 ${issue.commentsCount}개`);
+    const reactions = createElement('span', 'post-feed-stat', `👍 ${issue.reactionsCount}`);
+    const comments = createElement('span', 'post-feed-stat', `💬 ${issue.commentsCount}`);
+    stats.append(reactions, comments);
+
+    article.append(openButton, stats);
+    return article;
+  }
+
+  function renderPagination(pageCount) {
+    elements['feed-pagination'].replaceChildren();
+    if (pageCount <= 1) return;
+
+    const previous = createElement('button', 'pagination-button', '‹');
+    previous.type = 'button';
+    previous.disabled = state.currentPage === 1;
+    previous.setAttribute('aria-label', '이전 페이지');
+    previous.addEventListener('click', () => setPage(state.currentPage - 1));
+    elements['feed-pagination'].append(previous);
+
+    for (const page of paginationWindow(state.currentPage, pageCount)) {
+      if (page === '…') {
+        const ellipsis = createElement('span', 'pagination-button', '…');
+        ellipsis.setAttribute('aria-hidden', 'true');
+        elements['feed-pagination'].append(ellipsis);
+        continue;
+      }
+
+      const button = createElement('button', 'pagination-button', String(page));
+      button.type = 'button';
+      button.classList.toggle('is-active', page === state.currentPage);
+      button.setAttribute('aria-current', page === state.currentPage ? 'page' : 'false');
+      button.setAttribute('aria-label', `${page}페이지`);
+      button.addEventListener('click', () => setPage(page));
+      elements['feed-pagination'].append(button);
+    }
+
+    const next = createElement('button', 'pagination-button', '›');
+    next.type = 'button';
+    next.disabled = state.currentPage === pageCount;
+    next.setAttribute('aria-label', '다음 페이지');
+    next.addEventListener('click', () => setPage(state.currentPage + 1));
+    elements['feed-pagination'].append(next);
+  }
+
+  function paginationWindow(current, total) {
+    if (total <= 7) return Array.from({ length: total }, (_, index) => index + 1);
+    if (current <= 4) return [1, 2, 3, 4, 5, '…', total];
+    if (current >= total - 3) return [1, '…', total - 4, total - 3, total - 2, total - 1, total];
+    return [1, '…', current - 1, current, current + 1, '…', total];
+  }
+
+  function setPage(page) {
+    state.currentPage = page;
+    renderFeed();
+    renderPagination(Math.max(1, Math.ceil(state.visibleIssues.length / config.pageSize)));
+    elements['forum-feed'].scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  async function loadContributorRanking() {
+    if (state.issues.length === 0) {
+      renderRanking([]);
+      return;
+    }
+
+    const contributions = new Map();
+    const forumIssueNumbers = new Set(state.issues.map((issue) => issue.number));
+
+    for (const issue of state.issues) {
+      addContribution(contributions, issue.author, 'posts');
+    }
+
+    try {
+      const params = new URLSearchParams({
+        sort: 'created',
+        direction: 'desc',
+        per_page: '100',
+        page: '1'
+      });
+      const comments = state.session && oauthIsConfigured()
+        ? await workerRequest(`/api/repository-comments?${params}`)
+        : await githubRequest(`${issueApiPath}/comments?${params}`);
+
+      for (const comment of comments) {
+        const issueNumber = Number(String(comment.issue_url || '').split('/').pop());
+        if (!forumIssueNumbers.has(issueNumber)) continue;
+        addContribution(contributions, normalizeAuthor(comment.user), 'comments');
+      }
+    } catch (error) {
+      console.warn('댓글 기반 활동 랭킹을 불러오지 못했습니다:', error);
+    }
+
+    const ranking = [...contributions.values()]
+      .map((entry) => ({ ...entry, score: entry.posts * 3 + entry.comments }))
+      .sort((a, b) => b.score - a.score || b.posts - a.posts || a.author.login.localeCompare(b.author.login))
+      .slice(0, 10);
+    renderRanking(ranking);
+  }
+
+  function addContribution(map, author, field) {
+    const key = author.id || author.login;
+    const existing = map.get(key) || { author, posts: 0, comments: 0 };
+    existing[field] += 1;
+    map.set(key, existing);
+  }
+
+  function renderRanking(ranking) {
+    elements['contributor-ranking'].replaceChildren();
+
+    if (ranking.length === 0) {
+      elements['contributor-ranking'].append(createElement('li', 'rail-placeholder', '첫 활동자가 되어보세요.'));
+      return;
+    }
+
+    ranking.forEach((entry, index) => {
+      const item = createElement('li', 'ranking-item');
+      const position = createElement('span', 'ranking-position', `#${index + 1}`);
+      const avatar = createAvatar(entry.author, 32);
+      const person = createElement('span', 'ranking-person');
+      person.append(
+        createElement('strong', '', entry.author.login),
+        createElement('small', '', `글 ${entry.posts} · 댓글 ${entry.comments}`)
+      );
+      const score = createElement('span', 'ranking-score', String(entry.score));
+      score.title = '활동 점수: 글 3점, 댓글 1점';
+      item.append(position, avatar, person, score);
+      elements['contributor-ranking'].append(item);
+    });
+  }
+
+  function renderFeedError(error) {
+    elements['forum-feed'].replaceChildren();
+    const section = createElement('section', 'empty-state error-state');
+    const icon = createElement('div', 'empty-state-icon', '!');
+    icon.setAttribute('aria-hidden', 'true');
+    const title = createElement('h3', '', '게시글을 불러오지 못했습니다.');
+    const description = createElement('p', '', toUserMessage(error, '잠시 후 다시 시도해주세요.'));
+    const retry = createElement('button', 'button button-primary', '다시 시도');
+    retry.type = 'button';
+    retry.addEventListener('click', () => loadIssues({ force: true }));
+    section.append(icon, title, description, retry);
+    elements['forum-feed'].append(section);
+  }
+
+  async function openIssue(issueNumber, { updateHistory = true } = {}) {
+    const issue = state.issues.find((candidate) => candidate.number === Number(issueNumber));
+    if (!issue) {
+      showToast('해당 게시글을 찾을 수 없습니다.', 'error');
+      return;
+    }
+
+    state.currentIssue = issue;
+    state.comments = [];
+    elements['post-detail-category'].textContent = categoryLabel(issue.category);
+    elements['post-detail-title'].textContent = issue.title;
+    elements['post-detail-body'].textContent = issue.body || '내용이 없습니다.';
+    elements['post-reaction-count'].textContent = String(issue.reactionsCount);
+    elements['post-reaction-button'].classList.remove('is-active');
+    elements['post-github-link'].href = issue.htmlUrl;
+    elements['comments-count'].textContent = String(issue.commentsCount);
+    renderDetailAuthor(issue);
+    updateAuthUI();
+    showDialog(elements['post-dialog']);
+
+    if (updateHistory) {
+      window.history.pushState({}, '', `#post-${issue.number}`);
+    }
+
+    await loadComments(issue.number);
+  }
+
+  function renderDetailAuthor(issue) {
+    elements['post-detail-author'].replaceChildren();
+    const avatar = createAvatar(issue.author, 36);
+    const info = createElement('div');
+    const name = createElement('strong', '', issue.author.login);
+    const date = createElement('small', '', `${formatAbsoluteTime(issue.createdAt)} · #${issue.number}`);
+    info.append(name, date);
+    elements['post-detail-author'].append(avatar, info);
+  }
+
+  async function loadComments(issueNumber) {
+    const sequence = ++state.commentLoadSequence;
+    elements['comments-list'].replaceChildren(createElement('div', 'comments-loading', '댓글을 불러오는 중입니다.'));
+
+    try {
+      const comments = [];
+      const perPage = 100;
+
+      for (let page = 1; page <= 3; page += 1) {
+        const params = new URLSearchParams({ per_page: String(perPage), page: String(page) });
+        const pageComments = state.session && oauthIsConfigured()
+          ? await workerRequest(`/api/issues/${issueNumber}/comments?${params}`)
+          : await githubRequest(`${issueApiPath}/${issueNumber}/comments?${params}`);
+
+        if (sequence !== state.commentLoadSequence || state.currentIssue?.number !== issueNumber) return;
+        comments.push(...pageComments);
+        if (pageComments.length < perPage) break;
+      }
+
+      state.comments = comments.map(normalizeComment);
+      renderComments();
+    } catch (error) {
+      console.error('댓글 로드 실패:', error);
+      elements['comments-list'].replaceChildren(
+        createElement('div', 'comments-empty', toUserMessage(error, '댓글을 불러오지 못했습니다.'))
+      );
+    }
+  }
+
+  function normalizeComment(comment) {
+    return {
+      id: Number(comment.id) || 0,
+      body: String(comment.body || ''),
+      author: normalizeAuthor(comment.user),
+      createdAt: String(comment.created_at || comment.createdAt || ''),
+      htmlUrl: String(comment.html_url || comment.htmlUrl || '')
+    };
+  }
+
+  function renderComments() {
+    elements['comments-list'].replaceChildren();
+    elements['comments-count'].textContent = String(state.currentIssue?.commentsCount ?? state.comments.length);
+
+    if (state.comments.length === 0) {
+      elements['comments-list'].append(createElement('div', 'comments-empty', '아직 댓글이 없습니다. 첫 댓글을 남겨보세요.'));
+      return;
+    }
+
+    const fragment = document.createDocumentFragment();
+    for (const comment of state.comments) {
+      const item = createElement('article', 'comment-item');
+      const avatar = createAvatar(comment.author, 32);
+      const content = createElement('div');
+      const header = createElement('header', 'comment-item-header');
+      const name = createElement('strong', '', comment.author.login);
+      const time = createElement('time', '', formatRelativeTime(comment.createdAt));
+      time.dateTime = comment.createdAt;
+      time.title = formatAbsoluteTime(comment.createdAt);
+      const body = createElement('p', 'comment-item-body', comment.body);
+      header.append(name, time);
+      content.append(header, body);
+      item.append(avatar, content);
+      fragment.append(item);
+    }
+    elements['comments-list'].append(fragment);
+  }
+
+  function openComposeDialog() {
+    if (!state.session) {
+      requestAuthentication('compose');
+      return;
+    }
+
+    elements['compose-form'].reset();
+    elements['compose-category'].value = state.category !== 'all' && categoryMap.has(state.category) ? state.category : 'free';
+    elements['compose-title-count'].textContent = '0';
+    elements['compose-content-count'].textContent = '0';
+    elements['compose-author-name'].textContent = `@${state.user.login}`;
+    showDialog(elements['compose-dialog']);
+    window.setTimeout(() => elements['compose-title'].focus(), 30);
+  }
+
+  async function submitPost(event) {
+    event.preventDefault();
+    if (!state.session || !oauthIsConfigured()) {
+      requestAuthentication('compose');
+      return;
+    }
+
+    const category = elements['compose-category'].value;
+    const title = elements['compose-title'].value.trim();
+    const content = elements['compose-content'].value.trim();
+
+    if (!categoryMap.has(category) || title.length < 2 || title.length > limits.title || !content || content.length > limits.body) {
+      showToast('카테고리, 제목, 내용을 다시 확인해주세요.', 'error');
+      return;
+    }
+
+    setButtonBusy(elements['compose-submit'], true, '게시 중');
+    try {
+      const rawIssue = await workerRequest('/api/issues', {
+        method: 'POST',
+        body: { category, title, content }
+      });
+      const issue = normalizeIssue(rawIssue);
+      if (!issue) throw new ForumError('생성된 게시글 응답이 올바르지 않습니다.');
+
+      state.issues = [issue, ...state.issues.filter((item) => item.number !== issue.number)];
+      state.category = 'all';
+      state.query = '';
+      state.currentPage = 1;
+      elements['feed-search-input'].value = '';
+      renderCategoryTabs();
+      writeIssueCache(state.issues);
+      applyFiltersAndRender();
+      closeDialog(elements['compose-dialog']);
+      showToast('게시글을 등록했습니다.');
+      loadContributorRanking().catch(() => {});
+      await openIssue(issue.number);
+    } catch (error) {
+      console.error('게시글 작성 실패:', error);
+      handleAuthenticationFailure(error, '게시글을 등록하지 못했습니다.');
+    } finally {
+      setButtonBusy(elements['compose-submit'], false);
+    }
+  }
+
+  async function submitComment(event) {
+    event.preventDefault();
+    if (!state.currentIssue) return;
+    if (!state.session || !oauthIsConfigured()) {
+      requestAuthentication(`post:${state.currentIssue.number}`);
+      return;
+    }
+
+    const content = elements['comment-content'].value.trim();
+    if (!content || content.length > limits.comment) {
+      showToast('댓글 내용을 확인해주세요.', 'error');
+      return;
+    }
+
+    setButtonBusy(elements['comment-submit'], true, '등록 중');
+    try {
+      const rawComment = await workerRequest(`/api/issues/${state.currentIssue.number}/comments`, {
+        method: 'POST',
+        body: { content }
+      });
+      state.comments.push(normalizeComment(rawComment));
+      state.currentIssue.commentsCount += 1;
+      elements['comment-content'].value = '';
+      elements['comment-content-count'].textContent = '0';
+      writeIssueCache(state.issues);
+      renderComments();
+      applyFiltersAndRender();
+      showToast('댓글을 등록했습니다.');
+      loadContributorRanking().catch(() => {});
+    } catch (error) {
+      console.error('댓글 작성 실패:', error);
+      handleAuthenticationFailure(error, '댓글을 등록하지 못했습니다.');
+    } finally {
+      setButtonBusy(elements['comment-submit'], false);
+    }
+  }
+
+  async function toggleReaction() {
+    if (!state.currentIssue) return;
+    if (!state.session || !oauthIsConfigured()) {
+      requestAuthentication(`post:${state.currentIssue.number}`);
+      return;
+    }
+
+    elements['post-reaction-button'].disabled = true;
+    elements['post-reaction-button'].setAttribute('aria-busy', 'true');
+    try {
+      const result = await workerRequest(`/api/issues/${state.currentIssue.number}/reaction`, {
+        method: 'POST'
+      });
+      const delta = Number(result.delta) || 0;
+      state.currentIssue.reactionsCount = Math.max(0, state.currentIssue.reactionsCount + delta);
+      elements['post-reaction-count'].textContent = String(state.currentIssue.reactionsCount);
+      elements['post-reaction-button'].classList.toggle('is-active', Boolean(result.active));
+      writeIssueCache(state.issues);
+      applyFiltersAndRender();
+      showToast(result.active ? '게시글에 공감했습니다.' : '공감을 취소했습니다.');
+    } catch (error) {
+      console.error('공감 처리 실패:', error);
+      handleAuthenticationFailure(error, '공감을 처리하지 못했습니다.');
+    } finally {
+      elements['post-reaction-button'].disabled = false;
+      elements['post-reaction-button'].removeAttribute('aria-busy');
+    }
+  }
+
+  function handleAuthenticationFailure(error, fallbackMessage) {
+    if (error instanceof ForumError && error.status === 401) {
+      clearStoredSession();
+      updateAuthUI();
+      showToast('GitHub 로그인 세션이 만료되었습니다. 다시 로그인해주세요.', 'error');
+      return;
+    }
+    showToast(toUserMessage(error, fallbackMessage), 'error');
+  }
+
+  function openDirectIssueComposer() {
+    const url = new URL(`${repositoryUrl}/issues/new`);
+    url.searchParams.set('title', '[커뮤니티:free] ');
+    url.searchParams.set(
+      'body',
+      `<!-- ${config.forumMarker} -->\n<!-- paykr-category:free -->\n\n`
+    );
+    window.open(url.toString(), '_blank', 'noopener,noreferrer');
+    showToast('앱 로그인 설정 전이어서 GitHub 글쓰기 화면을 열었습니다.');
+  }
+
+  async function workerRequest(path, { method = 'GET', body, includeSession = true } = {}) {
+    if (!oauthIsConfigured()) {
+      throw new ForumError('OAuth Worker가 설정되지 않았습니다.', 503);
+    }
+
+    const headers = {
+      Accept: 'application/json'
+    };
+    if (body !== undefined) headers['Content-Type'] = 'application/json';
+    if (includeSession && state.session) headers.Authorization = `Bearer ${state.session}`;
+
+    let response;
+    try {
+      response = await fetch(`${workerBaseUrl()}${path}`, {
+        method,
+        headers,
+        body: body === undefined ? undefined : JSON.stringify(body),
+        cache: 'no-store'
+      });
+    } catch (error) {
+      throw new ForumError('로그인 서버에 연결할 수 없습니다.', 0, error);
+    }
+
+    const payload = await readJsonResponse(response);
+    if (!response.ok) {
+      throw new ForumError(payload?.error || '로그인 서버 요청에 실패했습니다.', response.status, payload);
+    }
+    return payload;
+  }
+
+  async function githubRequest(path) {
+    let response;
+    try {
+      response = await fetch(`https://api.github.com${path}`, {
+        headers: {
+          Accept: 'application/vnd.github+json',
+          'X-GitHub-Api-Version': config.apiVersion
+        }
+      });
+    } catch (error) {
+      throw new ForumError('GitHub에 연결할 수 없습니다. 네트워크를 확인해주세요.', 0, error);
+    }
+
+    const payload = await readJsonResponse(response);
+    if (!response.ok) {
+      const rateLimited = response.status === 403 && response.headers.get('x-ratelimit-remaining') === '0';
+      const message = rateLimited
+        ? 'GitHub 공개 조회 한도를 잠시 초과했습니다. 로그인하거나 잠시 후 다시 시도해주세요.'
+        : payload?.message || 'GitHub 요청에 실패했습니다.';
+      throw new ForumError(message, response.status, payload);
+    }
+    return payload;
+  }
+
+  async function readJsonResponse(response) {
+    const text = await response.text();
+    if (!text) return null;
+    try {
+      return JSON.parse(text);
+    } catch {
+      throw new ForumError('서버가 올바르지 않은 응답을 반환했습니다.', response.status);
+    }
+  }
+
+  function readIssueCache() {
+    const cache = safeParseJson(sessionStorage.getItem(STORAGE.issueCache));
+    if (!cache || !Array.isArray(cache.issues) || !Number.isFinite(cache.savedAt)) return null;
+    if (Date.now() - cache.savedAt > config.cacheTtlMs) {
+      sessionStorage.removeItem(STORAGE.issueCache);
+      return null;
+    }
+    return cache.issues.filter((issue) => Number.isInteger(issue.number) && issue.author?.login);
+  }
+
+  function writeIssueCache(issues) {
+    try {
+      sessionStorage.setItem(STORAGE.issueCache, JSON.stringify({
+        savedAt: Date.now(),
+        issues
+      }));
+    } catch (error) {
+      console.warn('게시글 캐시 저장 실패:', error);
+    }
+  }
+
+  function setSyncStatus(message, status = '') {
+    if (!elements['sync-status']) return;
+    elements['sync-status'].classList.toggle('is-ready', status === 'ready');
+    elements['sync-status'].classList.toggle('is-error', status === 'error');
+    elements['sync-status'].querySelector('span:last-child').textContent = message;
+  }
+
+  function showDialog(dialog) {
+    if (!dialog.open) dialog.showModal();
+    syncDialogBodyState();
+  }
+
+  function closeDialog(dialog, { updateHistory = true } = {}) {
+    if (!dialog?.open) return;
+    const wasPostDialog = dialog === elements['post-dialog'];
+    dialog.close();
+    if (wasPostDialog && updateHistory) clearPostHash();
+  }
+
+  function syncDialogBodyState() {
+    const anyOpen = [...document.querySelectorAll('dialog')].some((dialog) => dialog.open);
+    document.body.classList.toggle('is-dialog-open', anyOpen);
+  }
+
+  function issueNumberFromHash() {
+    const match = window.location.hash.match(/^#post-(\d+)$/);
+    return match ? Number(match[1]) : null;
+  }
+
+  function clearPostHash() {
+    if (!window.location.hash.startsWith('#post-')) return;
+    window.history.replaceState({}, '', `${window.location.pathname}${window.location.search}`);
+  }
+
+  function setButtonBusy(button, busy, label = '') {
+    if (busy) {
+      button.dataset.originalLabel = button.textContent;
+      button.disabled = true;
+      if (label) button.textContent = label;
+      return;
+    }
+
+    button.disabled = false;
+    if (button.dataset.originalLabel) {
+      button.textContent = button.dataset.originalLabel;
+      delete button.dataset.originalLabel;
+    }
+  }
+
+  function showToast(message, type = '') {
+    const toast = createElement('div', `toast${type === 'error' ? ' is-error' : ''}`, message);
+    elements['toast-region'].append(toast);
+    window.setTimeout(() => toast.remove(), 4200);
+  }
+
+  function categoryLabel(slug) {
+    return categoryMap.get(slug) || categoryMap.get('free') || '자유';
+  }
+
+  function createAvatar(author, size) {
+    const image = createElement('img');
+    image.width = size;
+    image.height = size;
+    image.alt = '';
+    image.loading = 'lazy';
+    image.decoding = 'async';
+    image.referrerPolicy = 'no-referrer';
+    image.src = author.avatarUrl || '../favicon.svg';
+    return image;
+  }
+
+  function createElement(tagName, className = '', text = null) {
+    const element = document.createElement(tagName);
+    if (className) element.className = className;
+    if (text !== null) element.textContent = text;
+    return element;
+  }
+
+  function formatRelativeTime(value) {
+    const date = new Date(value);
+    if (!Number.isFinite(date.getTime())) return '';
+    const seconds = Math.round((date.getTime() - Date.now()) / 1000);
+    const absolute = Math.abs(seconds);
+    const formatter = new Intl.RelativeTimeFormat('ko', { numeric: 'auto' });
+
+    if (absolute < 60) return formatter.format(seconds, 'second');
+    if (absolute < 3600) return formatter.format(Math.round(seconds / 60), 'minute');
+    if (absolute < 86400) return formatter.format(Math.round(seconds / 3600), 'hour');
+    if (absolute < 2_592_000) return formatter.format(Math.round(seconds / 86400), 'day');
+    return new Intl.DateTimeFormat('ko-KR', { year: 'numeric', month: '2-digit', day: '2-digit' }).format(date);
+  }
+
+  function formatAbsoluteTime(value) {
+    const date = new Date(value);
+    if (!Number.isFinite(date.getTime())) return '';
+    return new Intl.DateTimeFormat('ko-KR', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit'
+    }).format(date);
+  }
+
+  function dateValue(value) {
+    const timestamp = new Date(value).getTime();
+    return Number.isFinite(timestamp) ? timestamp : 0;
+  }
+
+  function safeParseJson(value) {
+    if (!value) return null;
+    try {
+      return JSON.parse(value);
+    } catch {
+      return null;
+    }
+  }
+
+  function toUserMessage(error, fallback) {
+    if (error instanceof ForumError && error.message) return error.message;
+    return fallback;
+  }
+
+  function randomBase64Url(byteLength) {
+    const bytes = crypto.getRandomValues(new Uint8Array(byteLength));
+    return bytesToBase64Url(bytes);
+  }
+
+  async function sha256Base64Url(value) {
+    const digest = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(value));
+    return bytesToBase64Url(new Uint8Array(digest));
+  }
+
+  function bytesToBase64Url(bytes) {
+    let binary = '';
+    for (const byte of bytes) binary += String.fromCharCode(byte);
+    return btoa(binary).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/g, '');
+  }
+
+  function constantTimeEqual(left, right) {
+    if (left.length !== right.length) return false;
+    let difference = 0;
+    for (let index = 0; index < left.length; index += 1) {
+      difference |= left.charCodeAt(index) ^ right.charCodeAt(index);
+    }
+    return difference === 0;
+  }
+
+  function escapeRegExp(value) {
+    return value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  }
+})();

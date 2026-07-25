@@ -1,0 +1,9 @@
+name = "paykr-github-oauth"
+main = "src/index.js"
+compatibility_date = "2026-07-25"
+workers_dev = true
+
+[vars]
+ALLOWED_ORIGINS = "https://diligencefrozen.github.io,http://127.0.0.1:4173,http://localhost:4173"
+GITHUB_OWNER = "diligencefrozen"
+GITHUB_REPO = "PayKR"

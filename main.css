@@ -1038,3 +1038,85 @@ li {
     display: none !important;
   }
 }
+
+/* 메인 화면 전환 */
+.app-mode-toggle {
+  position: fixed;
+  left: 50%;
+  bottom: max(18px, env(safe-area-inset-bottom));
+  z-index: 30;
+  transform: translateX(-50%);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+.app-mode-toggle-surface {
+  display: flex;
+  align-items: stretch;
+  gap: 2px;
+  padding: 4px;
+  border: 1px solid rgba(203, 213, 225, 0.95);
+  border-radius: 16px;
+  background: rgba(241, 245, 249, 0.92);
+  box-shadow: 0 10px 28px rgba(15, 23, 42, 0.18);
+  backdrop-filter: blur(14px);
+}
+
+.app-mode-toggle-button {
+  min-width: 66px;
+  min-height: 50px;
+  padding: 5px 9px;
+  display: grid;
+  place-items: center;
+  align-content: center;
+  gap: 3px;
+  border: 0;
+  border-radius: 12px;
+  color: #64748b;
+  background: transparent;
+  font: inherit;
+  cursor: pointer;
+  text-decoration: none;
+  transition: color 0.16s ease, background 0.16s ease, box-shadow 0.16s ease, transform 0.16s ease;
+}
+
+.app-mode-toggle-button:hover:not(:disabled) {
+  color: #0f172a;
+  background: rgba(255, 255, 255, 0.78);
+}
+
+.app-mode-toggle-button:active:not(:disabled) {
+  transform: translateY(1px);
+}
+
+.app-mode-toggle-button.is-active {
+  color: #fff;
+  background: linear-gradient(155deg, #1e293b, #0f172a);
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.24);
+}
+
+.app-mode-toggle-button-icon-wrap,
+.app-mode-toggle-button-icon-wrap svg {
+  width: 18px;
+  height: 18px;
+  display: block;
+}
+
+.app-mode-toggle-button-label {
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+@media screen and (max-width: 768px) {
+  .app-mode-toggle {
+    bottom: max(12px, env(safe-area-inset-bottom));
+  }
+
+  .app-mode-toggle-button {
+    min-width: 58px;
+    min-height: 46px;
+    padding: 4px 8px;
+  }
+
+}

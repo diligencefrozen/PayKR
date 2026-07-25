@@ -1,7 +1,28 @@
-// ⚠️ 여기에 본인의 Supabase 정보를 입력하세요!
-// Supabase 프로젝트 설정 → API에서 복사
-
-const SUPABASE_URL = 'https://cvusojkkfdxbvdelhwoz.supabase.co'  // 예: https://xxxxx.supabase.co
-const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN2dXNvamtrZmR4YnZkZWxod296Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjIyMjMzOTksImV4cCI6MjA3Nzc5OTM5OX0.nbs02elnZKQsRioIFFRrkV33Hof9lMJJFwj5uyhDo7g'  // anon public 키
-
-// 설정 가이드: SUPABASE_SETUP.md 파일을 참고하세요!
+/*
+ * 공개 설정만 이 파일에 둡니다.
+ * GitHub App client ID는 공개 값입니다. client secret과 SESSION_SECRET은
+ * 반드시 forum/oauth-worker의 Cloudflare Worker secret으로만 저장하세요.
+ */
+window.PAYKR_FORUM_CONFIG = Object.freeze({
+  repository: Object.freeze({
+    owner: 'diligencefrozen',
+    name: 'PayKR'
+  }),
+  githubAppClientId: '',
+  oauthWorkerUrl: '',
+  apiVersion: '2022-11-28',
+  forumMarker: 'paykr-forum:v1',
+  pageSize: 20,
+  maxIssuePages: 3,
+  cacheTtlMs: 60_000,
+  categories: Object.freeze([
+    Object.freeze({ slug: 'free', label: '자유' }),
+    Object.freeze({ slug: 'tips', label: '꿀팁' }),
+    Object.freeze({ slug: 'question', label: '질문' }),
+    Object.freeze({ slug: 'review', label: '후기' }),
+    Object.freeze({ slug: 'saving', label: '절약' }),
+    Object.freeze({ slug: 'work', label: '직장인' }),
+    Object.freeze({ slug: 'student', label: '학생' }),
+    Object.freeze({ slug: 'suggestion', label: '문의/건의' })
+  ])
+});

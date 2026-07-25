@@ -226,25 +226,26 @@
     const noticeContent = document.getElementById('notice-content');
     const closeNotice = document.getElementById('close-notice');
     
-    patchNotesToggle.addEventListener('click', ()=>{ 
-      patchNotesContent.style.display='block'; 
-      patchNotesToggle.style.display='none';
-      noticeToggle.style.display='block';
-    });
-    closePatchNotes.addEventListener('click', ()=>{ 
-      patchNotesContent.style.display='none'; 
-      patchNotesToggle.style.display='block';
-    });
-    
-    noticeToggle.addEventListener('click', ()=>{
-      noticeContent.style.display='block';
-      noticeToggle.style.display='none';
-      patchNotesToggle.style.display='block';
-    });
-    
-    closeNotice.addEventListener('click', ()=>{
-      noticeContent.style.display='none';
-      noticeToggle.style.display='block';
+    function setInformationPanel(panel) {
+      const showPatchNotes = panel === 'patch-notes';
+      const showNotice = panel === 'notice';
+
+      patchNotesContent.style.display = showPatchNotes ? 'block' : 'none';
+      noticeContent.style.display = showNotice ? 'block' : 'none';
+      patchNotesToggle.style.display = showPatchNotes ? 'none' : 'block';
+      noticeToggle.style.display = showNotice ? 'none' : 'block';
+      document.body.classList.toggle('has-information-panel', showPatchNotes || showNotice);
+    }
+
+    patchNotesToggle.addEventListener('click', () => setInformationPanel('patch-notes'));
+    closePatchNotes.addEventListener('click', () => setInformationPanel(null));
+    noticeToggle.addEventListener('click', () => setInformationPanel('notice'));
+    closeNotice.addEventListener('click', () => setInformationPanel(null));
+
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && document.body.classList.contains('has-information-panel')) {
+        setInformationPanel(null);
+      }
     });
   </script>
 

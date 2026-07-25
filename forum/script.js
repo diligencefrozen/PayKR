@@ -65,7 +65,6 @@
     bindEvents();
     renderCategoryTabs();
     populateComposeCategories();
-    configureRepositoryLinks();
 
     await handleOAuthCallback();
     await restoreSession();
@@ -88,7 +87,6 @@
       'feed-sort-select',
       'forum-feed',
       'feed-pagination',
-      'github-repository-link',
       'compose-dialog',
       'compose-form',
       'compose-category',
@@ -105,7 +103,6 @@
       'post-detail-body',
       'post-reaction-button',
       'post-reaction-count',
-      'post-github-link',
       'comments-count',
       'comments-list',
       'comment-form',
@@ -196,10 +193,6 @@
     update();
   }
 
-  function configureRepositoryLinks() {
-    elements['github-repository-link'].href = `${repositoryUrl}/issues`;
-  }
-
   function renderCategoryTabs() {
     elements['category-tabs'].replaceChildren();
     const categories = [{ slug: 'all', label: '전체' }, ...config.categories];
@@ -257,7 +250,7 @@
     removeOAuthQueryParameters(url);
 
     if (oauthError) {
-      const description = url.searchParams.get('error_description') || 'GitHub 인증이 취소되었습니다.';
+      const description = url.searchParams.get('error_description') || '로그인이 취소되었습니다.';
       showToast(description, 'error');
       clearOAuthTransaction();
       return;
@@ -265,7 +258,7 @@
 
     if (!oauthIsConfigured()) {
       clearOAuthTransaction();
-      showToast('GitHub 로그인 설정이 완료되지 않았습니다.', 'error');
+      showToast('로그인 연결이 아직 완료되지 않았습니다.', 'error');
       return;
     }
 
@@ -279,7 +272,7 @@
     }
 
     try {
-      setSyncStatus('GitHub 로그인을 확인하는 중');
+      setSyncStatus('로그인을 확인하는 중');
       const result = await workerRequest('/oauth/token', {
         method: 'POST',
         includeSession: false,
@@ -302,7 +295,7 @@
     } catch (error) {
       console.error('OAuth 콜백 처리 실패:', error);
       clearStoredSession();
-      showToast(toUserMessage(error, 'GitHub 로그인에 실패했습니다.'), 'error');
+      showToast(toUserMessage(error, '로그인에 실패했습니다.'), 'error');
     } finally {
       clearOAuthTransaction();
     }
@@ -333,9 +326,9 @@
       state.user = normalizeSessionUser(result.user);
       sessionStorage.setItem(STORAGE.user, JSON.stringify(state.user));
     } catch (error) {
-      console.warn('저장된 GitHub 세션이 만료되었습니다:', error);
+      console.warn('저장된 로그인 세션이 만료되었습니다:', error);
       clearStoredSession();
-      showToast('GitHub 로그인 세션이 만료되었습니다. 다시 로그인해주세요.');
+      showToast('로그인 세션이 만료되었습니다. 다시 로그인해주세요.');
     }
   }
 
@@ -360,18 +353,11 @@
     if (loggedIn) {
       authButtonLabel.textContent = '로그아웃';
       elements['auth-button'].title = 'GitHub 로그아웃';
-      elements['auth-button'].href = '#';
       elements['compose-author-name'].textContent = `@${state.user.login}`;
-    } else if (oauthIsConfigured()) {
-      authButtonLabel.textContent = 'GitHub 로그인';
-      elements['auth-button'].title = 'GitHub로 로그인';
-      elements['auth-button'].href = '#';
-      elements['compose-author-name'].textContent = '현재 GitHub 계정';
     } else {
       authButtonLabel.textContent = 'GitHub 로그인';
-      elements['auth-button'].title = 'GitHub 로그인 페이지로 이동';
-      elements['auth-button'].href = githubLoginUrl();
-      elements['compose-author-name'].textContent = 'GitHub 계정';
+      elements['auth-button'].title = 'GitHub로 로그인';
+      elements['compose-author-name'].textContent = '현재 로그인 계정';
     }
 
     const commentAllowed = loggedIn && !state.currentIssue?.locked;
@@ -381,7 +367,7 @@
     if (state.currentIssue?.locked) {
       elements['comment-login-button'].hidden = false;
       elements['comment-login-button'].disabled = true;
-      elements['comment-login-button'].querySelector('strong').textContent = 'GitHub에서 잠긴 게시글입니다.';
+      elements['comment-login-button'].querySelector('strong').textContent = '잠긴 게시글입니다.';
       elements['comment-login-button'].querySelector('span').textContent = '댓글을 작성할 수 없습니다.';
     } else {
       elements['comment-login-button'].disabled = false;
@@ -390,17 +376,11 @@
     }
   }
 
-  function handleAuthButtonClick(event) {
-    if (!state.session && !oauthIsConfigured()) {
-      return;
-    }
-
-    event.preventDefault();
-
+  function handleAuthButtonClick() {
     if (state.session) {
       clearStoredSession();
       updateAuthUI();
-      showToast('GitHub에서 로그아웃했습니다.');
+      showToast('로그아웃했습니다.');
       loadIssues({ force: true }).catch((error) => console.warn('로그아웃 후 새로고침 실패:', error));
       return;
     }
@@ -411,11 +391,6 @@
   function handleWriteRequest() {
     if (state.session) {
       openComposeDialog();
-      return;
-    }
-
-    if (!oauthIsConfigured()) {
-      openDirectIssueComposer();
       return;
     }
 
@@ -430,21 +405,12 @@
       sessionStorage.removeItem(STORAGE.pendingAction);
     }
 
-    if (!oauthIsConfigured()) {
-      if (pendingAction.startsWith('post:') && state.currentIssue) {
-        window.open(state.currentIssue.htmlUrl, '_blank', 'noopener,noreferrer');
-      } else {
-        openDirectIssueComposer();
-      }
-      return;
-    }
-
     showDialog(elements['auth-dialog']);
   }
 
   async function beginGitHubLogin() {
     if (!oauthIsConfigured()) {
-      showToast('GitHub App과 OAuth Worker 설정이 필요합니다.', 'error');
+      showToast('로그인 연결이 아직 완료되지 않았습니다.', 'error');
       return;
     }
 
@@ -508,7 +474,7 @@
 
   async function loadIssues({ force = false } = {}) {
     const sequence = ++state.issueLoadSequence;
-    setSyncStatus('GitHub에서 불러오는 중');
+    setSyncStatus('게시글을 불러오는 중');
     elements['forum-feed'].setAttribute('aria-busy', 'true');
 
     if (!force) {
@@ -516,7 +482,7 @@
       if (cache) {
         state.issues = cache;
         applyFiltersAndRender();
-        setSyncStatus('GitHub Issues와 동기화됨', 'ready');
+        setSyncStatus('최신 게시글로 갱신됨', 'ready');
         elements['forum-feed'].setAttribute('aria-busy', 'false');
         loadContributorRanking().catch((error) => console.warn('활동 랭킹 로드 실패:', error));
         return;
@@ -541,11 +507,11 @@
 
       writeIssueCache(state.issues);
       applyFiltersAndRender();
-      setSyncStatus('GitHub Issues와 동기화됨', 'ready');
+      setSyncStatus('최신 게시글로 갱신됨', 'ready');
       loadContributorRanking().catch((error) => console.warn('활동 랭킹 로드 실패:', error));
     } catch (error) {
       console.error('게시글 로드 실패:', error);
-      setSyncStatus('GitHub 동기화 실패', 'error');
+      setSyncStatus('게시글을 불러오지 못했습니다', 'error');
       renderFeedError(error);
     } finally {
       if (sequence === state.issueLoadSequence) {
@@ -865,7 +831,6 @@
     elements['post-detail-body'].textContent = issue.body || '내용이 없습니다.';
     elements['post-reaction-count'].textContent = String(issue.reactionsCount);
     elements['post-reaction-button'].classList.remove('is-active');
-    elements['post-github-link'].href = issue.htmlUrl;
     elements['comments-count'].textContent = String(issue.commentsCount);
     renderDetailAuthor(issue);
     updateAuthUI();
@@ -1085,28 +1050,10 @@
     if (error instanceof ForumError && error.status === 401) {
       clearStoredSession();
       updateAuthUI();
-      showToast('GitHub 로그인 세션이 만료되었습니다. 다시 로그인해주세요.', 'error');
+      showToast('로그인 세션이 만료되었습니다. 다시 로그인해주세요.', 'error');
       return;
     }
     showToast(toUserMessage(error, fallbackMessage), 'error');
-  }
-
-  function openDirectIssueComposer() {
-    const url = new URL(`${repositoryUrl}/issues/new`);
-    url.searchParams.set('title', '[커뮤니티:free] ');
-    url.searchParams.set(
-      'body',
-      `<!-- ${config.forumMarker} -->\n<!-- paykr-category:free -->\n\n`
-    );
-    window.open(url.toString(), '_blank', 'noopener,noreferrer');
-    showToast('앱 로그인 설정 전이어서 GitHub 글쓰기 화면을 열었습니다.');
-  }
-
-  function githubLoginUrl() {
-    const returnPath = `/${config.repository.owner}/${config.repository.name}/issues`;
-    const url = new URL('https://github.com/login');
-    url.searchParams.set('return_to', returnPath);
-    return url.toString();
   }
 
   async function workerRequest(path, { method = 'GET', body, includeSession = true } = {}) {
@@ -1149,15 +1096,15 @@
         }
       });
     } catch (error) {
-      throw new ForumError('GitHub에 연결할 수 없습니다. 네트워크를 확인해주세요.', 0, error);
+      throw new ForumError('커뮤니티에 연결할 수 없습니다. 네트워크를 확인해주세요.', 0, error);
     }
 
     const payload = await readJsonResponse(response);
     if (!response.ok) {
       const rateLimited = response.status === 403 && response.headers.get('x-ratelimit-remaining') === '0';
       const message = rateLimited
-        ? 'GitHub 공개 조회 한도를 잠시 초과했습니다. 로그인하거나 잠시 후 다시 시도해주세요.'
-        : payload?.message || 'GitHub 요청에 실패했습니다.';
+        ? '게시글 조회 요청이 많습니다. 잠시 후 다시 시도해주세요.'
+        : '커뮤니티 요청에 실패했습니다.';
       throw new ForumError(message, response.status, payload);
     }
     return payload;
@@ -1216,6 +1163,7 @@
   function syncDialogBodyState() {
     const anyOpen = [...document.querySelectorAll('dialog')].some((dialog) => dialog.open);
     document.body.classList.toggle('is-dialog-open', anyOpen);
+    document.body.classList.toggle('is-post-open', Boolean(elements['post-dialog']?.open));
   }
 
   function issueNumberFromHash() {

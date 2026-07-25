@@ -8,7 +8,7 @@ window.PAYKR_FORUM_CONFIG = Object.freeze({
     owner: 'diligencefrozen',
     name: 'PayKR'
   }),
-  githubAppClientId: '',
+  githubAppClientId: 'Iv23livqurqR6EHy4elO',
   oauthWorkerUrl: '',
   apiVersion: '2022-11-28',
   forumMarker: 'paykr-forum:v1',

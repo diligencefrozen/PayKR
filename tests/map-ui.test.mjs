@@ -97,8 +97,8 @@ for (const request of requests) {
 }
 const keywords = requests.map(request => request.keyword);
 assert.equal(new Set(keywords).size, keywords.length);
-for (const name of ['GS25', '코스트코', '파리바게뜨', '롯데리아']) assert.ok(keywords.includes(name));
-for (const name of ['스타벅스', '롯데호텔']) assert.ok(!keywords.includes(name));
+for (const name of ['GS25', '코스트코', '파리바게뜨', '롯데리아', '스타벅스', '하이오커피']) assert.ok(keywords.includes(name));
+assert.ok(!keywords.includes('롯데호텔'));
 assert.equal(vm.runInContext('categoryMarkers.length', context), 1, 'deduplicate places matched by different keywords');
 const pendingNearby = requests.find(request => request.keyword === 'CU');
 category('생활/가전').fire('click');

@@ -12,14 +12,15 @@
   <link rel="icon" href="favicon.svg" type="image/svg+xml" />
   <meta name="keyword" content="애플페이,애플 페이,Apple Pay,ApplePay,applepay,애플페이 사용처,애플페이지도,애플페이 지도,애플페이사용처,애플페이 가맹점,애플페이가맹점,애플페이 가맹점 지도,애플페이가맹점지도,애플페이맵,애플페이 맵">
   <link rel="icon" href="https://diligencefrozen.github.io/images/logo.ico" type="image/x-icon" />
-  <link rel="stylesheet" type="text/css" href="main.css?v=20261124.3">
-  <meta name="color-scheme" content="light" />
+  <script src="theme.js"></script>
+  <link rel="stylesheet" type="text/css" href="main.css?v=20261125.1">
+  <meta name="color-scheme" content="light dark" />
   <meta name="robots" content="index, follow">
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
   <title data-i18n="map.title">애플페이 가맹점 찾기</title>
 
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3313505766731703" crossorigin="anonymous"></script>
-  <link rel="stylesheet" href="shared.css">
+  <link rel="stylesheet" href="shared.css?v=20261125.1">
   <link rel="canonical" href="https://diligencefrozen.github.io/PayKR/?lang=ko">
   <link rel="alternate" hreflang="ko" href="https://diligencefrozen.github.io/PayKR/?lang=ko">
   <link rel="alternate" hreflang="en" href="https://diligencefrozen.github.io/PayKR/?lang=en">
@@ -30,8 +31,8 @@
 
   <script type="application/ld+json" src="https://diligencefrozen.github.io/PayKR/structured-data.json"></script>
   <script>document.oncontextmenu = () => false;</script>
-  <script src="i18n.js?v=20261124.3" defer></script>
-  <script src="main.js?v=20261124.3" defer></script>
+  <script src="i18n.js?v=20261125.1" defer></script>
+  <script src="main.js?v=20261125.1" defer></script>
 
   <style>
     html, body, #map { height:100%; margin:0; padding:0; }
@@ -99,7 +100,7 @@
         <div id="apple-pay-notice" style="position: relative; right: auto; bottom: auto; margin-top: 20px;">
           <img src="logo/applepay.png" alt="Apple Pay" width="30" height="15"><span data-i18n="map.sticker">스티커를 꼭 확인하세요!</span>
         </div>
-        <div style="margin-top: 30px; padding: 0 10px; color: #666; font-size: 14px; line-height: 1.6;">
+        <div style="margin-top: 30px; padding: 0 10px; color: var(--subtext, #666); font-size: 14px; line-height: 1.6;">
           <p><strong data-i18n="map.how">사용 방법</strong></p>
           <ul style="padding-left: 20px; margin-top: 10px;">
             <li data-i18n="map.searchStep">검색창에 매장명을 입력하세요</li>
@@ -116,7 +117,7 @@
         </div>
         <section id="notice-panel" aria-labelledby="notice-button" hidden>
           <ul>
-            <li data-i18n="notice.location">지도를 열 때 위치 접근을 허용하면 주변 편의점, 마트·슈퍼, 제과·디저트 매장과 음식점을 표시합니다. 현재 위치 버튼으로 다시 시도하거나 매장명·주소로 검색할 수 있습니다.</li>
+            <li data-i18n="notice.location">지도를 열 때 위치 접근을 허용하면 주변 편의점, 카페, 마트·슈퍼, 제과·디저트 매장과 음식점을 표시합니다. 현재 위치 버튼으로 다시 시도하거나 매장명·주소로 검색할 수 있습니다.</li>
             <li data-i18n="notice.building">같은 건물에 있는 여러 매장이 지도에서 한곳에 표시될 수 있습니다.</li>
             <li data-i18n="notice.marker">지도 마커를 클릭하면 매장 주소와 상세 정보를 볼 수 있습니다.</li>
             <li data-i18n="notice.source">업종 분류는 현대카드의 Apple Pay 안내를 참고했습니다.</li>
@@ -124,6 +125,7 @@
         </section>
         <section id="release-panel" aria-labelledby="release-button" hidden>
           <ul class="release-list">
+            <li><b>2026-11-25</b><span data-i18n="release.2026-11-25">주변 매장에 카페를 추가했습니다. 화면 테마를 선택할 수 있으며, 카테고리를 여는 동안 Discord 버튼을 숨깁니다.</span></li>
             <li><b>2026-11-24</b><span data-i18n="release.2026-11-24">한·영 전환과 온라인 브랜드 검색을 개선했습니다. 지도 접속 시 현재 위치를 확인해 주변 매장을 표시하며, PC에서 필독사항과 패치노트를 볼 수 있습니다.</span></li>
             <li><b>20260510.1</b><span data-i18n="release.20260510.1">사용자 편의성 개선 (현재 위치를 불러오지 못하면, IP 주소로 사용자 위치를 확인 시도함.)</span></li>
             <li><b>20251105.3</b><span data-i18n="release.20251105.3">사용자 편의성 업데이트 (💬 포럼 기능 추가)</span></li>
@@ -189,6 +191,14 @@
   <section id="filter-panel" data-i18n-aria-label="map.filter" aria-label="카테고리 필터" hidden>
     <div class="panel-heading"><h2 data-i18n="map.filter">카테고리</h2><button id="filter-close" class="icon-button" data-i18n-aria-label="map.closeFilter" aria-label="필터 닫기">×</button></div>
     <div id="filter-categories"></div>
+    <label class="theme-setting">
+      <span data-i18n="theme.label">화면 테마</span>
+      <select class="theme-choice" data-theme-choice>
+        <option value="system" data-i18n="theme.system">기기 설정</option>
+        <option value="light" data-i18n="theme.light">라이트</option>
+        <option value="dark" data-i18n="theme.dark">다크</option>
+      </select>
+    </label>
   </section>
   <button id="location-button" class="icon-button" data-i18n-aria-label="location.button" aria-label="현재 위치로 이동" data-i18n-title="location.button" title="현재 위치로 이동">
     <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="7"/><circle cx="12" cy="12" r="3"/><path d="M12 1v4m0 14v4M1 12h4m14 0h4"/></svg>
@@ -524,34 +534,34 @@
     search("스토리웨이", createMarkerImage(storywayImageUrl));
     search("씨스페이스24", createMarkerImage(cspaceImageUrl));
   }
-  function searchCafes(){
-    searchAndMark("스타벅스", createMarkerImage(starbucksImageUrl));
-    searchAndMark("투썸플레이스", createMarkerImage(twosomeImageUrl));
-    searchAndMark("빽다방", createMarkerImage(bbaekImageUrl));
-    searchAndMark("메가커피", createMarkerImage(megaImageUrl));
-    searchAndMark("이디야커피", createMarkerImage(ediyaImageUrl));
-    searchAndMark("더벤티", createMarkerImage(theventiImageUrl));
-    searchAndMark("할리스", createMarkerImage(hollysImageUrl));
-    searchAndMark("공차", createMarkerImage(gongchaImageUrl));
-    searchAndMark("커피빈", createMarkerImage(coffeebeanImageUrl));
-    searchAndMark("엔제리너스", createMarkerImage(angelinusImageUrl));
-    searchAndMark("폴바셋", createMarkerImage(pbImageUrl));
-    searchAndMark("파스쿠찌", createMarkerImage(pascucciImageUrl));
-    searchAndMark("블루보틀", createMarkerImage(bluebottleImageUrl));
-    searchAndMark("탐앤탐스", createMarkerImage(tntcoffeeImageUrl));
-    searchAndMark("아마스빈", createMarkerImage(amasvinImageUrl));
-    searchAndMark("커피베이", createMarkerImage(coffeebayImageUrl));
-    searchAndMark("테라로사", createMarkerImage(terarosaImageUrl));
-    searchAndMark("잠바주스", createMarkerImage(jambaImageUrl));
-    searchAndMark("커피앳웍스", createMarkerImage(coffeworksImageUrl));
-    searchAndMark("카페스토리웨이", createMarkerImage(cafestorywayImageUrl));
-    searchAndMark("카페소비", createMarkerImage(cafesobiImageUrl));
-    searchAndMark("아티제", createMarkerImage(atijeImageUrl));
-    searchAndMark("댄싱컵", createMarkerImage(dancingcupImageUrl));
-    searchAndMark("팀홀튼", createMarkerImage(thtImageUrl));
-    searchAndMark("카페콤마", createMarkerImage(cafecommaImageUrl));
-    searchAndMark("하이오커피", createMarkerImage(hioImageUrl));
-    searchAndMark("카페봄봄", createMarkerImage(cafebombomImageUrl));
+  function searchCafes(search = searchAndMark){
+    search("스타벅스", createMarkerImage(starbucksImageUrl));
+    search("투썸플레이스", createMarkerImage(twosomeImageUrl));
+    search("빽다방", createMarkerImage(bbaekImageUrl));
+    search("메가커피", createMarkerImage(megaImageUrl));
+    search("이디야커피", createMarkerImage(ediyaImageUrl));
+    search("더벤티", createMarkerImage(theventiImageUrl));
+    search("할리스", createMarkerImage(hollysImageUrl));
+    search("공차", createMarkerImage(gongchaImageUrl));
+    search("커피빈", createMarkerImage(coffeebeanImageUrl));
+    search("엔제리너스", createMarkerImage(angelinusImageUrl));
+    search("폴바셋", createMarkerImage(pbImageUrl));
+    search("파스쿠찌", createMarkerImage(pascucciImageUrl));
+    search("블루보틀", createMarkerImage(bluebottleImageUrl));
+    search("탐앤탐스", createMarkerImage(tntcoffeeImageUrl));
+    search("아마스빈", createMarkerImage(amasvinImageUrl));
+    search("커피베이", createMarkerImage(coffeebayImageUrl));
+    search("테라로사", createMarkerImage(terarosaImageUrl));
+    search("잠바주스", createMarkerImage(jambaImageUrl));
+    search("커피앳웍스", createMarkerImage(coffeworksImageUrl));
+    search("카페스토리웨이", createMarkerImage(cafestorywayImageUrl));
+    search("카페소비", createMarkerImage(cafesobiImageUrl));
+    search("아티제", createMarkerImage(atijeImageUrl));
+    search("댄싱컵", createMarkerImage(dancingcupImageUrl));
+    search("팀홀튼", createMarkerImage(thtImageUrl));
+    search("카페콤마", createMarkerImage(cafecommaImageUrl));
+    search("하이오커피", createMarkerImage(hioImageUrl));
+    search("카페봄봄", createMarkerImage(cafebombomImageUrl));
   }
   function searchDepartmentStoresandShoppingMalls(){
     searchAndMark("롯데백화점", createMarkerImage(lottedepartmentStoreImageUrl));
@@ -711,6 +721,7 @@
       const keywords = new Map();
       const collect = (keyword, image) => keywords.set(keyword, image);
       searchConvenienceStores(collect);
+      searchCafes(collect);
       searchmartandsuper(collect);
       searchjaegwaanddessert(collect);
       searchrestaurants(collect);

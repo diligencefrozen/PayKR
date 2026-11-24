@@ -14,13 +14,14 @@
     <link rel="icon" href="https://diligencefrozen.github.io/images/logo.ico" type="image/x-icon" />
 
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3313505766731703" crossorigin="anonymous"></script>
-  <link rel="stylesheet" href="shared.css">
+  <script src="theme.js"></script>
+  <link rel="stylesheet" href="shared.css?v=20261125.1">
   <link rel="canonical" href="https://diligencefrozen.github.io/PayKR/online.html?lang=ko">
   <link rel="alternate" hreflang="ko" href="https://diligencefrozen.github.io/PayKR/online.html?lang=ko">
   <link rel="alternate" hreflang="en" href="https://diligencefrozen.github.io/PayKR/online.html?lang=en">
   <link rel="alternate" hreflang="x-default" href="https://diligencefrozen.github.io/PayKR/online.html">
-  <link rel="stylesheet" href="online.css">
-  <script src="i18n.js?v=20261124.2" defer></script>
+  <link rel="stylesheet" href="online.css?v=20261125.1">
+  <script src="i18n.js?v=20261125.1" defer></script>
   <script src="online.js" defer></script>
 </head>
 <body>
@@ -36,7 +37,17 @@
   </header>
   <main class="wrap">
     <div class="intro">
-      <h1 data-i18n="ecommerce.heading">온라인 애플페이 사용처</h1>
+      <div class="intro-heading">
+        <h1 data-i18n="ecommerce.heading">온라인 애플페이 사용처</h1>
+        <label class="theme-setting">
+          <span data-i18n="theme.label">화면 테마</span>
+          <select class="theme-choice" data-theme-choice>
+            <option value="system" data-i18n="theme.system">기기 설정</option>
+            <option value="light" data-i18n="theme.light">라이트</option>
+            <option value="dark" data-i18n="theme.dark">다크</option>
+          </select>
+        </label>
+      </div>
       <p data-i18n="ecommerce.description">대한민국에서 Apple Pay로 결제할 수 있는 온라인 쇼핑몰과 서비스를 찾아보세요.</p>
     </div>
     <section class="controls" aria-label="브랜드 검색" data-i18n-aria-label="ecommerce.search">

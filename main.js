@@ -121,6 +121,7 @@
   }
   function setFilter(open) {
     $('filter-panel').hidden = !open;
+    document.body.classList.toggle('filter-open', open);
     document.querySelectorAll('.filter-toggle').forEach(button => button.setAttribute('aria-expanded', String(open)));
   }
   function setCategorySelection(name) {

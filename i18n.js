@@ -1,5 +1,9 @@
 // Each entry contains the Korean default and its English translation.
 const messages = {
+  "theme.label": ["화면 테마", "Appearance"],
+  "theme.system": ["기기 설정", "System"],
+  "theme.light": ["라이트", "Light"],
+  "theme.dark": ["다크", "Dark"],
   "common.language": ["언어 선택", "Language"],
   "common.map": ["매장 지도", "Store map"],
   "common.online": ["온라인 사용처", "Online directory"],
@@ -10,7 +14,8 @@ const messages = {
   "map.how": ["사용 방법", "Using the map"],
   "map.notice": ["필독사항", "Important information"],
   "map.releases": ["패치노트", "Release notes"],
-  "notice.location": ["지도를 열 때 위치 접근을 허용하면 주변 편의점, 마트·슈퍼, 제과·디저트 매장과 음식점을 표시합니다. 현재 위치 버튼으로 다시 시도하거나 매장명·주소로 검색할 수 있습니다.", "Allow location access when the map opens to see nearby convenience stores, supermarkets, bakeries, dessert shops and restaurants. Use the location button to try again, or search by store name or address."],
+  "release.2026-11-25": ["주변 매장에 카페를 추가했습니다. 화면 테마를 선택할 수 있으며, 카테고리를 여는 동안 Discord 버튼을 숨깁니다.", "Nearby searches now include cafés. You can choose a display theme, and the Discord button is hidden while categories are open."],
+  "notice.location": ["지도를 열 때 위치 접근을 허용하면 주변 편의점, 카페, 마트·슈퍼, 제과·디저트 매장과 음식점을 표시합니다. 현재 위치 버튼으로 다시 시도하거나 매장명·주소로 검색할 수 있습니다.", "Allow location access when the map opens to see nearby convenience stores, cafés, supermarkets, bakeries, dessert shops and restaurants. Use the location button to try again, or search by store name or address."],
   "notice.building": ["같은 건물에 있는 여러 매장이 지도에서 한곳에 표시될 수 있습니다.", "Stores in the same building may appear at the same point on the map."],
   "notice.marker": ["지도 마커를 클릭하면 매장 주소와 상세 정보를 볼 수 있습니다.", "Select a map marker to see the store address and details."],
   "notice.source": ["업종 분류는 현대카드의 Apple Pay 안내를 참고했습니다.", "The categories are based on Hyundai Card’s Apple Pay guide."],
@@ -70,7 +75,7 @@ const messages = {
   "location.current": ["현재 위치", "Current location"],
   "location.loading": ["현재 위치를 확인하고 있습니다.", "Finding your location…"],
   "location.success": ["현재 위치로 이동했습니다.", "Map centered on your location."],
-  "location.nearby": ["현재 위치 주변의 편의점, 마트·슈퍼, 제과·디저트 매장과 음식점을 찾고 있습니다.", "Finding convenience stores, supermarkets, bakeries, dessert shops and restaurants near you."],
+  "location.nearby": ["현재 위치 주변의 편의점, 카페, 마트·슈퍼, 제과·디저트 매장과 음식점을 찾고 있습니다.", "Finding convenience stores, cafés, supermarkets, bakeries, dessert shops and restaurants near you."],
   "location.secure": ["HTTPS로 접속해야 위치를 확인할 수 있습니다. 장소나 주소로도 검색할 수 있습니다.", "Open the site over HTTPS to use location, or search for a place or address."],
   "location.unsupported": ["이 브라우저는 위치 확인을 지원하지 않습니다. 장소나 주소를 검색해 주세요.", "Your browser does not support location. Search for a place or address."],
   "location.denied": ["위치 접근이 차단되었습니다. 기기의 위치 서비스와 브라우저의 사이트 위치 권한을 확인하거나 주소를 검색해 주세요.", "Location access is blocked. Check device Location Services and site permissions, or search by address."],

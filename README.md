@@ -84,9 +84,13 @@ Both pages use the same KO / EN selector. A valid `?lang=ko` or `?lang=en`
 takes precedence over the saved choice and browser language. Store names and
 addresses supplied by Kakao retain their original spelling. When the map opens,
 it requests the browser's location and searches the confirmed viewport for
-convenience stores, supermarkets, bakeries and dessert shops, and restaurants.
+convenience stores, cafés, supermarkets, bakeries and dessert shops, and restaurants.
 Users can retry with the location button or explore manually. A failed request
 leaves the map and any previously confirmed location marker in place.
+
+Appearance defaults to the device setting. Choose Light, Dark or System in the
+map's category panel or next to the online directory heading. Both pages share
+the saved choice. The map hides the Discord control while the category panel is open.
 
 Open `/online.html` to search the 36 original entries using their Korean names,
 English names or aliases. Search and category filters apply together.

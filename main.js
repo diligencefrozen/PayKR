@@ -124,6 +124,21 @@
     document.body.classList.toggle('filter-open', open);
     document.querySelectorAll('.filter-toggle').forEach(button => button.setAttribute('aria-expanded', String(open)));
   }
+  const desktopCategories = $('desktop-categories');
+  desktopCategories.addEventListener('wheel', event => {
+    const { deltaMode, deltaX, deltaY } = event;
+    if (event.ctrlKey || event.shiftKey || Math.abs(deltaX) >= Math.abs(deltaY)) return;
+    const maxScroll = desktopCategories.scrollWidth - desktopCategories.clientWidth;
+    const left = desktopCategories.scrollLeft;
+    if (maxScroll <= 0 || (deltaY > 0 ? left >= maxScroll : left <= 0)) return;
+    // Wheel deltas may be reported in pixels, lines, or pages.
+    let distance = deltaY;
+    if (deltaMode === 1) distance *= 16;
+    if (deltaMode === 2) distance *= desktopCategories.clientWidth;
+    event.preventDefault();
+    desktopCategories.scrollLeft += distance;
+  }, { passive: false });
+
   function setCategorySelection(name) {
     document.querySelectorAll('[data-category][aria-pressed]').forEach(button => {
       button.setAttribute('aria-pressed', String(button.dataset.category === name));

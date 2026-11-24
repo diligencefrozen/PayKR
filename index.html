@@ -12,7 +12,7 @@
   <link rel="icon" href="favicon.svg" type="image/svg+xml" />
   <meta name="keyword" content="애플페이,애플 페이,Apple Pay,ApplePay,applepay,애플페이 사용처,애플페이지도,애플페이 지도,애플페이사용처,애플페이 가맹점,애플페이가맹점,애플페이 가맹점 지도,애플페이가맹점지도,애플페이맵,애플페이 맵">
   <link rel="icon" href="https://diligencefrozen.github.io/images/logo.ico" type="image/x-icon" />
-  <link rel="stylesheet" type="text/css" href="main.css?v=20261124.2">
+  <link rel="stylesheet" type="text/css" href="main.css?v=20261124.3">
   <meta name="color-scheme" content="light" />
   <meta name="robots" content="index, follow">
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
@@ -30,8 +30,8 @@
 
   <script type="application/ld+json" src="https://diligencefrozen.github.io/PayKR/structured-data.json"></script>
   <script>document.oncontextmenu = () => false;</script>
-  <script src="i18n.js?v=20261124.2" defer></script>
-  <script src="main.js?v=20261124.2" defer></script>
+  <script src="i18n.js?v=20261124.3" defer></script>
+  <script src="main.js?v=20261124.3" defer></script>
 
   <style>
     html, body, #map { height:100%; margin:0; padding:0; }
@@ -109,6 +109,60 @@
         </div>
         <aside class="ad-space" id="sidebar-ad" data-i18n-aria-label="advertisement.label" aria-label="광고"><span data-i18n="advertisement.preview">광고 배치 미리보기</span></aside>
       </div>
+      <div class="sidebar-guides" id="sidebar-guides">
+        <div class="guide-buttons">
+          <button id="notice-button" type="button" aria-expanded="false" aria-controls="notice-panel" data-i18n="map.notice">필독사항</button>
+          <button id="release-button" type="button" aria-expanded="false" aria-controls="release-panel" data-i18n="map.releases">패치노트</button>
+        </div>
+        <section id="notice-panel" aria-labelledby="notice-button" hidden>
+          <ul>
+            <li data-i18n="notice.location">지도를 열 때 위치 접근을 허용하면 주변 편의점, 마트·슈퍼, 제과·디저트 매장과 음식점을 표시합니다. 현재 위치 버튼으로 다시 시도하거나 매장명·주소로 검색할 수 있습니다.</li>
+            <li data-i18n="notice.building">같은 건물에 있는 여러 매장이 지도에서 한곳에 표시될 수 있습니다.</li>
+            <li data-i18n="notice.marker">지도 마커를 클릭하면 매장 주소와 상세 정보를 볼 수 있습니다.</li>
+            <li data-i18n="notice.source">업종 분류는 현대카드의 Apple Pay 안내를 참고했습니다.</li>
+          </ul>
+        </section>
+        <section id="release-panel" aria-labelledby="release-button" hidden>
+          <ul class="release-list">
+            <li><b>2026-11-24</b><span data-i18n="release.2026-11-24">한·영 전환과 온라인 브랜드 검색을 개선했습니다. 지도 접속 시 현재 위치를 확인해 주변 매장을 표시하며, PC에서 필독사항과 패치노트를 볼 수 있습니다.</span></li>
+            <li><b>20260510.1</b><span data-i18n="release.20260510.1">사용자 편의성 개선 (현재 위치를 불러오지 못하면, IP 주소로 사용자 위치를 확인 시도함.)</span></li>
+            <li><b>20251105.3</b><span data-i18n="release.20251105.3">사용자 편의성 업데이트 (💬 포럼 기능 추가)</span></li>
+            <li><b>20251031.2</b><span data-i18n="release.20251031.2">사용자 인터페이스 개선 (검색 결과 표시 방식 개선)</span></li>
+            <li><b>20251030.1</b><span data-i18n="release.20251030.1">사용자 인터페이스 개선 (데스크탑 최적화)</span></li>
+            <li><b>20251021.2</b><span data-i18n="release.20251021.2">사용자 인터페이스 개선 (모바일 최적화)</span></li>
+            <li><b>20250517.11</b><span data-i18n="release.20250517.11">기능 개선 (영어 지원 1/10)</span></li>
+            <li><b>20250101.5</b><span data-i18n="release.20250101.5">가맹점 업데이트 (생활/가전, 커피, 제과/디저트, 온라인)</span></li>
+            <li><b>20240914.10</b><span data-i18n="release.20240914.10">가맹점 업데이트 및 UI 개선 (편의점, 패션, 카페, 외식)</span></li>
+            <li><b>20240613.3</b><span data-i18n="release.20240613.3">가맹점 업데이트 (커피, 백화점, 온라인)</span></li>
+            <li><b>20240225.2</b><span data-i18n="release.20240225.2">가맹점 업데이트 (커피, 외식)</span></li>
+            <li><b>20240125.7</b><span data-i18n="release.20240125.7">사용자 인터페이스 개선 (사이트 하단에 애플페이 스티커 관련 안내 문구 추가)</span></li>
+            <li><b>20231226.6</b><span data-i18n="release.20231226.6">가맹점 업데이트 (외식, 백화점/쇼핑) 및 사용자 인터페이스 개선</span></li>
+            <li><b>20231221.3</b><span data-i18n="release.20231221.3">가맹점 업데이트 (외식, 온라인)</span></li>
+            <li><b>20231201.6</b><span data-i18n="release.20231201.6">가맹점 업데이트 (백화점/쇼핑, 마트/슈퍼, 커피, 외식, 온라인)</span></li>
+            <li><b>20231105.10</b><span data-i18n="release.20231105.10">사용자 인터페이스 개선 ('기타' 메뉴 삭제(약국 삭제), 온라인 메뉴 추가, 문의 메뉴 추가)</span></li>
+            <li><b>20231017.2</b><span data-i18n="release.20231017.2">사용자 인터페이스 수정 (검색 버튼 수정)</span></li>
+            <li><b>20231014.1</b><span data-i18n="release.20231014.1">사용자 인터페이스 수정 (화면 비율 수정)</span></li>
+            <li><b>20231008.5</b><span data-i18n="release.20231008.5">사용자 인터페이스 수정 (카테고리, 필독사항)</span></li>
+            <li><b>20230822.1</b><span data-i18n="release.20230822.1">가맹점 수정 (기타, 생활&가전)</span></li>
+            <li><b>20230821.3</b><span data-i18n="release.20230821.3">사용자 인터페이스 개선 (패치노트 영역, 현재 위치 표시 기능 개선)</span></li>
+            <li><b>20230818.5</b><span data-i18n="release.20230818.5">가맹점 추가(약국) 및 수정(외식) 그리고 사용자 인터페이스 개선(패치노트, 필독사항 영역)</span></li>
+            <li><b>20230811.1</b><span data-i18n="release.20230811.1">가맹점 추가(레저, 여행)</span></li>
+            <li><b>20230809.2</b><span data-i18n="release.20230809.2">가맹점 추가(영화, 도서) 및 가맹점 수정(편의점)</span></li>
+            <li><b>20230808.1</b><span data-i18n="release.20230808.1">가맹점 추가(주유,충전)</span></li>
+            <li><b>20230805.8</b><span data-i18n="release.20230805.8">사용자 인터페이스 개선</span></li>
+            <li><b>20230804.4</b><span data-i18n="release.20230804.4">가맹점 추가(호텔,리조트) 및 사용자 인터페이스 업데이트</span></li>
+            <li><b>20230803.11</b><span data-i18n="release.20230803.11">가맹점 추가(외식/생활,가전) 및 사용자 인터페이스 개선</span></li>
+            <li><b>20230802.9</b><span data-i18n="release.20230802.9">사용자 인터페이스 개선</span></li>
+            <li><b>20230726.16</b><span data-i18n="release.20230726.16">가맹점 수정 (롯데마트/롯데백화점/롯데슈퍼)</span></li>
+            <li><b>20230724.1</b><span data-i18n="release.20230724.1">사용자 인터페이스 개선</span></li>
+            <li><b>20230723.9</b><span data-i18n="release.20230723.9">사용자 인터페이스 개선 (검색 기능 디자인 변경 / 모바일 기기로 접속시 반응하는 인터페이스 개선)</span></li>
+            <li><b>20230721.9</b><span data-i18n="release.20230721.9">가맹점 추가 (제과/디저트) 및 사용자 인터페이스 개선 (검색 기능 개선 / 마커 기능 추가)</span></li>
+            <li><b>20230720.11</b><span data-i18n="release.20230720.11">가맹점 추가 (마트/슈퍼) 및 사용자 인터페이스 개선 (검색 기능 추가)</span></li>
+            <li><b>20230718.7</b><span data-i18n="release.20230718.7">사용자 인터페이스 업데이트 및 가맹점 추가 (편의점, 카페)</span></li>
+            <li><b>20230524.1</b><span data-i18n="release.20230524.1">초기 버전 출시</span></li>
+          </ul>
+        </section>
+      </div>
     </div>
   </div>
 
@@ -161,7 +215,10 @@
     // 전역 보관 (중복 선언 금지)
     let map, currentPositionMarker = null;
     let categoryMarkers = [];
+    const categoryPlaceIds = new Set();
     let categoryGeneration = 0;
+    let explorationGeneration = 0;
+    let useNearbyDefaults = true;
     let selectedPlaceId = null;
     let currentOverlay = null; // 현재 열려있는 오버레이 추적
 
@@ -246,13 +303,27 @@
     }
 
     // 키워드 검색 + 마킹
-    function searchAndMark(keyword, markerImage) {
+    function clearCategoryMarkers() {
+      categoryGeneration++;
+      categoryMarkers.forEach(marker => marker.setMap(null));
+      categoryMarkers = [];
+      categoryPlaceIds.clear();
+    }
+
+    function searchAndMark(keyword, markerImage, bounds = map.getBounds(), next) {
       const generation = categoryGeneration;
       const ps = new kakao.maps.services.Places(map);
       ps.keywordSearch(keyword, (data, status)=>{
-        if(generation !== categoryGeneration || status!==kakao.maps.services.Status.OK) return;
-        for (let i=0;i<data.length;i++) displayMarker(data[i], markerImage);
-      }, { bounds: map.getBounds() });
+        if (generation !== categoryGeneration) return;
+        if (status === kakao.maps.services.Status.OK) {
+          for (const place of data) {
+            if (place.id && categoryPlaceIds.has(place.id)) continue;
+            if (place.id) categoryPlaceIds.add(place.id);
+            displayMarker(place, markerImage);
+          }
+        }
+        next?.();
+      }, { bounds });
     }
 
     // ===== 브랜드별 검색 함수들 =====
@@ -441,14 +512,19 @@
 
   /* ===== 카테고리 실행 함수들 (원문 유지) ===== */
   function searchConvenienceStoresAndStarbucks(){
-    searchAndMark("GS25", createMarkerImage(GS25ImageUrl));
-    searchAndMark("CU", createMarkerImage(CUImageUrl));
-    searchAndMark("세븐일레븐", createMarkerImage(sevenelevenImageUrl));
-    searchAndMark("이마트24", createMarkerImage(emart24ImageUrl));
-    searchAndMark("미니스톱", createMarkerImage(ministopImageUrl));
-    searchAndMark("스토리웨이", createMarkerImage(storywayImageUrl));
-    searchAndMark("씨스페이스24", createMarkerImage(cspaceImageUrl));
-    // 카페
+    searchConvenienceStores();
+    searchCafes();
+  }
+  function searchConvenienceStores(search = searchAndMark){
+    search("GS25", createMarkerImage(GS25ImageUrl));
+    search("CU", createMarkerImage(CUImageUrl));
+    search("세븐일레븐", createMarkerImage(sevenelevenImageUrl));
+    search("이마트24", createMarkerImage(emart24ImageUrl));
+    search("미니스톱", createMarkerImage(ministopImageUrl));
+    search("스토리웨이", createMarkerImage(storywayImageUrl));
+    search("씨스페이스24", createMarkerImage(cspaceImageUrl));
+  }
+  function searchCafes(){
     searchAndMark("스타벅스", createMarkerImage(starbucksImageUrl));
     searchAndMark("투썸플레이스", createMarkerImage(twosomeImageUrl));
     searchAndMark("빽다방", createMarkerImage(bbaekImageUrl));
@@ -496,62 +572,62 @@
     searchAndMark("스타필드", createMarkerImage(starfieldImageUrl));
     searchAndMark("JDC면세점", createMarkerImage(jdcImageUrl));
   }
-  function searchmartandsuper(){
-    searchAndMark("코스트코", createMarkerImage(costcoImageUrl));
-    searchAndMark("롯데마트", createMarkerImage(lottemartImageUrl));
-    searchAndMark("롯데슈퍼", createMarkerImage(lottesuperImageUrl));
-    searchAndMark("홈플러스 마트", createMarkerImage(homeplusmartImageUrl));
-    searchAndMark("홈플러스 익스프레스", createMarkerImage(homeplusexpressImageUrl));
-    searchAndMark("GS 더 프레시", createMarkerImage(gsthefreshImageUrl));
-    searchAndMark("농협하나로마트", createMarkerImage(hanaromartImageUrl));
-    searchAndMark("초록마을", createMarkerImage(greentownImageUrl));
-    searchAndMark("식자재왕도매마트", createMarkerImage(sigjajaeImageUrl));
-    searchAndMark("고향뜨락", createMarkerImage(gohyangImageUrl));
-    searchAndMark("이마트 에브리데이", createMarkerImage(emarteverydayImageUrl));
+  function searchmartandsuper(search = searchAndMark){
+    search("코스트코", createMarkerImage(costcoImageUrl));
+    search("롯데마트", createMarkerImage(lottemartImageUrl));
+    search("롯데슈퍼", createMarkerImage(lottesuperImageUrl));
+    search("홈플러스 마트", createMarkerImage(homeplusmartImageUrl));
+    search("홈플러스 익스프레스", createMarkerImage(homeplusexpressImageUrl));
+    search("GS 더 프레시", createMarkerImage(gsthefreshImageUrl));
+    search("농협하나로마트", createMarkerImage(hanaromartImageUrl));
+    search("초록마을", createMarkerImage(greentownImageUrl));
+    search("식자재왕도매마트", createMarkerImage(sigjajaeImageUrl));
+    search("고향뜨락", createMarkerImage(gohyangImageUrl));
+    search("이마트 에브리데이", createMarkerImage(emarteverydayImageUrl));
   }
-  function searchjaegwaanddessert(){
-    searchAndMark("파리바게뜨", createMarkerImage(parisbagguetteImageUrl));
-    searchAndMark("파리크라상", createMarkerImage(parisImageUrl));
-    searchAndMark("뚜레주르", createMarkerImage(touslesjoursImageUrl));
-    searchAndMark("베스킨라빈스", createMarkerImage(BRImageUrl));
-    searchAndMark("던킨", createMarkerImage(dunkinImageUrl));
-    searchAndMark("크리스피 크림 도넛", createMarkerImage(krispyImageUrl));
-    searchAndMark("디저트39", createMarkerImage(dessert39ImageUrl));
-    searchAndMark("트리핀", createMarkerImage(trippinImageUrl));
-    searchAndMark("식자재왕도매마트", createMarkerImage(sigjajaeImageUrl));
-    searchAndMark("빚은", createMarkerImage(bizzenImageUrl));
-    searchAndMark("쿠키날", createMarkerImage(cookienalImageUrl));
-    searchAndMark("쇼콜라팔레트", createMarkerImage(cpImageUrl));
+  function searchjaegwaanddessert(search = searchAndMark){
+    search("파리바게뜨", createMarkerImage(parisbagguetteImageUrl));
+    search("파리크라상", createMarkerImage(parisImageUrl));
+    search("뚜레주르", createMarkerImage(touslesjoursImageUrl));
+    search("베스킨라빈스", createMarkerImage(BRImageUrl));
+    search("던킨", createMarkerImage(dunkinImageUrl));
+    search("크리스피 크림 도넛", createMarkerImage(krispyImageUrl));
+    search("디저트39", createMarkerImage(dessert39ImageUrl));
+    search("트리핀", createMarkerImage(trippinImageUrl));
+    search("식자재왕도매마트", createMarkerImage(sigjajaeImageUrl));
+    search("빚은", createMarkerImage(bizzenImageUrl));
+    search("쿠키날", createMarkerImage(cookienalImageUrl));
+    search("쇼콜라팔레트", createMarkerImage(cpImageUrl));
   }
-  function searchrestaurants(){
-    searchAndMark("롯데리아", createMarkerImage(lotteriaImageUrl));
-    searchAndMark("맥도날드", createMarkerImage(mcdonaldsImageUrl));
-    searchAndMark("KFC", createMarkerImage(kfcImageUrl));
-    searchAndMark("쉐이크쉑", createMarkerImage(shakeImageUrl));
-    searchAndMark("라그릴리아", createMarkerImage(lagriliaImageUrl));
-    searchAndMark("피그인더가든", createMarkerImage(piginthegardenImageUrl));
-    searchAndMark("김가네", createMarkerImage(kimkanaeImageUrl));
-    searchAndMark("봉추찜닭", createMarkerImage(bongchuImageUrl));
-    searchAndMark("스트릿", createMarkerImage(streatImageUrl));
-    searchAndMark("퀸즈파크", createMarkerImage(queensparkImageUrl));
-    searchAndMark("베라", createMarkerImage(veraImageUrl));
-    searchAndMark("라뜰리에", createMarkerImage(lateImageUrl));
-    searchAndMark("에그슬럿", createMarkerImage(eggImageUrl));
-    searchAndMark("시티델리", createMarkerImage(citydeliImageUrl));
-    searchAndMark("리나스", createMarkerImage(linasImageUrl));
-    searchAndMark("VIPS", createMarkerImage(vipsImageUrl));
-    searchAndMark("제일제면소", createMarkerImage(jaeilImageUrl));
-    searchAndMark("더플레이스", createMarkerImage(theplaceImageUrl));
-    searchAndMark("더스테이크하우스", createMarkerImage(thesteakhouseImageUrl)); /* 오타 수정 완료 */
-    searchAndMark("더테이스터블", createMarkerImage(thetastableImageUrl));
-    searchAndMark("파파이스", createMarkerImage(papaImageUrl));
-    searchAndMark("신라대학교 미대식당", createMarkerImage(shilaImageUrl));
-    searchAndMark("쿠차라", createMarkerImage(cucharaImageUrl));
-    searchAndMark("아웃백 스테이크하우스", createMarkerImage(outbackImageUrl));
-    searchAndMark("플레이팅", createMarkerImage(pletingImageUrl));
-    searchAndMark("이삭토스트", createMarkerImage(isaacImageUrl));
-    searchAndMark("한솥도시락", createMarkerImage(hansotImageUrl));
-    searchAndMark("파이브가이즈", createMarkerImage(fiveImageUrl));
+  function searchrestaurants(search = searchAndMark){
+    search("롯데리아", createMarkerImage(lotteriaImageUrl));
+    search("맥도날드", createMarkerImage(mcdonaldsImageUrl));
+    search("KFC", createMarkerImage(kfcImageUrl));
+    search("쉐이크쉑", createMarkerImage(shakeImageUrl));
+    search("라그릴리아", createMarkerImage(lagriliaImageUrl));
+    search("피그인더가든", createMarkerImage(piginthegardenImageUrl));
+    search("김가네", createMarkerImage(kimkanaeImageUrl));
+    search("봉추찜닭", createMarkerImage(bongchuImageUrl));
+    search("스트릿", createMarkerImage(streatImageUrl));
+    search("퀸즈파크", createMarkerImage(queensparkImageUrl));
+    search("베라", createMarkerImage(veraImageUrl));
+    search("라뜰리에", createMarkerImage(lateImageUrl));
+    search("에그슬럿", createMarkerImage(eggImageUrl));
+    search("시티델리", createMarkerImage(citydeliImageUrl));
+    search("리나스", createMarkerImage(linasImageUrl));
+    search("VIPS", createMarkerImage(vipsImageUrl));
+    search("제일제면소", createMarkerImage(jaeilImageUrl));
+    search("더플레이스", createMarkerImage(theplaceImageUrl));
+    search("더스테이크하우스", createMarkerImage(thesteakhouseImageUrl)); /* 오타 수정 완료 */
+    search("더테이스터블", createMarkerImage(thetastableImageUrl));
+    search("파파이스", createMarkerImage(papaImageUrl));
+    search("신라대학교 미대식당", createMarkerImage(shilaImageUrl));
+    search("쿠차라", createMarkerImage(cucharaImageUrl));
+    search("아웃백 스테이크하우스", createMarkerImage(outbackImageUrl));
+    search("플레이팅", createMarkerImage(pletingImageUrl));
+    search("이삭토스트", createMarkerImage(isaacImageUrl));
+    search("한솥도시락", createMarkerImage(hansotImageUrl));
+    search("파이브가이즈", createMarkerImage(fiveImageUrl));
   }
   function searchHomeappliances(){
     searchAndMark("이케아", createMarkerImage(ikeaImageUrl));
@@ -629,6 +705,26 @@
 
   <!-- 지도 초기화 (SDK 로드 이후) -->
   <script>
+    function showNearbyMerchants() {
+      clearCategoryMarkers();
+      window.PayKR.setCategorySelection(null);
+      const keywords = new Map();
+      const collect = (keyword, image) => keywords.set(keyword, image);
+      searchConvenienceStores(collect);
+      searchmartandsuper(collect);
+      searchjaegwaanddessert(collect);
+      searchrestaurants(collect);
+
+      // Keep every search in the confirmed viewport and limit concurrent Kakao requests.
+      const bounds = map.getBounds();
+      const pending = keywords.entries();
+      function next() {
+        const entry = pending.next();
+        if (!entry.done) searchAndMark(...entry.value, bounds, next);
+      }
+      for (let i = 0; i < 4; i++) next();
+    }
+
     function initCategories() {
       // 카테고리 버튼 렌더
       const categories = [
@@ -653,9 +749,9 @@
       window.PayKR.renderCategories(categories, (cat) => {
         if (cat.name === '온라인' || cat.name === '문의하기') { cat.action(); return; }
         if (!map) { window.PayKR.status('map.wait'); return; }
-        categoryGeneration++;
-        categoryMarkers.forEach(marker => marker.setMap(null));
-        categoryMarkers = [];
+        explorationGeneration++;
+        useNearbyDefaults = false;
+        clearCategoryMarkers();
         closeAllOverlays();
         selectedPlaceId = null;
         window.PayKR.resetPlace();
@@ -670,22 +766,29 @@
       map = new kakao.maps.Map(container, options);
 
       // 지도 클릭 시 모든 오버레이 닫기
-      kakao.maps.event.addListener(map, 'click', () => { closeAllOverlays(); selectedPlaceId = null; window.PayKR.resetPlace(); });
+      kakao.maps.event.addListener(map, 'click', () => { explorationGeneration++; closeAllOverlays(); selectedPlaceId = null; window.PayKR.resetPlace(); });
+      for (const event of ['dragstart', 'zoom_start']) {
+        kakao.maps.event.addListener(map, event, () => { explorationGeneration++; });
+      }
 
       const locationButton = document.getElementById('location-button');
-      locationButton.addEventListener('click', () => {
+      function locate() {
         if (window.isSecureContext === false) { window.PayKR.status('location.secure'); return; }
         if (!navigator.geolocation) { window.PayKR.status('location.unsupported'); return; }
+        if (locationButton.disabled) return;
+        const generation = explorationGeneration;
         locationButton.disabled = true;
         window.PayKR.status('location.loading');
         const fail = error => {
           locationButton.disabled = false;
+          if (generation !== explorationGeneration) return;
           const reason = { 1: 'location.denied', 3: 'location.timeout' };
           window.PayKR.status(reason[error?.code] || 'location.unavailable');
         };
         try {
           navigator.geolocation.getCurrentPosition(({ coords }) => {
             locationButton.disabled = false;
+            if (generation !== explorationGeneration) return;
             if (!Number.isFinite(coords.latitude) || !Number.isFinite(coords.longitude)) { fail(); return; }
             const position = new kakao.maps.LatLng(coords.latitude, coords.longitude);
             if (currentPositionMarker) currentPositionMarker.setMap(null);
@@ -696,10 +799,13 @@
             });
             map.setCenter(position);
             map.setLevel(3);
-            window.PayKR.status('location.success');
+            if (useNearbyDefaults) showNearbyMerchants();
+            window.PayKR.status(useNearbyDefaults ? 'location.nearby' : 'location.success');
           }, fail, { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 });
         } catch (error) { fail(error); }
-      });
+      }
+      locationButton.addEventListener('click', locate);
+      locate();
 
       const searchInput = document.getElementById('search-input');
       const searchInputMobile = document.getElementById('search-input-mobile');
@@ -739,6 +845,7 @@
       }
 
       function selectSearchPlace(place) {
+        explorationGeneration++;
         const pos = new kakao.maps.LatLng(place.y, place.x);
         map.setCenter(pos);
         map.setLevel(3);
@@ -754,6 +861,9 @@
       function searchPlaces(inputElement) {
         const keyword = inputElement.value.trim();
         if (!keyword) { window.PayKR.status('search.required'); inputElement.focus(); return; }
+        explorationGeneration++;
+        if (useNearbyDefaults) clearCategoryMarkers();
+        useNearbyDefaults = false;
         searchInput.value = searchInputMobile.value = keyword;
         inputElement.blur();
         const generation = ++searchGeneration;

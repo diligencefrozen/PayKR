@@ -123,6 +123,11 @@
     $('filter-panel').hidden = !open;
     document.querySelectorAll('.filter-toggle').forEach(button => button.setAttribute('aria-expanded', String(open)));
   }
+  function setCategorySelection(name) {
+    document.querySelectorAll('[data-category][aria-pressed]').forEach(button => {
+      button.setAttribute('aria-pressed', String(button.dataset.category === name));
+    });
+  }
   function renderCategories(categories, onSelect) {
     const icons = { '전체': 'grid', '생활/가전': 'home', '외식': 'food', '호텔/리조트': 'bed', '백화점/쇼핑': 'bag', '패션/뷰티': 'bag', '편의점&카페': 'coffee' };
     const order = ['전체', '생활/가전', '외식', '호텔/리조트', '백화점/쇼핑', '패션/뷰티'];
@@ -137,7 +142,7 @@
         button.innerHTML = icon(icons[cat.name]);
         const label = document.createElement('span'); translatedText(label, 'category.' + cat.name); button.append(label);
         button.addEventListener('click', () => {
-          if (!navigation) document.querySelectorAll('[data-category][aria-pressed]').forEach(el => el.setAttribute('aria-pressed', String(el.dataset.category === cat.name)));
+          if (!navigation) setCategorySelection(cat.name);
           setFilter(false);
           onSelect(cat);
         });
@@ -177,6 +182,26 @@
   });
   document.querySelectorAll('.filter-toggle').forEach(button => button.addEventListener('click', () => setFilter($('filter-panel').hidden)));
   $('filter-close').addEventListener('click', () => { setFilter(false); document.querySelector(window.innerWidth <= 768 ? '#search-box-mobile .filter-toggle' : '#search-box .filter-toggle').focus(); });
+  const guideButtons = document.querySelectorAll('.guide-buttons button');
+  function showGuide(active) {
+    guideButtons.forEach(button => {
+      const open = button === active;
+      button.setAttribute('aria-expanded', String(open));
+      $(button.getAttribute('aria-controls')).hidden = !open;
+    });
+  }
+  guideButtons.forEach(button => button.addEventListener('click', () => {
+    showGuide(button.getAttribute('aria-expanded') === 'true' ? null : button);
+  }));
+  $('sidebar-guides').addEventListener('keydown', event => {
+    if (event.key !== 'Escape') return;
+    const active = document.querySelector('.guide-buttons [aria-expanded="true"]');
+    if (active) {
+      event.stopPropagation();
+      showGuide(null);
+      active.focus();
+    }
+  });
   document.addEventListener('keydown', event => {
     if (event.key === 'Escape') { setFilter(false); setExpanded(false); if (crate) crate.toggle(false); }
   });
@@ -188,7 +213,7 @@
   window.visualViewport?.addEventListener('resize', layoutControls);
   window.PayKR = {
     placeOverlay: place => placeContent(place, true),
-    selectPlace, resetPlace, resultButton, showResults, renderCategories, status, initChat
+    selectPlace, resetPlace, resultButton, showResults, renderCategories, setCategorySelection, status, initChat
   };
   ['search-box', 'search-box-mobile'].forEach(id => $(id).addEventListener('submit', event => {
     event.preventDefault();

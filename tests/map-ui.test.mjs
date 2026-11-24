@@ -41,7 +41,7 @@ const requests = [], markers = [], crates = [], ready = [];
 let mapCount = 0;
 class Map {
   constructor(container, options) { this.center = options.center; this.level = options.level; mapCount++; }
-  setCenter(center) { this.center = center; } setLevel(level) { this.level = level; } getBounds() { return {}; } relayout() {}
+  setCenter(center) { this.center = center; } setLevel(level) { this.level = level; } getBounds() { return { center: this.center }; } relayout() {}
 }
 class Marker {
   constructor(options) { this.map = options.map; this.position = options.position; markers.push(this); }
@@ -66,7 +66,7 @@ const context = vm.createContext({ document, console, URL, URLSearchParams,
     MarkerImage: class {}, Size: class {}, Point: class {},
     event: { addListener(target, name, fn) { (target.events ||= {})[name] = fn; } },
     load: fn => fn(), services: { Status: { OK: 'OK', ZERO_RESULT: 'ZERO_RESULT' },
-      Places: class { keywordSearch(keyword, callback) { requests.push({ keyword, callback }); } }
+      Places: class { keywordSearch(keyword, callback, options) { requests.push({ keyword, callback, options }); } }
     }
   } }
 });
@@ -81,14 +81,36 @@ context.initMap();
 assert.equal(mapCount, 1, 'SDK initializes the map exactly once');
 assert.equal(ids['mobile-categories'].children.length, 14, 'all existing categories and All remain available');
 const category = name => ids['mobile-categories'].children.find(el => el.dataset.category === name);
+const locate = () => ids['location-button'].fire('click');
+const mapState = () => vm.runInContext('[map.center, map.level, currentPositionMarker]', context);
+assert.equal(gpsRequests.length, 1, 'initialization requests location exactly once');
+assert.equal(requests.length, 0, 'wait for a confirmed location before loading nearby stores');
+locate();
+assert.equal(gpsRequests.length, 1, 'a pending location request is reused');
+gpsRequests.pop().success({ coords: { latitude: 35.16, longitude: 129.06 } });
+assert.equal(requests.length, 4, 'nearby searches start with bounded concurrency');
+const nearbyPlace = { id: 'nearby', place_name: 'GS25', x: '129.06', y: '35.16' };
+for (const request of requests) {
+  assert.equal(request.options.bounds.center, mapState()[0]);
+  if (request.keyword === 'CU') continue; // Still in flight when the user chooses another category.
+  request.callback([nearbyPlace], 'OK');
+}
+const keywords = requests.map(request => request.keyword);
+assert.equal(new Set(keywords).size, keywords.length);
+for (const name of ['GS25', '코스트코', '파리바게뜨', '롯데리아']) assert.ok(keywords.includes(name));
+for (const name of ['스타벅스', '롯데호텔']) assert.ok(!keywords.includes(name));
+assert.equal(vm.runInContext('categoryMarkers.length', context), 1, 'deduplicate places matched by different keywords');
+const pendingNearby = requests.find(request => request.keyword === 'CU');
 category('생활/가전').fire('click');
-const stale = requests[0];
+const stale = requests.at(-1);
 category('외식').fire('click');
 const place = { id: '1', place_name: '<b>테스트 장소</b>', x: '127.93', y: '37.34', address_name: '테스트 주소', category_name: '음식점', phone: '033-123-4567' };
+const markerCount = markers.length;
+pendingNearby.callback([nearbyPlace], 'OK');
 stale.callback([place], 'OK');
-assert.equal(markers.length, 0, 'late results from previous category are discarded');
+assert.equal(markers.length, markerCount, 'late results from nearby and previous category searches are discarded');
 requests.at(-1).callback([place], 'OK');
-markers[0].events.click();
+vm.runInContext('categoryMarkers[0].events.click()', context);
 assert.equal(ids['place-title'].textContent, place.place_name, 'place names render as plain text');
 assert.equal(ids['sheet-toggle'].attrs['aria-expanded'], 'true');
 context.PayKR.initChat(); context.PayKR.initChat();
@@ -138,11 +160,15 @@ for (const id of ['desktop-categories', 'mobile-categories', 'filter-categories'
   assert.equal(all.getAttribute('aria-pressed'), 'true');
 }
 
-assert.equal(gpsRequests.length, 0, 'location access starts with a button click');
-const locate = () => ids['location-button'].fire('click');
-const mapState = () => vm.runInContext('[map.center, map.level, currentPositionMarker]', context);
+const previousCenter = mapState()[0];
+locate();
+vm.runInContext('map.events.dragstart()', context);
+gpsRequests.pop().success({ coords: { latitude: 35.11, longitude: 129.01 } });
+assert.equal(mapState()[0], previousCenter, 'a late location fix does not interrupt manual exploration');
+const requestCount = requests.length;
 locate();
 gpsRequests.pop().success({ coords: { latitude: 37.5, longitude: 127 } });
+assert.equal(requests.length, requestCount, 'manual recenter preserves an explicitly selected category');
 const [center, level, marker] = mapState();
 assert.equal(center.lat, 37.5);
 assert.ok(marker);
@@ -174,4 +200,4 @@ for (const source of [html, online]) {
 }
 assert.equal((online.match(/class="brand" data-category=/g) || []).length, 36);
 assert.equal((online.match(/<button type="button" data-i18n="filter\./g) || []).length, 6);
-console.log('PASS: All searches and selection, click-only geolocation and errors, language precedence and fallback, directory inventory and registration-only ads');
+console.log('PASS: All searches and selection, automatic location and nearby merchants, manual retries and errors, language precedence and fallback, directory inventory and registration-only ads');

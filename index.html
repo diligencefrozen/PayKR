@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ko">    
+<html lang="ko">
 <head>
   <meta charset="utf-8">
   <meta name="google-site-verification" content="c4eTxK6D1wFIOq01h8LLX02-f44HSO5gXqCsqGhr8AE" />
@@ -12,7 +12,7 @@
   <link rel="icon" href="favicon.svg" type="image/svg+xml" />
   <meta name="keyword" content="애플페이,애플 페이,Apple Pay,ApplePay,applepay,애플페이 사용처,애플페이지도,애플페이 지도,애플페이사용처,애플페이 가맹점,애플페이가맹점,애플페이 가맹점 지도,애플페이가맹점지도,애플페이맵,애플페이 맵">
   <link rel="icon" href="https://diligencefrozen.github.io/images/logo.ico" type="image/x-icon" />
-  <link rel="stylesheet" type="text/css" href="main.css?v=20260726.2">
+  <link rel="stylesheet" type="text/css" href="main.css?v=20261124.1">
   <meta name="color-scheme" content="light" />
   <meta name="robots" content="index, follow">
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
@@ -23,8 +23,8 @@
 
   <script type="application/ld+json" src="https://diligencefrozen.github.io/PayKR/structured-data.json"></script>
   <script>document.oncontextmenu = () => false;</script>
-  <script src="i18n.js?v=20260726.2" defer></script>
-  <script src="main.js?v=20260726.2" defer></script>
+  <script src="i18n.js?v=20261124.1" defer></script>
+  <script src="main.js?v=20261124.1" defer></script>
 
   <style>
     html, body, #map { height:100%; margin:0; padding:0; }
@@ -62,47 +62,20 @@
   </script>
 </head>
 
-<body
-  style="user-select:none"
-  oncontextmenu="return false"
-  onselectstart="return false"
-  ondragstart="return false">
+<body>
 
   <div id="map"></div>
-
-  <nav class="app-mode-toggle is-desktop" aria-label="메인 화면 전환">
-    <div class="app-mode-toggle-surface">
-      <a class="app-mode-toggle-button is-map is-active" href="./index.html" aria-label="맵" aria-current="page">
-        <span class="app-mode-toggle-button-icon-wrap" aria-hidden="true">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M14.106 5.553a2 2 0 0 0 1.788 0l3.659-1.83A1 1 0 0 1 21 4.619v12.764a1 1 0 0 1-.553.894l-4.553 2.277a2 2 0 0 1-1.788 0l-4.212-2.106a2 2 0 0 0-1.788 0l-3.659 1.83A1 1 0 0 1 3 19.381V6.618a1 1 0 0 1 .553-.894l4.553-2.277a2 2 0 0 1 1.788 0z"></path>
-            <path d="M15 5.764v15"></path>
-            <path d="M9 3.236v15"></path>
-          </svg>
-        </span>
-        <span class="app-mode-toggle-button-label">맵</span>
-      </a>
-      <a class="app-mode-toggle-button is-community" href="forum/" aria-label="커뮤니티">
-        <span class="app-mode-toggle-button-icon-wrap" aria-hidden="true">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M2.992 16.342a2 2 0 0 1 .094 1.167l-1.065 3.29a1 1 0 0 0 1.236 1.168l3.413-.998a2 2 0 0 1 1.099.092 10 10 0 1 0-4.777-4.719"></path>
-          </svg>
-        </span>
-        <span class="app-mode-toggle-button-label">커뮤니티</span>
-      </a>
-    </div>
-  </nav>
 
   <!-- 데스크탑용 사이드바 -->
   <div id="sidebar">
     <div id="sidebar-header">
-      <div id="search-box">
-        <span class="search-icon">🔍</span>
-        <input type="text" id="search-input" data-i18n="searchPlaceholder" placeholder="장소를 검색하세요.">
-        <button id="search-submit" type="button">검색</button>
-      </div>
+      <form id="search-box" role="search">
+        <span class="search-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="7.5"/><path d="m16 16 5 5"/></svg></span>
+        <input type="search" id="search-input" aria-label="장소, 주소 검색" enterkeyhint="search" autocomplete="off" data-i18n="searchPlaceholder" placeholder="장소, 주소 검색...">
+        <button class="filter-toggle" type="button" aria-label="카테고리 필터 열기" aria-expanded="false" aria-controls="filter-panel"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/><circle cx="8" cy="6" r="2"/><circle cx="16" cy="12" r="2"/><circle cx="8" cy="18" r="2"/></svg></button>
+      </form>
     </div>
-    
+
     <div id="sidebar-content">
       <!-- 검색 결과 리스트 -->
       <div id="search-results">
@@ -112,7 +85,7 @@
         </div>
         <div id="search-results-list"></div>
       </div>
-      
+
       <!-- 기본 안내 문구 -->
       <div id="sidebar-welcome">
         <div id="apple-pay-notice" style="position: relative; right: auto; bottom: auto; margin-top: 20px;">
@@ -129,32 +102,48 @@
       </div>
     </div>
   </div>
-  
+
   <!-- 데스크탑용 카테고리 (검색창 우측) -->
   <div class="desktop-category-wrapper">
-    <!-- 현재위치 버튼 -->
-    <button id="home-button-desktop" class="home-button-desktop" title="현재 위치로 이동">🏠</button>
-    
     <div class="nav-control-categories" id="desktop-categories">
       <!-- 카테고리 버튼들이 JS로 삽입됨 -->
     </div>
   </div>
 
   <!-- 모바일용 검색박스 -->
-  <div id="search-box-mobile" style="display: none;">
-    <span class="search-icon">🔍</span>
-    <input type="text" id="search-input-mobile" data-i18n="searchPlaceholder" placeholder="장소를 검색하세요.">
-    <button id="search-submit-mobile" type="button">검색</button>
-  </div>
+  <form id="search-box-mobile" role="search">
+    <span class="search-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="7.5"/><path d="m16 16 5 5"/></svg></span>
+    <input type="search" id="search-input-mobile" aria-label="장소, 주소 검색" enterkeyhint="search" autocomplete="off" data-i18n="searchPlaceholder" placeholder="장소, 주소 검색...">
+    <button class="filter-toggle" type="button" aria-label="카테고리 필터 열기" aria-expanded="false" aria-controls="filter-panel"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/><circle cx="8" cy="6" r="2"/><circle cx="16" cy="12" r="2"/><circle cx="8" cy="18" r="2"/></svg></button>
+  </form>
 
   <!-- 모바일용 카테고리 -->
-  <div class="nav-control-categories" id="mobile-categories" style="display: none;">
+  <div class="nav-control-categories" id="mobile-categories">
     <!-- 카테고리 버튼들이 JS로 삽입됨 -->
   </div>
 
-  <div id="apple-pay-notice-mobile" style="display: none;">
-    <img src="https://github.com/diligencefrozen/PayKR/blob/main/logo/applepay.png?raw=true" width="30" height="15"> 스티커를 꼭 확인하세요!
-  </div>
+  <section id="filter-panel" aria-label="카테고리 필터" hidden>
+    <div class="panel-heading"><h2>카테고리</h2><button id="filter-close" class="icon-button" aria-label="필터 닫기">×</button></div>
+    <div id="filter-categories"></div>
+  </section>
+  <button id="location-button" class="icon-button" aria-label="현재 위치로 이동" title="현재 위치로 이동">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="7"/><circle cx="12" cy="12" r="3"/><path d="M12 1v4m0 14v4M1 12h4m14 0h4"/></svg>
+  </button>
+  <section id="place-sheet" aria-label="장소 정보">
+    <button id="sheet-toggle" aria-label="장소 패널 펼치기" aria-expanded="false" aria-controls="sheet-content"><span></span></button>
+    <div class="sheet-summary">
+      <svg class="pin-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22S3 14 3 9a9 9 0 1 1 18 0c0 5-9 13-9 13Z"/><circle cx="12" cy="9" r="3"/></svg>
+      <div aria-live="polite"><h1 id="place-title">이 지역의 장소 찾기</h1><p id="place-subtitle">지도에서 장소를 선택하면 상세 정보가 표시됩니다.</p></div>
+      <button id="place-clear" class="icon-button" aria-label="장소 선택 해제" hidden>×</button>
+    </div>
+    <div id="sheet-content" hidden>
+      <div id="place-details"></div>
+      <div id="mobile-results" aria-label="장소 검색 결과"></div>
+      <p class="payment-note">결제 전 매장의 Apple Pay 스티커를 꼭 확인하세요.</p>
+    </div>
+  </section>
+  <p id="map-status" role="status" hidden></p>
+  <a id="chat-fallback" href="https://discord.com/channels/1574706452671504474/1574706454353412239" target="_blank" rel="noopener noreferrer" hidden>Discord에서 채팅 열기</a>
 
   <!-- 패치노트 -->
   <div id="patch-notes" class="is-active">
@@ -225,7 +214,7 @@
     const noticeToggle = document.getElementById('notice-toggle');
     const noticeContent = document.getElementById('notice-content');
     const closeNotice = document.getElementById('close-notice');
-    
+
     function setInformationPanel(panel) {
       const showPatchNotes = panel === 'patch-notes';
       const showNotice = panel === 'notice';
@@ -253,6 +242,9 @@
   <script>
     // 전역 보관 (중복 선언 금지)
     let map, currentPositionMarker = null;
+    let categoryMarkers = [];
+    let categoryGeneration = 0;
+    let selectedPlaceId = null;
     let currentOverlay = null; // 현재 열려있는 오버레이 추적
 
     // 공통 마커 생성
@@ -270,30 +262,36 @@
       }
     }
 
+    function escapeHTML(value) {
+      return String(value || '').replace(/[&<>"']/g, ch => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[ch]));
+    }
+
     // 단일 displayMarker (중복 제거)
     function displayMarker(place, markerImage) {
       const pos = new kakao.maps.LatLng(place.y, place.x);
       const marker = new kakao.maps.Marker({ position: pos, image: markerImage });
       marker.setMap(map);
 
+      categoryMarkers.push(marker);
+
       // 카카오맵 링크 생성
       const kakaoMapUrl = `https://map.kakao.com/link/to/${encodeURIComponent(place.place_name)},${place.y},${place.x}`;
-      const kakaoPlaceUrl = place.place_url || `https://place.map.kakao.com/${place.id}`;
+      const kakaoPlaceUrl = `https://place.map.kakao.com/${encodeURIComponent(place.id)}`;
 
       const content =
         '<div class="infoWindow">' +
-        '<strong> ' + place.place_name + '</strong>' +
-        '<div class="info-address">' + (place.address_name || place.road_address_name || '주소 정보 없음') + '</div>' +
+        '<strong> ' + escapeHTML(place.place_name) + '</strong>' +
+        '<div class="info-address">' + escapeHTML(place.address_name || place.road_address_name || '주소 정보 없음') + '</div>' +
         '<div class="info-actions">' +
-        (place.phone ? '<a href="tel:' + place.phone + '" class="info-phone"> 전화</a>' : '') +
+        (place.phone ? '<a href="tel:' + escapeHTML(place.phone) + '" class="info-phone"> 전화</a>' : '') +
         '<a href="' + kakaoPlaceUrl + '" target="_blank" rel="noopener noreferrer" class="info-review"> 리뷰</a>' +
         '<a href="' + kakaoMapUrl + '" target="_blank" rel="noopener noreferrer" class="info-navigate"> 길찾기</a>' +
         '</div>' +
         '</div>';
-      const overlay = new kakao.maps.CustomOverlay({ 
-        position: pos, 
-        content, 
-        xAnchor:.5, 
+      const overlay = new kakao.maps.CustomOverlay({
+        position: pos,
+        content,
+        xAnchor:.5,
         yAnchor:1.15,
         clickable: true
       });
@@ -313,7 +311,7 @@
           const overlayElement = document.querySelector('.infoWindow');
           if (overlayElement && !overlayElement.dataset.listenerAdded) {
             overlayElement.dataset.listenerAdded = 'true';
-            
+
             overlayElement.addEventListener('mouseenter', () => {
               isOverOverlay = true;
               if (hideTimeout) {
@@ -321,7 +319,7 @@
                 hideTimeout = null;
               }
             });
-            
+
             overlayElement.addEventListener('mouseleave', () => {
               isOverOverlay = false;
               hideTimeout = setTimeout(() => {
@@ -335,44 +333,33 @@
         }, 10);
       }
 
-      // 데스크톱: hover 이벤트
-      kakao.maps.event.addListener(marker, 'mouseover', ()=> {
-        isOverMarker = true;
-        if (hideTimeout) {
-          clearTimeout(hideTimeout);
-          hideTimeout = null;
-        }
-        showOverlay();
+      kakao.maps.event.addListener(marker, 'mouseover', () => {
+        if (window.matchMedia('(hover: hover)').matches) { isOverMarker = true; showOverlay(); }
       });
-
-      kakao.maps.event.addListener(marker, 'mouseout', ()=> {
+      kakao.maps.event.addListener(marker, 'mouseout', () => {
         isOverMarker = false;
         hideTimeout = setTimeout(() => {
-          if (!isOverMarker && !isOverOverlay) {
-            overlay.setMap(null);
-            if (currentOverlay === overlay) currentOverlay = null;
-          }
-        }, 500);
+          if (!isOverOverlay) { overlay.setMap(null); if (currentOverlay === overlay) currentOverlay = null; }
+        }, 700);
       });
-      
-      // 모바일: click 이벤트 (토글)
-      kakao.maps.event.addListener(marker, 'click', ()=> {
-        if (overlay.getMap()) {
-          // 이미 열려있으면 닫기
-          overlay.setMap(null);
-          if (currentOverlay === overlay) currentOverlay = null;
+      kakao.maps.event.addListener(marker, 'click', () => {
+        closeAllOverlays();
+        if (selectedPlaceId === place.id) {
+          selectedPlaceId = null;
+          window.PayKR.resetPlace();
         } else {
-          // 다른 오버레이 닫고 새로 열기
-          showOverlay();
+          selectedPlaceId = place.id;
+          window.PayKR.selectPlace(place);
         }
       });
     }
 
     // 키워드 검색 + 마킹
     function searchAndMark(keyword, markerImage) {
+      const generation = categoryGeneration;
       const ps = new kakao.maps.services.Places(map);
       ps.keywordSearch(keyword, (data, status)=>{
-        if(status!==kakao.maps.services.Status.OK) return;
+        if(generation !== categoryGeneration || status!==kakao.maps.services.Status.OK) return;
         for (let i=0;i<data.length;i++) displayMarker(data[i], markerImage);
       }, { bounds: map.getBounds() });
     }
@@ -562,7 +549,7 @@
   var sungmunanImageUrl="https://github.com/diligencefrozen/PayKR/blob/main/logo/leisure.png?raw=true";
 
   /* ===== 카테고리 실행 함수들 (원문 유지) ===== */
-  function searchConvenienceStoresAndStarbucks(){ 
+  function searchConvenienceStoresAndStarbucks(){
     searchAndMark("GS25", createMarkerImage(GS25ImageUrl));
     searchAndMark("CU", createMarkerImage(CUImageUrl));
     searchAndMark("세븐일레븐", createMarkerImage(sevenelevenImageUrl));
@@ -599,7 +586,7 @@
     searchAndMark("하이오커피", createMarkerImage(hioImageUrl));
     searchAndMark("카페봄봄", createMarkerImage(cafebombomImageUrl));
   }
-  function searchDepartmentStoresandShoppingMalls(){ 
+  function searchDepartmentStoresandShoppingMalls(){
     searchAndMark("롯데백화점", createMarkerImage(lottedepartmentStoreImageUrl));
     searchAndMark("롯데아울렛", createMarkerImage(lotteoutletImageUrl));
     searchAndMark("롯데몰", createMarkerImage(lottemallImageUrl));
@@ -618,7 +605,7 @@
     searchAndMark("스타필드", createMarkerImage(starfieldImageUrl));
     searchAndMark("JDC면세점", createMarkerImage(jdcImageUrl));
   }
-  function searchmartandsuper(){ 
+  function searchmartandsuper(){
     searchAndMark("코스트코", createMarkerImage(costcoImageUrl));
     searchAndMark("롯데마트", createMarkerImage(lottemartImageUrl));
     searchAndMark("롯데슈퍼", createMarkerImage(lottesuperImageUrl));
@@ -631,7 +618,7 @@
     searchAndMark("고향뜨락", createMarkerImage(gohyangImageUrl));
     searchAndMark("이마트 에브리데이", createMarkerImage(emarteverydayImageUrl));
   }
-  function searchjaegwaanddessert(){ 
+  function searchjaegwaanddessert(){
     searchAndMark("파리바게뜨", createMarkerImage(parisbagguetteImageUrl));
     searchAndMark("파리크라상", createMarkerImage(parisImageUrl));
     searchAndMark("뚜레주르", createMarkerImage(touslesjoursImageUrl));
@@ -645,7 +632,7 @@
     searchAndMark("쿠키날", createMarkerImage(cookienalImageUrl));
     searchAndMark("쇼콜라팔레트", createMarkerImage(cpImageUrl));
   }
-  function searchrestaurants(){ 
+  function searchrestaurants(){
     searchAndMark("롯데리아", createMarkerImage(lotteriaImageUrl));
     searchAndMark("맥도날드", createMarkerImage(mcdonaldsImageUrl));
     searchAndMark("KFC", createMarkerImage(kfcImageUrl));
@@ -675,7 +662,7 @@
     searchAndMark("한솥도시락", createMarkerImage(hansotImageUrl));
     searchAndMark("파이브가이즈", createMarkerImage(fiveImageUrl));
   }
-  function searchHomeappliances(){ 
+  function searchHomeappliances(){
     searchAndMark("이케아", createMarkerImage(ikeaImageUrl));
     searchAndMark("다이소", createMarkerImage(daisoImageUrl));
     searchAndMark("롯데하이마트", createMarkerImage(lottehimartImageUrl));
@@ -690,7 +677,7 @@
     searchAndMark("프린트카페", createMarkerImage(printImageUrl));
     searchAndMark("에이스침대", createMarkerImage(acebedImageUrl));
   }
-  function searchresortandhotel(){ 
+  function searchresortandhotel(){
     searchAndMark("해비치호텔앤드 리조트", createMarkerImage(haevichiImageUrl));
     searchAndMark("롯데호텔", createMarkerImage(lottehotelImageUrl));
     searchAndMark("호텔신라", createMarkerImage(hotelshillaImageUrl));
@@ -719,7 +706,7 @@
     searchAndMark("세이지우드", createMarkerImage(sageImageUrl));
     searchAndMark("페어몬트 앰배서더 서울", createMarkerImage(seoul2ImageUrl));
   }
-  function searchfasion(){ 
+  function searchfasion(){
     searchAndMark("올리브영", createMarkerImage(oliveImageUrl));
     searchAndMark("무신사", createMarkerImage(musinsaImageUrl));
     searchAndMark("이니스프리", createMarkerImage(innisImageUrl));
@@ -727,7 +714,7 @@
     searchAndMark("엠플레이 그라운드", createMarkerImage(mplayImageUrl));
   }
   function searchgasstation(){ searchAndMark("GS칼텍스", createMarkerImage(GSImageUrl)); searchAndMark("E1", createMarkerImage(E1ImageUrl)); }
-  function searchmovieandbooks(){ 
+  function searchmovieandbooks(){
     searchAndMark("롯데시네마", createMarkerImage(lottecinemaImageUrl));
     searchAndMark("교보문구", createMarkerImage(kyoboImageUrl));
     searchAndMark("교보핫트랙스", createMarkerImage(kyobohotImageUrl));
@@ -735,7 +722,7 @@
     searchAndMark("알라딘 중고서점", createMarkerImage(aladinImageUrl));
     searchAndMark("종로서적", createMarkerImage(jongnoImageUrl));
   }
-  function searchleisure(){ 
+  function searchleisure(){
     searchAndMark("서울랜드", createMarkerImage(seoullandImageUrl));
     searchAndMark("아쿠아플라넷", createMarkerImage(aquaImageUrl));
     searchAndMark("설악 워터피아", createMarkerImage(waterpiaImageUrl));
@@ -751,13 +738,48 @@
 
   <!-- 지도 초기화 (SDK 로드 이후) -->
   <script>
+    function initCategories() {
+      // 카테고리 버튼 렌더
+      const categories = [
+        { name:'편의점&카페', emoji:'편의점/카페', action: searchConvenienceStoresAndStarbucks },
+        { name:'백화점/쇼핑', emoji:'백화점/쇼핑', action: searchDepartmentStoresandShoppingMalls },
+        { name:'마트/슈퍼', emoji:'마트/슈퍼', action: searchmartandsuper },
+        { name:'제과/디저트', emoji:'제과/디저트', action: searchjaegwaanddessert },
+        { name:'생활/가전', emoji:'생활/가전', action: searchHomeappliances },
+        { name:'외식', emoji:'외식', action: searchrestaurants },
+        { name:'호텔/리조트', emoji:'호텔/리조트', action: searchresortandhotel },
+        { name:'패션/뷰티', emoji:'패션/뷰티', action: searchfasion },
+        { name:'주유/충전', emoji:'주유/충전', action: searchgasstation },
+        { name:'영화/도서', emoji:'영화/도서', action: searchmovieandbooks },
+        { name:'레저/여행', emoji:'레저/여행', action: searchleisure },
+        { name:'온라인', emoji:'온라인', action: searchonline },
+        { name:'문의하기', emoji:'문의하기', action: searchcontact },
+      ];
+
+      const mapCategories = categories.slice(0, -2);
+      categories.unshift({ name: '전체', action: () => mapCategories.forEach(cat => cat.action()) });
+      // Keep every existing merchant category; one selection is shared by all controls.
+      window.PayKR.renderCategories(categories, (cat) => {
+        if (cat.name === '온라인' || cat.name === '문의하기') { cat.action(); return; }
+        if (!map) { window.PayKR.status('지도를 불러온 뒤 다시 시도해주세요.'); return; }
+        categoryGeneration++;
+        categoryMarkers.forEach(marker => marker.setMap(null));
+        categoryMarkers = [];
+        closeAllOverlays();
+        selectedPlaceId = null;
+        window.PayKR.resetPlace();
+        cat.action();
+      });
+    }
+
     function initMap() {
+      if (map) return;
       const container = document.getElementById("map");
       const options = { center: new kakao.maps.LatLng(37.34487430629196, 127.93071437137233), level: 3 };
       map = new kakao.maps.Map(container, options);
 
       // 지도 클릭 시 모든 오버레이 닫기
-      kakao.maps.event.addListener(map, 'click', closeAllOverlays);
+      kakao.maps.event.addListener(map, 'click', () => { closeAllOverlays(); selectedPlaceId = null; window.PayKR.resetPlace(); });
 
       // 현재위치 이동 함수: 1순위 GPS / 2순위 IP 기반 위치 fallback
       function moveToCurrentLocation(lat, lng, source = 'gps') {
@@ -847,214 +869,93 @@
         }
       }
 
-      // 모바일 홈(현재위치) 버튼
-      const home = document.createElement("div");
-      home.innerHTML = "🏠";
-      home.style.width="30px"; home.style.height="30px"; home.style.lineHeight="30px";
-      home.style.textAlign="center"; home.className="nav-control";
-      container.appendChild(home);
-      home.addEventListener("click", goToCurrentLocation);
-      
-      // 데스크탑 홈 버튼
-      const homeDesktop = document.getElementById('home-button-desktop');
-      if(homeDesktop) {
-        homeDesktop.addEventListener('click', goToCurrentLocation);
-      }
+      document.getElementById('location-button').addEventListener('click', goToCurrentLocation);
 
-      // 카테고리 버튼 렌더
-      const categories = [
-        { name:'편의점&카페', emoji:'편의점/카페', action: searchConvenienceStoresAndStarbucks },
-        { name:'백화점/쇼핑', emoji:'백화점/쇼핑', action: searchDepartmentStoresandShoppingMalls },
-        { name:'마트/슈퍼', emoji:'마트/슈퍼', action: searchmartandsuper },
-        { name:'제과/디저트', emoji:'제과/디저트', action: searchjaegwaanddessert },
-        { name:'생활/가전', emoji:'생활/가전', action: searchHomeappliances },
-        { name:'외식', emoji:'외식', action: searchrestaurants },
-        { name:'호텔/리조트', emoji:'호텔/리조트', action: searchresortandhotel },
-        { name:'패션/뷰티', emoji:'패션/뷰티', action: searchfasion },
-        { name:'주유/충전', emoji:'주유/충전', action: searchgasstation },
-        { name:'영화/도서', emoji:'영화/도서', action: searchmovieandbooks },
-        { name:'레저/여행', emoji:'레저/여행', action: searchleisure },
-        { name:'온라인', emoji:'온라인', action: searchonline },
-        { name:'문의하기', emoji:'문의하기', action: searchcontact },
-      ];
-      
-      // 데스크탑과 모바일 모두에 카테고리 추가
-      const desktopContainer = document.getElementById('desktop-categories');
-      const mobileContainer = document.getElementById('mobile-categories');
-      
-      categories.forEach(cat=>{
-        // 데스크탑용
-        const btnDesktop = document.createElement('button');
-        btnDesktop.innerHTML = cat.emoji; 
-        btnDesktop.title = cat.name;
-        btnDesktop.addEventListener('click', ()=> setTimeout(cat.action, 500));
-        if(desktopContainer) desktopContainer.appendChild(btnDesktop);
-        
-        // 모바일용
-        const btnMobile = document.createElement('button');
-        btnMobile.innerHTML = cat.emoji; 
-        btnMobile.title = cat.name;
-        btnMobile.addEventListener('click', ()=> setTimeout(cat.action, 500));
-        if(mobileContainer) mobileContainer.appendChild(btnMobile);
-      });
-
-      // 검색 연결 (데스크탑)
-      const searchBtn = document.getElementById('search-submit');
       const searchInput = document.getElementById('search-input');
-      
-      // 검색 연결 (모바일)
-      const searchBtnMobile = document.getElementById('search-submit-mobile');
       const searchInputMobile = document.getElementById('search-input-mobile');
-      
+      let searchGeneration = 0;
       let searchMarker = null;
-      
+
       // 검색 결과를 사이드바에 표시하는 함수
       function displaySearchResults(data, keyword) {
+        window.PayKR.showResults(data, selectSearchPlace);
         const resultsList = document.getElementById('search-results-list');
         const resultsHeader = document.getElementById('search-results-header');
         const resultsTitle = document.getElementById('search-results-title');
         const resultsCount = document.getElementById('search-results-count');
         const sidebarWelcome = document.getElementById('sidebar-welcome');
-        
+
         // 환영 메시지 숨기기
         if(sidebarWelcome) sidebarWelcome.style.display = 'none';
-        
+
         // 헤더 표시
         resultsHeader.style.display = 'block';
         resultsTitle.textContent = `"${keyword}" 검색 결과`;
         resultsCount.textContent = `${data.length}개의 장소를 찾았습니다`;
-        
+
         // 기존 결과 초기화
         resultsList.innerHTML = '';
-        
+
         // 결과 리스트 생성
         data.forEach((place, index) => {
-          const item = document.createElement('div');
-          item.className = 'search-result-item';
-          
-          const distance = place.distance ? `${place.distance}m` : '';
-          
-          item.innerHTML = `
-            <div class="result-number">${index + 1}</div>
-            <div class="result-info">
-              <h4 class="result-name">${place.place_name}</h4>
-              <p class="result-address">${place.address_name || place.road_address_name || ''}</p>
-              ${place.phone ? `<p class="result-phone">📞 ${place.phone}</p>` : ''}
-              ${distance ? `<p class="result-distance">📍 ${distance}</p>` : ''}
-            </div>
-          `;
-          
-          // 클릭 이벤트
+          const item = window.PayKR.resultButton(place, index);
           item.addEventListener('click', () => {
-            const pos = new kakao.maps.LatLng(place.y, place.x);
-            map.setCenter(pos);
-            map.setLevel(3);
-            
-            // 기존 검색 마커 제거
-            if(searchMarker) searchMarker.setMap(null);
-            
-            // 새 마커 생성
-            searchMarker = new kakao.maps.Marker({
-              position: pos,
-              image: createMarkerImage('https://github.com/diligencefrozen/PayKR/blob/main/logo/marker.png?raw=true')
-            });
-            searchMarker.setMap(map);
-            
-            // 리스트 아이템 활성화 표시
+            selectSearchPlace(place);
             document.querySelectorAll('.search-result-item').forEach(el => el.classList.remove('active'));
             item.classList.add('active');
           });
-          
           resultsList.appendChild(item);
         });
       }
-      
-      function searchPlaces(inputElement){
+
+      function selectSearchPlace(place) {
+        const pos = new kakao.maps.LatLng(place.y, place.x);
+        map.setCenter(pos);
+        map.setLevel(3);
+        if (searchMarker) searchMarker.setMap(null);
+        searchMarker = new kakao.maps.Marker({ position: pos, map,
+          image: createMarkerImage('logo/marker.png') });
+        kakao.maps.event.addListener(searchMarker, 'click', () => window.PayKR.selectPlace(place));
+        closeAllOverlays();
+        selectedPlaceId = place.id;
+        window.PayKR.selectPlace(place);
+      }
+
+      function searchPlaces(inputElement) {
         const keyword = inputElement.value.trim();
-        if(!keyword){ alert('키워드를 입력해주세요.'); return; }
-        if(searchMarker) searchMarker.setMap(null);
+        if (!keyword) { inputElement.focus(); return; }
+        searchInput.value = searchInputMobile.value = keyword;
+        inputElement.blur();
+        const generation = ++searchGeneration;
         const places = new kakao.maps.services.Places(map);
-        places.keywordSearch(keyword, (data, status)=>{
-          if(status===kakao.maps.services.Status.OK){
-            // 첫 번째 결과로 지도 이동
-            const p = data[0];
-            const pos = new kakao.maps.LatLng(p.y, p.x);
-            map.setCenter(pos);
-            map.setLevel(5); // 약간 줌 아웃해서 주변 결과도 보이게
-            
-            // 검색 결과를 사이드바에 표시
+        places.keywordSearch(keyword, (data, status) => {
+          if (generation !== searchGeneration) return;
+          if (status === kakao.maps.services.Status.OK) {
+            selectSearchPlace(data[0]);
             displaySearchResults(data, keyword);
-            
-            // 첫 번째 결과 마커 표시
-            searchMarker = new kakao.maps.Marker({
-              position: pos,
-              image: createMarkerImage('https://github.com/diligencefrozen/PayKR/blob/main/logo/marker.png?raw=true')
-            });
-            searchMarker.setMap(map);
-          }else if(status===kakao.maps.services.Status.ZERO_RESULT){
-            alert('검색 결과가 없습니다.');
-          }else{
-            alert('검색 결과를 불러오던 중 오류가 발생했습니다.');
+          } else {
+            window.PayKR.status(status === kakao.maps.services.Status.ZERO_RESULT
+              ? '검색 결과가 없습니다.' : '검색 결과를 불러오지 못했습니다. 다시 시도해주세요.');
           }
         });
       }
-      
-      if(searchBtn) {
-        searchBtn.addEventListener('click', ()=>searchPlaces(searchInput));
-        searchInput.addEventListener('keydown', e=>{ if(e.key==='Enter') searchPlaces(searchInput); });
-      }
-      
-      if(searchBtnMobile) {
-        searchBtnMobile.addEventListener('click', ()=>searchPlaces(searchInputMobile));
-        searchInputMobile.addEventListener('keydown', e=>{ if(e.key==='Enter') searchPlaces(searchInputMobile); });
-      }
-      
-      // 반응형 처리
-      function handleResponsive() {
-        const isMobile = window.innerWidth <= 768;
-        
-        // 사이드바 표시/숨김
-        const sidebar = document.getElementById('sidebar');
-        if(sidebar) sidebar.style.display = isMobile ? 'none' : 'flex';
-        
-        // 데스크탑 카테고리 래퍼 표시/숨김
-        const desktopWrapper = document.querySelector('.desktop-category-wrapper');
-        if(desktopWrapper) desktopWrapper.style.display = isMobile ? 'none' : 'flex';
-        
-        // 모바일 요소들 표시/숨김
-        const searchBoxMobile = document.getElementById('search-box-mobile');
-        const mobileCats = document.getElementById('mobile-categories');
-        const appleNotice = document.getElementById('apple-pay-notice-mobile');
-        
-        if(searchBoxMobile) searchBoxMobile.style.display = isMobile ? 'flex' : 'none';
-        if(mobileCats) mobileCats.style.display = isMobile ? 'flex' : 'none';
-        if(appleNotice) appleNotice.style.display = isMobile ? 'flex' : 'none';
-      }
-      
-      handleResponsive();
-      window.addEventListener('resize', handleResponsive);
-      
-      // 데스크탑 사이드바 호버 효과로 지도와 카테고리 위치 조정
-      if(window.innerWidth > 768) {
-        const sidebar = document.getElementById('sidebar');
-        
-        if(sidebar) {
-          sidebar.addEventListener('mouseenter', () => {
-            if(map) map.relayout();
-          });
-          
-          sidebar.addEventListener('mouseleave', () => {
-            if(map) map.relayout();
-          });
-        }
-      }
+      document.getElementById('search-box').addEventListener('submit', e => { e.preventDefault(); searchPlaces(searchInput); });
+      document.getElementById('search-box-mobile').addEventListener('submit', e => { e.preventDefault(); searchPlaces(searchInputMobile); });
 
       // 창 크기 변경 시 relayout
       window.addEventListener('resize', ()=>{ try{ map && map.relayout(); }catch(_){} });
     }
 
     // SDK 준비 후 실행
-    window.addEventListener('DOMContentLoaded', ()=> kakao.maps.load(initMap));
+    window.addEventListener('DOMContentLoaded', () => {
+      initCategories();
+      if (window.kakao && kakao.maps) kakao.maps.load(initMap);
+      else window.PayKR.status('지도를 불러오지 못했습니다. 네트워크 연결을 확인한 뒤 새로고침해주세요.');
+    });
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/@widgetbot/crate@3" async defer onerror="document.getElementById('chat-fallback').hidden = false">
+    if (window.PayKR) window.PayKR.initChat();
+    else window.addEventListener('paykr:ready', () => window.PayKR.initChat(), { once: true });
   </script>
 </body>
 </html>

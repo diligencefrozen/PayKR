@@ -1,6 +1,6 @@
 const I18N = {
   ko: {
-    searchPlaceholder:    "장소를 검색하세요.",
+    searchPlaceholder:    "장소, 주소 검색...",
     patchNotesToggle:     "패치노트",
     noticeToggle:         "필독사항",
     noKeywordAlert:       "키워드를 입력해주세요.",
@@ -8,7 +8,7 @@ const I18N = {
     errorAlert:           "검색 중 오류가 발생했습니다."
   },
   en: {
-    searchPlaceholder:    "Search for a place…",
+    searchPlaceholder:    "Search places, addresses…",
     patchNotesToggle:     "Release Notes",
     noticeToggle:         "Notice",
     noKeywordAlert:       "Please enter a keyword.",
@@ -22,7 +22,7 @@ function applyI18n() {
   // 쿼리 파라미터에 lang=en 이 있으면 강제 사용
   const params = new URLSearchParams(location.search);
   const forced = params.get('lang');
-  const lang = navigator.language.toLowerCase().startsWith("en") ? "en" : "ko";
+  const lang = forced === 'en' || forced === 'ko' ? forced : navigator.language.toLowerCase().startsWith("en") ? "en" : "ko";
   document.querySelectorAll("[data-i18n]").forEach(el => {
     const key = el.dataset.i18n;
     const txt = I18N[lang][key] || "";

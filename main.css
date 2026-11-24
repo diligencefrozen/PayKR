@@ -47,8 +47,10 @@ input::placeholder { color: var(--subtext, #828898); }
 .filter-toggle, .icon-button { border: 0; background: var(--surface, white); display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; width: 44px; height: 44px; border-radius: 50%; }
 .filter-toggle[aria-expanded=true] { background: var(--tint, #edf3fc); color: var(--accent, #135a9e); }
 .desktop-category-wrapper { position: fixed; top: 20px; left: 382px; right: 16px; z-index: 10; }
-.nav-control-categories { display: flex; gap: 8px; overflow-x: auto; overscroll-behavior-x: contain; scrollbar-width: none; padding: 4px 2px 10px; }
-.nav-control-categories::-webkit-scrollbar { display: none; }
+.nav-control-categories { display: flex; gap: 8px; overflow-x: auto; overscroll-behavior-x: contain; padding: 4px 2px 10px; }
+#desktop-categories { scrollbar-color: var(--subtext, #66758b) var(--surface, #f2f4f7); }
+#mobile-categories { scrollbar-width: none; }
+#mobile-categories::-webkit-scrollbar { display: none; }
 .nav-control-categories button, #filter-categories button { display: inline-flex; align-items: center; justify-content: center; gap: 7px; flex-shrink: 0; min-height: 44px; padding: 10px 16px; border-radius: 26px; background: var(--surface, #fff); border: 1px solid var(--line, #e5e7ed); font-size: 14px; font-weight: 650; color: var(--ink); white-space: nowrap; box-shadow: 0 3px 8px #17213c20; }
 [data-category] svg { width: 19px; height: 19px; color: #337bff; }
 [data-category="외식"] svg { color: #ff7a00; }

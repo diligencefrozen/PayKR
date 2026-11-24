@@ -1,4 +1,4 @@
-<img width="2551" height="899" alt="image" src="https://github.com/user-attachments/assets/99cd6596-4632-457a-86bd-f9ea7d4e1b40" /><img width="1920" height="914" alt="image" src="https://github.com/user-attachments/assets/0b7be13b-cc53-4f71-a2d0-f227bf2d204b" /><br/>
+<img width="1920" height="914" alt="image" src="https://github.com/user-attachments/assets/0b7be13b-cc53-4f71-a2d0-f227bf2d204b" /><br/>
 <img width="1920" height="914" alt="image" src="https://github.com/diligencefrozen/PayKR/blob/main/ss/2.1.png?raw=true" />
 <img width="1920" height="914" alt="image" src="<img width="2551" height="899" alt="image" src="https://github.com/diligencefrozen/PayKR/blob/main/ss/Screenshot%202026-11-25%2000140249489484.png?raw=true" />
 " />

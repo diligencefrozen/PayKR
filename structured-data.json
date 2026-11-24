@@ -3,7 +3,7 @@
   "@graph": [
     {
       "@type": "WebSite",
-      "url": "https://diligencefrozen.github.io/applepay-southkorea-map/",
+      "url": "https://diligencefrozen.github.io/PayKR/",
       "name": "애플페이 가맹점 찾기",
       "description": "대한민국 내 애플페이 지원 매장을 지도에서 손쉽게 찾아보세요.",
       "inLanguage": "ko-KR",
@@ -17,18 +17,18 @@
       },
       "potentialAction": {
         "@type": "SearchAction",
-        "target": "https://diligencefrozen.github.io/applepay-southkorea-map/?q={search_term_string}",
+        "target": "https://diligencefrozen.github.io/PayKR/?q={search_term_string}",
         "query-input": "required name=search_term_string"
       }
     },
     {
       "@type": "WebPage",
-      "url": "https://diligencefrozen.github.io/applepay-southkorea-map/",
+      "url": "https://diligencefrozen.github.io/PayKR/",
       "name": "애플페이 가맹점 찾기 홈",
       "description": "대한민국 내 애플페이 가맹점 지도 서비스 – 편의점, 카페, 백화점 등 모든 매장을 확인하세요.",
       "inLanguage": "ko-KR",
       "isPartOf": {
-        "@id": "https://diligencefrozen.github.io/applepay-southkorea-map/"
+        "@id": "https://diligencefrozen.github.io/PayKR/"
       }
     },
     {
@@ -38,7 +38,7 @@
           "@type": "ListItem",
           "position": 1,
           "name": "홈",
-          "item": "https://diligencefrozen.github.io/applepay-southkorea-map/"
+          "item": "https://diligencefrozen.github.io/PayKR/"
         }
       ]
     }

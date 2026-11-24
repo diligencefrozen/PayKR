@@ -7,24 +7,31 @@
   <meta name="msvalidate.01" content="4922F3F89BC9061D5E31D97E09092268" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <meta name="description" content="대한민국에서 애플페이를 지원하는 매장을 지도로 확인할 수 있습니다.">
+  <meta data-i18n-content="map.description" name="description" content="대한민국에서 애플페이를 지원하는 매장을 지도로 확인할 수 있습니다.">
   <meta name="author" content="diligencefrozen">
   <link rel="icon" href="favicon.svg" type="image/svg+xml" />
   <meta name="keyword" content="애플페이,애플 페이,Apple Pay,ApplePay,applepay,애플페이 사용처,애플페이지도,애플페이 지도,애플페이사용처,애플페이 가맹점,애플페이가맹점,애플페이 가맹점 지도,애플페이가맹점지도,애플페이맵,애플페이 맵">
   <link rel="icon" href="https://diligencefrozen.github.io/images/logo.ico" type="image/x-icon" />
-  <link rel="stylesheet" type="text/css" href="main.css?v=20261124.1">
+  <link rel="stylesheet" type="text/css" href="main.css?v=20261124.2">
   <meta name="color-scheme" content="light" />
   <meta name="robots" content="index, follow">
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-  <title>애플페이 가맹점 찾기</title>
+  <title data-i18n="map.title">애플페이 가맹점 찾기</title>
+
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3313505766731703" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="shared.css">
+  <link rel="canonical" href="https://diligencefrozen.github.io/PayKR/?lang=ko">
+  <link rel="alternate" hreflang="ko" href="https://diligencefrozen.github.io/PayKR/?lang=ko">
+  <link rel="alternate" hreflang="en" href="https://diligencefrozen.github.io/PayKR/?lang=en">
+  <link rel="alternate" hreflang="x-default" href="https://diligencefrozen.github.io/PayKR/">
 
   <!-- Kakao Maps SDK (지연 로드) -->
   <script defer src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=5a3cbf225c0d060b226dc5f1a8662069&libraries=services,clusterer&autoload=false"></script>
 
   <script type="application/ld+json" src="https://diligencefrozen.github.io/PayKR/structured-data.json"></script>
   <script>document.oncontextmenu = () => false;</script>
-  <script src="i18n.js?v=20261124.1" defer></script>
-  <script src="main.js?v=20261124.1" defer></script>
+  <script src="i18n.js?v=20261124.2" defer></script>
+  <script src="main.js?v=20261124.2" defer></script>
 
   <style>
     html, body, #map { height:100%; margin:0; padding:0; }
@@ -47,18 +54,18 @@
   </script>
   <script type="application/ld+json">
   {"@context":"https://schema.org","@type":"HowTo","name":"애플페이 가맹점 찾기 사용법","description":"지도에서 카테고리를 선택하고 매장을 찾는 방법 안내","step":[
-    {"@type":"HowToStep","position":1,"name":"홈페이지 접속","itemListElement":{"@type":"HowToDirection","text":"https://…/applepay-southkorea-map/ 에 접속합니다."}},
-    {"@type":"HowToStep","position":2,"name":"카테고리 선택","itemListElement":{"@type":"HowToDirection","text":"화면 하단의 카테고리 버튼(예: 편의점/카페)을 클릭합니다."}},
+    {"@type":"HowToStep","position":1,"name":"홈페이지 접속","itemListElement":{"@type":"HowToDirection","text":"PayKR 매장 지도를 엽니다."}},
+    {"@type":"HowToStep","position":2,"name":"카테고리 선택","itemListElement":{"@type":"HowToDirection","text":"지도 상단의 카테고리 버튼(예: 편의점/카페)을 클릭합니다."}},
     {"@type":"HowToStep","position":3,"name":"매장 정보 확인","itemListElement":{"@type":"HowToDirection","text":"마커를 클릭하면 매장명·주소가 표시됩니다."}}
   ]}
   </script>
   <script type="application/ld+json">
   {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[
-    {"@type":"ListItem","position":1,"name":"홈","item":"https://diligencefrozen.github.io/applepay-southkorea-map/"}
+    {"@type":"ListItem","position":1,"name":"홈","item":"https://diligencefrozen.github.io/PayKR/"}
   ]}
   </script>
   <script type="application/ld+json">
-  {"@context":"https://schema.org","@type":"Organization","name":"애플페이 가맹점 찾기","url":"https://diligencefrozen.github.io/applepay-southkorea-map/","logo":"https://diligencefrozen.github.io/images/logo.ico","sameAs":["https://github.com/diligencefrozen","https://diligencefrozen.github.io/ASM-ApplePay-SouthKorea/"]}
+  {"@context":"https://schema.org","@type":"Organization","name":"애플페이 가맹점 찾기","url":"https://diligencefrozen.github.io/PayKR/","logo":"https://diligencefrozen.github.io/images/logo.ico","sameAs":["https://github.com/diligencefrozen","https://diligencefrozen.github.io/ASM-ApplePay-SouthKorea/"]}
   </script>
 </head>
 
@@ -71,8 +78,9 @@
     <div id="sidebar-header">
       <form id="search-box" role="search">
         <span class="search-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="7.5"/><path d="m16 16 5 5"/></svg></span>
-        <input type="search" id="search-input" aria-label="장소, 주소 검색" enterkeyhint="search" autocomplete="off" data-i18n="searchPlaceholder" placeholder="장소, 주소 검색...">
-        <button class="filter-toggle" type="button" aria-label="카테고리 필터 열기" aria-expanded="false" aria-controls="filter-panel"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/><circle cx="8" cy="6" r="2"/><circle cx="16" cy="12" r="2"/><circle cx="8" cy="18" r="2"/></svg></button>
+        <input type="search" id="search-input" data-i18n-aria-label="search.input" aria-label="장소, 주소 검색" enterkeyhint="search" autocomplete="off" data-i18n-placeholder="search.placeholder" placeholder="장소, 주소 검색...">
+        <select class="language" data-language data-i18n-aria-label="common.language" aria-label="언어 선택"><option value="ko" lang="ko">KO</option><option value="en" lang="en">EN</option></select>
+        <button class="filter-toggle" type="button" data-i18n-aria-label="map.openFilter" aria-label="카테고리 필터 열기" aria-expanded="false" aria-controls="filter-panel"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/><circle cx="8" cy="6" r="2"/><circle cx="16" cy="12" r="2"/><circle cx="8" cy="18" r="2"/></svg></button>
       </form>
     </div>
 
@@ -89,16 +97,17 @@
       <!-- 기본 안내 문구 -->
       <div id="sidebar-welcome">
         <div id="apple-pay-notice" style="position: relative; right: auto; bottom: auto; margin-top: 20px;">
-          <img src="https://github.com/diligencefrozen/PayKR/blob/main/logo/applepay.png?raw=true" width="30" height="15"> 스티커를 꼭 확인하세요!
+          <img src="logo/applepay.png" alt="Apple Pay" width="30" height="15"><span data-i18n="map.sticker">스티커를 꼭 확인하세요!</span>
         </div>
         <div style="margin-top: 30px; padding: 0 10px; color: #666; font-size: 14px; line-height: 1.6;">
-          <p><strong>💡 사용 방법</strong></p>
+          <p><strong data-i18n="map.how">사용 방법</strong></p>
           <ul style="padding-left: 20px; margin-top: 10px;">
-            <li>검색창에 매장명을 입력하세요</li>
-            <li>카테고리 버튼을 클릭하세요</li>
-            <li>마우스 휠로 지도를 확대/축소하세요</li>
+            <li data-i18n="map.searchStep">검색창에 매장명을 입력하세요</li>
+            <li data-i18n="map.categoryStep">카테고리 버튼을 클릭하세요</li>
+            <li data-i18n="map.zoomStep">마우스 휠로 지도를 확대/축소하세요</li>
           </ul>
         </div>
+        <aside class="ad-space" id="sidebar-ad" data-i18n-aria-label="advertisement.label" aria-label="광고"><span data-i18n="advertisement.preview">광고 배치 미리보기</span></aside>
       </div>
     </div>
   </div>
@@ -113,8 +122,9 @@
   <!-- 모바일용 검색박스 -->
   <form id="search-box-mobile" role="search">
     <span class="search-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="7.5"/><path d="m16 16 5 5"/></svg></span>
-    <input type="search" id="search-input-mobile" aria-label="장소, 주소 검색" enterkeyhint="search" autocomplete="off" data-i18n="searchPlaceholder" placeholder="장소, 주소 검색...">
-    <button class="filter-toggle" type="button" aria-label="카테고리 필터 열기" aria-expanded="false" aria-controls="filter-panel"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/><circle cx="8" cy="6" r="2"/><circle cx="16" cy="12" r="2"/><circle cx="8" cy="18" r="2"/></svg></button>
+    <input type="search" id="search-input-mobile" data-i18n-aria-label="search.input" aria-label="장소, 주소 검색" enterkeyhint="search" autocomplete="off" data-i18n-placeholder="search.placeholder" placeholder="장소, 주소 검색...">
+    <select class="language" data-language data-i18n-aria-label="common.language" aria-label="언어 선택"><option value="ko" lang="ko">KO</option><option value="en" lang="en">EN</option></select>
+        <button class="filter-toggle" type="button" data-i18n-aria-label="map.openFilter" aria-label="카테고리 필터 열기" aria-expanded="false" aria-controls="filter-panel"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/><circle cx="8" cy="6" r="2"/><circle cx="16" cy="12" r="2"/><circle cx="8" cy="18" r="2"/></svg></button>
   </form>
 
   <!-- 모바일용 카테고리 -->
@@ -122,121 +132,29 @@
     <!-- 카테고리 버튼들이 JS로 삽입됨 -->
   </div>
 
-  <section id="filter-panel" aria-label="카테고리 필터" hidden>
-    <div class="panel-heading"><h2>카테고리</h2><button id="filter-close" class="icon-button" aria-label="필터 닫기">×</button></div>
+  <section id="filter-panel" data-i18n-aria-label="map.filter" aria-label="카테고리 필터" hidden>
+    <div class="panel-heading"><h2 data-i18n="map.filter">카테고리</h2><button id="filter-close" class="icon-button" data-i18n-aria-label="map.closeFilter" aria-label="필터 닫기">×</button></div>
     <div id="filter-categories"></div>
   </section>
-  <button id="location-button" class="icon-button" aria-label="현재 위치로 이동" title="현재 위치로 이동">
+  <button id="location-button" class="icon-button" data-i18n-aria-label="location.button" aria-label="현재 위치로 이동" data-i18n-title="location.button" title="현재 위치로 이동">
     <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="7"/><circle cx="12" cy="12" r="3"/><path d="M12 1v4m0 14v4M1 12h4m14 0h4"/></svg>
   </button>
-  <section id="place-sheet" aria-label="장소 정보">
-    <button id="sheet-toggle" aria-label="장소 패널 펼치기" aria-expanded="false" aria-controls="sheet-content"><span></span></button>
+  <section id="place-sheet" data-i18n-aria-label="place.info" aria-label="장소 정보">
+    <button id="sheet-toggle" data-i18n-aria-label="place.expand" aria-label="장소 패널 펼치기" aria-expanded="false" aria-controls="sheet-content"><span></span></button>
     <div class="sheet-summary">
       <svg class="pin-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22S3 14 3 9a9 9 0 1 1 18 0c0 5-9 13-9 13Z"/><circle cx="12" cy="9" r="3"/></svg>
-      <div aria-live="polite"><h1 id="place-title">이 지역의 장소 찾기</h1><p id="place-subtitle">지도에서 장소를 선택하면 상세 정보가 표시됩니다.</p></div>
-      <button id="place-clear" class="icon-button" aria-label="장소 선택 해제" hidden>×</button>
+      <div aria-live="polite"><h1 id="place-title" data-i18n="place.emptyTitle">이 지역의 장소 찾기</h1><p id="place-subtitle" data-i18n="place.emptyHint">지도에서 장소를 선택하면 상세 정보가 표시됩니다.</p></div>
+      <button id="place-clear" class="icon-button" data-i18n-aria-label="place.clear" aria-label="장소 선택 해제" hidden>×</button>
     </div>
     <div id="sheet-content" hidden>
       <div id="place-details"></div>
-      <div id="mobile-results" aria-label="장소 검색 결과"></div>
-      <p class="payment-note">결제 전 매장의 Apple Pay 스티커를 꼭 확인하세요.</p>
+      <div id="mobile-results" data-i18n-aria-label="search.results" aria-label="장소 검색 결과"></div>
+      <p class="payment-note" data-i18n="place.note">결제 전 매장의 Apple Pay 스티커를 꼭 확인하세요.</p>
+      <aside class="ad-space" id="place-ad" hidden data-i18n-aria-label="advertisement.label" aria-label="광고"><span data-i18n="advertisement.preview">광고 배치 미리보기</span></aside>
     </div>
   </section>
   <p id="map-status" role="status" hidden></p>
-  <a id="chat-fallback" href="https://discord.com/channels/1574706452671504474/1574706454353412239" target="_blank" rel="noopener noreferrer" hidden>Discord에서 채팅 열기</a>
-
-  <!-- 패치노트 -->
-  <div id="patch-notes" class="is-active">
-    <button id="patch-notes-toggle">패치노트</button>
-    <button id="notice-toggle">필독사항</button>
-    <div id="patch-notes-content" style="display:none;position:fixed;top:10%;left:20%;right:20%;background:#fff;border:1px solid #ccc;padding:20px;z-index:9999;">
-      <button id="close-patch-notes" style="position:absolute;top:10px;right:10px;background:none;border:none;font-size:20px;">&times;</button>
-      <ul>
-        <h3><b>패치노트</b></h3>
-        <h4><b><font color="999999">Last Update: 05/10/2026 0:58 KST</font></b></h4>
-        <li>20230524.1: 초기 버전 출시</li>
-        <li>20230718.7: 사용자 인터페이스 업데이트 및 가맹점 추가 (편의점, 카페)</li>
-        <li>20230720.11: 가맹점 추가 (마트/슈퍼) 및 사용자 인터페이스 개선 (검색 기능 추가)</li>
-        <li>20230721.9: 가맹점 추가 (제과/디저트) 및 사용자 인터페이스 개선 (검색 기능 개선 / 마커 기능 추가) </li>
-        <li>20230723.9: 사용자 인터페이스 개선 (검색 기능 디자인 변경 / 모바일 기기로 접속시 반응하는 인터페이스 개선) </li>
-        <li>20230724.1: 사용자 인터페이스 개선 </li>
-        <li>20230726.16: 가맹점 수정 (롯데마트/롯데백화점/롯데슈퍼) </li>
-        <li>20230802.9: 사용자 인터페이스 개선</li>
-        <li>20230803.11: 가맹점 추가(외식/생활,가전) 및 사용자 인터페이스 개선</li>
-        <li>20230804.4: 가맹점 추가(호텔,리조트) 및 사용자 인터페이스 업데이트</li>
-        <li>20230805.8: 사용자 인터페이스 개선</li>
-        <li>20230808.1: 가맹점 추가(주유,충전)</li>
-        <li>20230809.2: 가맹점 추가(영화, 도서) 및 가맹점 수정(편의점)</li>
-        <li>20230811.1: 가맹점 추가(레저, 여행)</li>
-        <li>20230818.5: 가맹점 추가(약국) 및 수정(외식) 그리고 사용자 인터페이스 개선(패치노트, 필독사항 영역)</li>
-        <li>20230821.3: 사용자 인터페이스 개선 (패치노트 영역, 현재 위치 표시 기능 개선)</li>
-        <li>20230822.1: 가맹점 수정 (기타, 생활&가전)</li>
-        <li>20231008.5: 사용자 인터페이스 수정 (카테고리, 필독사항)</li>
-        <li>20231014.1: 사용자 인터페이스 수정 (화면 비율 수정)</li>
-        <li>20231017.2: 사용자 인터페이스 수정 (검색 버튼 수정)</li>
-        <li>20231105.10: 사용자 인터페이스 개선 ('기타' 메뉴 삭제(약국 삭제), 온라인 메뉴 추가, 문의 메뉴 추가)</li>
-        <li>20231201.6: 가맹점 업데이트 (백화점/쇼핑, 마트/슈퍼, 커피, 외식, 온라인)</li>
-        <li>20231221.3: 가맹점 업데이트 (외식, 온라인)</li>
-        <li>20231226.6: 가맹점 업데이트 (외식, 백화점/쇼핑) 및 사용자 인터페이스 개선</li>
-        <li>20240125.7: 사용자 인터페이스 개선 (사이트 하단에 애플페이 스티커 관련 안내 문구 추가)</li>
-        <li>20240225.2: 가맹점 업데이트 (커피, 외식) </li>
-        <li>20240613.3: 가맹점 업데이트 (커피, 백화점, 온라인) </li>
-        <li>20240914.10: 가맹점 업데이트 및 UI 개선 (편의점, 패션, 카페, 외식) </li>
-        <li>20250101.5: 가맹점 업데이트 (생활/가전, 커피, 제과/디저트, 온라인) </li>
-        <li>20250517.11: 기능 개선 (영어 지원 1/10) </li>
-        <li>20251021.2: 사용자 인터페이스 개선 (모바일 최적화) </li>
-        <li>20251030.1: 사용자 인터페이스 개선 (데스크탑 최적화) </li>
-        <li>20251031.2: 사용자 인터페이스 개선 (검색 결과 표시 방식 개선)</li>
-        <li>20251105.3: 사용자 편의성 업데이트 (💬 포럼 기능 추가)</li>
-        <li>20260510.1: 사용자 편의성 개선 (현재 위치를 불러오지 못하면, IP 주소로 사용자 위치를 확인 시도함.)</li>
-      </ul>
-    </div>
-    <div id="notice-content" style="display:none;position:fixed;top:10%;left:20%;right:20%;background:#fff;border:1px solid gray;padding:20px;z-index:9999;">
-      <button id="close-notice" style="position:absolute;top:10px;right:10px;background:none;border:none;font-size:20px;">&times;</button>
-      <ul>
-        <h3><b>필독사항</b></h3>
-        <h4><b><font color="999999">Last Update: 12/26/2023 13:35 KST</font></b></h4>
-        <li><b>Menu</b></li>
-        <li>🏠 집 모양 버튼을 클릭하면, 당신의 현재 위치로 이동합니다.</li>
-        <li>🍎 iPhone은 네이버 앱, iPad/Mac은 Chrome 권장.</li>
-        <li>⚠️ 동일 건물 내 요소는 같은 장소로 묶일 수 있습니다.</li>
-        <li>⭐ 마커 좌클릭으로 세부정보 보기.</li>
-        <li>⭐ 분류는 현대카드 애플페이 문서를 참고.</li>
-      </ul>
-    </div>
-  </div>
-
-  <script>
-    // 패치노트 토글
-    const patchNotesToggle = document.getElementById('patch-notes-toggle');
-    const patchNotesContent = document.getElementById('patch-notes-content');
-    const closePatchNotes = document.getElementById('close-patch-notes');
-    const noticeToggle = document.getElementById('notice-toggle');
-    const noticeContent = document.getElementById('notice-content');
-    const closeNotice = document.getElementById('close-notice');
-
-    function setInformationPanel(panel) {
-      const showPatchNotes = panel === 'patch-notes';
-      const showNotice = panel === 'notice';
-
-      patchNotesContent.style.display = showPatchNotes ? 'block' : 'none';
-      noticeContent.style.display = showNotice ? 'block' : 'none';
-      patchNotesToggle.style.display = showPatchNotes ? 'none' : 'block';
-      noticeToggle.style.display = showNotice ? 'none' : 'block';
-      document.body.classList.toggle('has-information-panel', showPatchNotes || showNotice);
-    }
-
-    patchNotesToggle.addEventListener('click', () => setInformationPanel('patch-notes'));
-    closePatchNotes.addEventListener('click', () => setInformationPanel(null));
-    noticeToggle.addEventListener('click', () => setInformationPanel('notice'));
-    closeNotice.addEventListener('click', () => setInformationPanel(null));
-
-    document.addEventListener('keydown', (event) => {
-      if (event.key === 'Escape' && document.body.classList.contains('has-information-panel')) {
-        setInformationPanel(null);
-      }
-    });
-  </script>
+  <a id="chat-fallback" data-i18n-aria-label="common.chatFallback" data-i18n-title="common.chatFallback" href="https://discord.com/channels/1574706452671504474/1574706454353412239" target="_blank" rel="noopener noreferrer" hidden>Discord</a>
 
   <!-- 지도/검색 스크립트: SDK 준비 후 실행 -->
   <script>
@@ -262,9 +180,6 @@
       }
     }
 
-    function escapeHTML(value) {
-      return String(value || '').replace(/[&<>"']/g, ch => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[ch]));
-    }
 
     // 단일 displayMarker (중복 제거)
     function displayMarker(place, markerImage) {
@@ -274,20 +189,7 @@
 
       categoryMarkers.push(marker);
 
-      // 카카오맵 링크 생성
-      const kakaoMapUrl = `https://map.kakao.com/link/to/${encodeURIComponent(place.place_name)},${place.y},${place.x}`;
-      const kakaoPlaceUrl = `https://place.map.kakao.com/${encodeURIComponent(place.id)}`;
-
-      const content =
-        '<div class="infoWindow">' +
-        '<strong> ' + escapeHTML(place.place_name) + '</strong>' +
-        '<div class="info-address">' + escapeHTML(place.address_name || place.road_address_name || '주소 정보 없음') + '</div>' +
-        '<div class="info-actions">' +
-        (place.phone ? '<a href="tel:' + escapeHTML(place.phone) + '" class="info-phone"> 전화</a>' : '') +
-        '<a href="' + kakaoPlaceUrl + '" target="_blank" rel="noopener noreferrer" class="info-review"> 리뷰</a>' +
-        '<a href="' + kakaoMapUrl + '" target="_blank" rel="noopener noreferrer" class="info-navigate"> 길찾기</a>' +
-        '</div>' +
-        '</div>';
+      const content = window.PayKR.placeOverlay(place);
       const overlay = new kakao.maps.CustomOverlay({
         position: pos,
         content,
@@ -303,35 +205,24 @@
       // 오버레이를 표시할 때 이벤트 리스너 추가
       function showOverlay() {
         closeAllOverlays();
+        translateTextNodes(content);
         overlay.setMap(map);
         currentOverlay = overlay;
-
-        // 오버레이가 렌더링된 후 이벤트 리스너 추가
-        setTimeout(() => {
-          const overlayElement = document.querySelector('.infoWindow');
-          if (overlayElement && !overlayElement.dataset.listenerAdded) {
-            overlayElement.dataset.listenerAdded = 'true';
-
-            overlayElement.addEventListener('mouseenter', () => {
-              isOverOverlay = true;
-              if (hideTimeout) {
-                clearTimeout(hideTimeout);
-                hideTimeout = null;
-              }
-            });
-
-            overlayElement.addEventListener('mouseleave', () => {
-              isOverOverlay = false;
-              hideTimeout = setTimeout(() => {
-                if (!isOverMarker && !isOverOverlay) {
-                  overlay.setMap(null);
-                  if (currentOverlay === overlay) currentOverlay = null;
-                }
-              }, 700);
-            });
-          }
-        }, 10);
       }
+
+      content.addEventListener('mouseenter', () => {
+        isOverOverlay = true;
+        clearTimeout(hideTimeout);
+      });
+      content.addEventListener('mouseleave', () => {
+        isOverOverlay = false;
+        hideTimeout = setTimeout(() => {
+          if (!isOverMarker && !isOverOverlay) {
+            overlay.setMap(null);
+            if (currentOverlay === overlay) currentOverlay = null;
+          }
+        }, 700);
+      });
 
       kakao.maps.event.addListener(marker, 'mouseover', () => {
         if (window.matchMedia('(hover: hover)').matches) { isOverMarker = true; showOverlay(); }
@@ -732,7 +623,7 @@
     searchAndMark("마티나 라운지", createMarkerImage(matina2ImageUrl));
     searchAndMark("성문안 컨트리클럽", createMarkerImage(sungmunanImageUrl));
   }
-  function searchonline(){ window.location.href="https://diligencefrozen.github.io/PayKR/online.html"; }
+  function searchonline(){ window.location.href=pageLink("online.html"); }
   function searchcontact(){ window.location.href="https://github.com/diligencefrozen/PayKR/issues"; }
   </script>
 
@@ -761,7 +652,7 @@
       // Keep every existing merchant category; one selection is shared by all controls.
       window.PayKR.renderCategories(categories, (cat) => {
         if (cat.name === '온라인' || cat.name === '문의하기') { cat.action(); return; }
-        if (!map) { window.PayKR.status('지도를 불러온 뒤 다시 시도해주세요.'); return; }
+        if (!map) { window.PayKR.status('map.wait'); return; }
         categoryGeneration++;
         categoryMarkers.forEach(marker => marker.setMap(null));
         categoryMarkers = [];
@@ -781,95 +672,34 @@
       // 지도 클릭 시 모든 오버레이 닫기
       kakao.maps.event.addListener(map, 'click', () => { closeAllOverlays(); selectedPlaceId = null; window.PayKR.resetPlace(); });
 
-      // 현재위치 이동 함수: 1순위 GPS / 2순위 IP 기반 위치 fallback
-      function moveToCurrentLocation(lat, lng, source = 'gps') {
-        const ll = new kakao.maps.LatLng(lat, lng);
-        map.setCenter(ll);
-
-        // IP 기반 위치는 도시/통신망 단위로 오차가 크므로 너무 확대하지 않습니다.
-        map.setLevel(source === 'ip' ? 7 : 3);
-
-        if(currentPositionMarker) currentPositionMarker.setMap(null);
-        currentPositionMarker = new kakao.maps.Marker({
-          position: ll, map,
-          image: new kakao.maps.MarkerImage(
-            'https://github.com/diligencefrozen/PayKR/blob/main/logo/mylocation.png?raw=true',
-            new kakao.maps.Size(50,45),
-            { offset:new kakao.maps.Point(25,45), alt: source === 'ip' ? 'IP 기반 현재 위치' : '현재 위치' }
-          )
-        });
-      }
-
-      function getGpsLocation() {
-        return new Promise((resolve, reject) => {
-          if (!navigator.geolocation) {
-            reject(new Error('이 브라우저는 Geolocation을 지원하지 않습니다.'));
-            return;
-          }
-
-          navigator.geolocation.getCurrentPosition(
-            pos => {
-              resolve({
-                lat: pos.coords.latitude,
-                lng: pos.coords.longitude,
-                accuracy: pos.coords.accuracy
-              });
-            },
-            reject,
-            {
-              maximumAge: 120000,
-              timeout: 7000,
-              enableHighAccuracy: false
-            }
-          );
-        });
-      }
-
-      async function getIpLocationFallback() {
-        const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 4000);
-
+      const locationButton = document.getElementById('location-button');
+      locationButton.addEventListener('click', () => {
+        if (window.isSecureContext === false) { window.PayKR.status('location.secure'); return; }
+        if (!navigator.geolocation) { window.PayKR.status('location.unsupported'); return; }
+        locationButton.disabled = true;
+        window.PayKR.status('location.loading');
+        const fail = error => {
+          locationButton.disabled = false;
+          const reason = { 1: 'location.denied', 3: 'location.timeout' };
+          window.PayKR.status(reason[error?.code] || 'location.unavailable');
+        };
         try {
-          // ipapi.co는 요청자의 public IP를 기준으로 대략적인 위도/경도를 반환합니다.
-          const res = await fetch('https://ipapi.co/json/', {
-            signal: controller.signal,
-            cache: 'no-store'
-          });
-
-          if (!res.ok) throw new Error(`IP 위치 API 오류: ${res.status}`);
-
-          const data = await res.json();
-          const lat = Number(data.latitude);
-          const lng = Number(data.longitude);
-
-          if (!Number.isFinite(lat) || !Number.isFinite(lng)) {
-            throw new Error('IP 위치 응답에 좌표가 없습니다.');
-          }
-
-          return { lat, lng, city: data.city, country: data.country_name };
-        } finally {
-          clearTimeout(timeoutId);
-        }
-      }
-
-      async function goToCurrentLocation() {
-        try {
-          const gps = await getGpsLocation();
-          moveToCurrentLocation(gps.lat, gps.lng, 'gps');
-        } catch (gpsError) {
-          console.warn('GPS 위치 확인 실패. IP 기반 위치로 대체합니다.', gpsError);
-
-          try {
-            const ipLocation = await getIpLocationFallback();
-            moveToCurrentLocation(ipLocation.lat, ipLocation.lng, 'ip');
-          } catch (ipError) {
-            console.error('IP 기반 위치 확인도 실패했습니다.', ipError);
-            alert('현재 위치를 가져오지 못했습니다. 위치 권한 또는 네트워크 상태를 확인해주세요.');
-          }
-        }
-      }
-
-      document.getElementById('location-button').addEventListener('click', goToCurrentLocation);
+          navigator.geolocation.getCurrentPosition(({ coords }) => {
+            locationButton.disabled = false;
+            if (!Number.isFinite(coords.latitude) || !Number.isFinite(coords.longitude)) { fail(); return; }
+            const position = new kakao.maps.LatLng(coords.latitude, coords.longitude);
+            if (currentPositionMarker) currentPositionMarker.setMap(null);
+            currentPositionMarker = new kakao.maps.Marker({
+              position, map,
+              image: new kakao.maps.MarkerImage('logo/mylocation.png', new kakao.maps.Size(50, 45),
+                { offset: new kakao.maps.Point(25, 45), alt: t('location.current') })
+            });
+            map.setCenter(position);
+            map.setLevel(3);
+            window.PayKR.status('location.success');
+          }, fail, { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 });
+        } catch (error) { fail(error); }
+      });
 
       const searchInput = document.getElementById('search-input');
       const searchInputMobile = document.getElementById('search-input-mobile');
@@ -890,8 +720,8 @@
 
         // 헤더 표시
         resultsHeader.style.display = 'block';
-        resultsTitle.textContent = `"${keyword}" 검색 결과`;
-        resultsCount.textContent = `${data.length}개의 장소를 찾았습니다`;
+        translatedText(resultsTitle, "search.title", { query: keyword });
+        translatedText(resultsCount, "search.count", { count: data.length });
 
         // 기존 결과 초기화
         resultsList.innerHTML = '';
@@ -923,7 +753,7 @@
 
       function searchPlaces(inputElement) {
         const keyword = inputElement.value.trim();
-        if (!keyword) { inputElement.focus(); return; }
+        if (!keyword) { window.PayKR.status('search.required'); inputElement.focus(); return; }
         searchInput.value = searchInputMobile.value = keyword;
         inputElement.blur();
         const generation = ++searchGeneration;
@@ -935,7 +765,7 @@
             displaySearchResults(data, keyword);
           } else {
             window.PayKR.status(status === kakao.maps.services.Status.ZERO_RESULT
-              ? '검색 결과가 없습니다.' : '검색 결과를 불러오지 못했습니다. 다시 시도해주세요.');
+              ? 'search.none' : 'search.error');
           }
         });
       }
@@ -950,12 +780,15 @@
     window.addEventListener('DOMContentLoaded', () => {
       initCategories();
       if (window.kakao && kakao.maps) kakao.maps.load(initMap);
-      else window.PayKR.status('지도를 불러오지 못했습니다. 네트워크 연결을 확인한 뒤 새로고침해주세요.');
+      else {
+        const message = document.createElement('p');
+        message.className = 'map-load-error';
+        message.setAttribute('role', 'status');
+        translatedText(message, 'map.unavailable');
+        document.getElementById('map').append(message);
+      }
     });
   </script>
-  <script src="https://cdn.jsdelivr.net/npm/@widgetbot/crate@3" async defer onerror="document.getElementById('chat-fallback').hidden = false">
-    if (window.PayKR) window.PayKR.initChat();
-    else window.addEventListener('paykr:ready', () => window.PayKR.initChat(), { once: true });
-  </script>
+  <script src="https://cdn.jsdelivr.net/npm/@widgetbot/crate@3" async onload="window.PayKR?.initChat()" onerror="document.getElementById('chat-fallback').hidden = false"></script>
 </body>
 </html>

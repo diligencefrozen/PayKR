@@ -77,3 +77,28 @@ plain-text place rendering and Crate initialization/state preservation.
 Browser checks covered 390px mobile and 1280px desktop layouts, filter and sheet
 controls, and loading the actual `Lab` / `general` Discord channel. Sending a chat
 message and authenticated Discord access have not been tested.
+
+## Language, directory and ad previews
+
+Both pages use the same KO / EN selector. A valid `?lang=ko` or `?lang=en`
+takes precedence over the saved choice and browser language. Store names and
+addresses supplied by Kakao retain their original spelling. The location button
+uses the browser's location service on demand. A failed request leaves the map
+and any previously confirmed location marker in place.
+
+Open `/online.html` to search the 36 original entries using their Korean names,
+English names or aliases. Search and category filters apply together.
+
+Add `?adpreview=1` to either page to inspect non-interactive placement outlines.
+The map has a desktop sidebar placement and a mobile placement after the
+selected place's details. The directory has placements above, within and below
+the list. Short result lists suppress the middle and lower placements.
+Ordinary visits collapse these spaces. Each page loads the supplied AdSense
+site connection script once. Manual ad units require IDs issued by AdSense.
+Review automatic formats and page exclusions in the publisher account before
+enabling them on the map.
+
+Run `node tests/map-ui.test.mjs` and `node tests/directory.test.mjs` for the
+offline regression checks. The screenshots in `ss/paykr-*.png` show the local
+Chrome preview. The map screenshots show controls without Kakao tiles, and the
+mobile place panel uses test data.

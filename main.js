@@ -21,13 +21,17 @@
     expanded = value;
     sheet.classList.toggle('is-expanded', value);
     toggle.setAttribute('aria-expanded', String(value));
-    toggle.setAttribute('aria-label', value ? '장소 패널 접기' : '장소 패널 펼치기');
+    const label = value ? 'place.collapse' : 'place.expand';
+    toggle.setAttribute('data-i18n-aria-label', label);
+    toggle.setAttribute('aria-label', t(label));
     $('sheet-content').hidden = !value;
     requestAnimationFrame(layoutControls);
   }
   function layoutControls() {
     const rect = sheet.getBoundingClientRect();
-    const bottom = Math.ceil(window.innerHeight - rect.top + 16);
+    // In short landscape windows the controls have their own column beside the sheet.
+    const sideRail = window.matchMedia('(orientation: landscape) and (max-height: 500px)').matches;
+    const bottom = sideRail ? Math.max(16, window.innerHeight - rect.bottom) : Math.ceil(window.innerHeight - rect.top + 16);
     // Crate's documented numeric location uses negative coordinates from bottom/right.
     const right = Math.max(20, parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--safe-right')) || 0);
     document.documentElement.style.setProperty('--sheet-clearance', `${bottom}px`);
@@ -38,37 +42,58 @@
     }
   }
   function resetPlace() {
-    $('place-title').textContent = '이 지역의 장소 찾기';
-    $('place-subtitle').textContent = '지도에서 장소를 선택하면 상세 정보가 표시됩니다.';
+    translatedText($('place-title'), 'place.emptyTitle');
+    $('place-ad').hidden = true;
+    translatedText($('place-subtitle'), 'place.emptyHint');
     $('place-details').replaceChildren();
     $('place-clear').hidden = true;
     setExpanded(false);
   }
-  function addLink(parent, label, href) {
+  function addLink(parent, key, href, values) {
     const link = document.createElement('a');
-    link.textContent = label;
+    translatedText(link, key, values);
     link.href = href;
     if (!href.startsWith('tel:')) { link.target = '_blank'; link.rel = 'noopener noreferrer'; }
     parent.append(link);
   }
-  function selectPlace(place) {
-    $('place-title').textContent = place.place_name;
-    $('place-subtitle').textContent = place.category_name || '장소 정보';
-    $('place-clear').hidden = false;
-    const details = $('place-details');
-    details.replaceChildren();
-    const address = document.createElement('p');
-    address.className = 'place-address';
-    address.textContent = place.road_address_name || place.address_name || '주소 정보 없음';
-    details.append(address);
-    const actions = document.createElement('div');
-    actions.className = 'place-actions';
-    if (place.phone) addLink(actions, `전화 ${place.phone}`, `tel:${place.phone.replace(/[^+\d-]/g, '')}`);
-    if (place.id) addLink(actions, '상세 정보 · 리뷰', `https://place.map.kakao.com/${encodeURIComponent(place.id)}`);
-    if (Number.isFinite(Number(place.x)) && Number.isFinite(Number(place.y))) {
-      addLink(actions, '길찾기', `https://map.kakao.com/link/to/${encodeURIComponent(place.place_name)},${Number(place.y)},${Number(place.x)}`);
+  function placeContent(place, compact) {
+    const content = document.createElement('div');
+    if (compact) {
+      content.className = 'infoWindow';
+      const name = document.createElement('strong');
+      name.textContent = place.place_name;
+      content.append(name);
     }
-    details.append(actions);
+    const address = document.createElement('p');
+    address.className = compact ? 'info-address' : 'place-address';
+    const addressText = place.road_address_name || place.address_name;
+    if (addressText) address.textContent = addressText;
+    else translatedText(address, 'place.noAddress');
+    content.append(address);
+    const actions = document.createElement('div');
+    actions.className = compact ? 'info-actions' : 'place-actions';
+    if (place.phone) {
+      addLink(actions, compact ? 'place.call' : 'place.phone', 'tel:' + place.phone.replace(/[^+\d-]/g, ''), { phone: place.phone });
+    }
+    if (place.id) addLink(actions, compact ? 'place.review' : 'place.details', 'https://place.map.kakao.com/' + encodeURIComponent(place.id));
+    if (Number.isFinite(Number(place.x)) && Number.isFinite(Number(place.y))) {
+      addLink(actions, 'place.directions', `https://map.kakao.com/link/to/${encodeURIComponent(place.place_name)},${Number(place.y)},${Number(place.x)}`);
+    }
+    content.append(actions);
+    return content;
+  }
+  function selectPlace(place) {
+    const title = $('place-title');
+    const subtitle = $('place-subtitle');
+    delete title.dataset.i18n;
+    title.textContent = place.place_name;
+    if (place.category_name) {
+      delete subtitle.dataset.i18n;
+      subtitle.textContent = place.category_name;
+    } else translatedText(subtitle, 'place.info');
+    $('place-clear').hidden = false;
+    $('place-ad').hidden = false;
+    $('place-details').replaceChildren(placeContent(place, false));
     setExpanded(true);
     $('sheet-content').scrollTop = 0;
   }
@@ -86,7 +111,7 @@
   }
   function showResults(places, onSelect) {
     const list = $('mobile-results'); list.replaceChildren();
-    const heading = document.createElement('h2'); heading.textContent = `검색 결과 ${places.length}곳`;
+    const heading = document.createElement('h2'); translatedText(heading, 'search.count', { count: places.length });
     list.append(heading);
     places.forEach((place, index) => {
       const button = resultButton(place, index);
@@ -110,7 +135,7 @@
         const navigation = cat.name === '온라인' || cat.name === '문의하기';
         if (!navigation) button.setAttribute('aria-pressed', String(cat.name === '전체'));
         button.innerHTML = icon(icons[cat.name]);
-        const label = document.createElement('span'); label.textContent = cat.name; button.append(label);
+        const label = document.createElement('span'); translatedText(label, 'category.' + cat.name); button.append(label);
         button.addEventListener('click', () => {
           if (!navigation) document.querySelectorAll('[data-category][aria-pressed]').forEach(el => el.setAttribute('aria-pressed', String(el.dataset.category === cat.name)));
           setFilter(false);
@@ -120,8 +145,8 @@
       });
     });
   }
-  function status(message) {
-    clearTimeout(statusTimer); $('map-status').textContent = message; $('map-status').hidden = false;
+  function status(key) {
+    clearTimeout(statusTimer); translatedText($('map-status'), key); $('map-status').hidden = false;
     statusTimer = setTimeout(() => { $('map-status').hidden = true; }, 7000);
   }
   function initChat() {
@@ -161,13 +186,15 @@
   if ('ResizeObserver' in window) new ResizeObserver(layoutControls).observe(sheet);
   window.addEventListener('resize', layoutControls);
   window.visualViewport?.addEventListener('resize', layoutControls);
-  window.PayKR = { selectPlace, resetPlace, resultButton, showResults, renderCategories, status, initChat };
+  window.PayKR = {
+    placeOverlay: place => placeContent(place, true),
+    selectPlace, resetPlace, resultButton, showResults, renderCategories, status, initChat
+  };
   ['search-box', 'search-box-mobile'].forEach(id => $(id).addEventListener('submit', event => {
     event.preventDefault();
-    if (!map) status('지도를 불러온 뒤 다시 검색해주세요.');
+    if (!map) status('map.wait');
   }));
-  $('location-button').addEventListener('click', () => { if (!map) status('지도를 불러온 뒤 다시 시도해주세요.'); });
-  applyI18n();
+  $('location-button').addEventListener('click', () => { if (!map) status('map.wait'); });
+  initChat();
   layoutControls();
-  window.dispatchEvent(new Event('paykr:ready'));
 })();

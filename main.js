@@ -56,19 +56,25 @@
     if (!href.startsWith('tel:')) { link.target = '_blank'; link.rel = 'noopener noreferrer'; }
     parent.append(link);
   }
+  function setPlaceText(element, original, format) {
+    translatedText(element, 'place.localized', { original, english: format(original) });
+  }
+  function setAddress(element, place) {
+    const address = place.road_address_name || place.address_name;
+    if (address) setPlaceText(element, address, placeText.address);
+    else translatedText(element, 'place.noAddress');
+  }
   function placeContent(place, compact) {
     const content = document.createElement('div');
     if (compact) {
       content.className = 'infoWindow';
       const name = document.createElement('strong');
-      name.textContent = place.place_name;
+      setPlaceText(name, place.place_name, placeText.name);
       content.append(name);
     }
     const address = document.createElement('p');
     address.className = compact ? 'info-address' : 'place-address';
-    const addressText = place.road_address_name || place.address_name;
-    if (addressText) address.textContent = addressText;
-    else translatedText(address, 'place.noAddress');
+    setAddress(address, place);
     content.append(address);
     const actions = document.createElement('div');
     actions.className = compact ? 'info-actions' : 'place-actions';
@@ -83,11 +89,16 @@
     if (!compact) {
       const tools = document.createElement('div');
       tools.className = 'place-language-tools';
-      const original = [place.place_name, addressText].filter(Boolean).join('\n');
+      const original = [place.place_name, place.road_address_name || place.address_name].filter(Boolean).join('\n');
       if (/[가-힣]/.test(original)) {
-        const url = new URL('https://translate.google.com/');
-        url.search = new URLSearchParams({ sl: 'ko', tl: 'en', text: original, op: 'translate' });
-        addLink(tools, 'place.translateText', url.href);
+        const details = document.createElement('details');
+        const summary = document.createElement('summary');
+        translatedText(summary, 'place.original');
+        const source = document.createElement('p');
+        source.lang = 'ko';
+        source.textContent = original;
+        details.append(summary, source);
+        tools.append(details);
       }
       if (place.id) {
         const hint = document.createElement('p');
@@ -101,15 +112,13 @@
   function selectPlace(place) {
     const title = $('place-title');
     const subtitle = $('place-subtitle');
-    delete title.dataset.i18n;
-    title.textContent = place.place_name;
+    setPlaceText(title, place.place_name, placeText.name);
     const category = place.category_name || place.category_group_name;
     const groupKey = 'place.group.' + place.category_group_code;
     if (category && Object.hasOwn(messages, groupKey)) {
       translatedText(subtitle, groupKey, { original: category });
     } else if (category) {
-      delete subtitle.dataset.i18n;
-      subtitle.textContent = category;
+      setPlaceText(subtitle, category, placeText.category);
     } else translatedText(subtitle, 'place.info');
     $('place-clear').hidden = false;
     $('place-ad').hidden = false;
@@ -124,8 +133,8 @@
     const number = document.createElement('span');
     number.className = 'result-number'; number.textContent = index + 1;
     const info = document.createElement('span'); info.className = 'result-info';
-    const name = document.createElement('strong'); name.textContent = place.place_name;
-    const address = document.createElement('span'); address.textContent = place.road_address_name || place.address_name || '';
+    const name = document.createElement('strong'); setPlaceText(name, place.place_name, placeText.name);
+    const address = document.createElement('span'); setAddress(address, place);
     info.append(name, address); button.append(number, info);
     return button;
   }

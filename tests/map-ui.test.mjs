@@ -56,7 +56,7 @@ const gpsRequests = [];
 const context = vm.createContext({ document, console, URL, URLSearchParams,
   localStorage: { getItem: key => stored[key], setItem: (key, value) => { stored[key] = value; } },
   history: { replaceState() {} }, Number, String, Event: class {},
-  navigator: { language: 'ko-KR', geolocation: { getCurrentPosition: (success, error) => gpsRequests.push({ success, error }) } }, location: { href: 'https://example.test/', search: '' }, innerHeight: 800, innerWidth: 390,
+  navigator: { language: 'en-US', geolocation: { getCurrentPosition: (success, error) => gpsRequests.push({ success, error }) } }, location: { href: 'https://example.test/', search: '' }, innerHeight: 800, innerWidth: 390,
   setTimeout: () => 1, clearTimeout() {}, requestAnimationFrame: fn => fn(),
   matchMedia: () => ({ matches: false }),
   getComputedStyle: () => ({ getPropertyValue: () => '0px' }), Crate,
@@ -74,10 +74,35 @@ context.window = context;
 for (const match of html.matchAll(/<script\b([^>]*)>([\s\S]*?)<\/script>/g)) {
   if (!match[1].includes('src=') && !match[1].includes('application/ld+json')) vm.runInContext(match[2], context);
 }
-vm.runInContext(fs.readFileSync(new URL('i18n.js', root), 'utf8'), context);
-vm.runInContext(fs.readFileSync(new URL('main.js', root), 'utf8'), context);
+for (const script of ['i18n.js', 'vendor/koroman/koroman.browser.js', 'place-text.js', 'main.js']) {
+  vm.runInContext(fs.readFileSync(new URL(script, root), 'utf8'), context);
+}
 ready.forEach(fn => fn());
 context.initMap();
+const store = { id: '123', place_name: '스타벅스 강남역점', road_address_name: '서울 강남구 테헤란로 123',
+  address_name: '서울 강남구 역삼동 12-3', category_name: '음식점 > 카페' };
+assert.equal(document.documentElement.lang, 'en', 'first visit uses the English browser locale');
+context.PayKR.selectPlace(store);
+const result = context.PayKR.resultButton(store, 0).children[1];
+const overlay = context.PayKR.placeOverlay(store);
+const panel = ids['place-details'].children[0];
+for (const field of [ids['place-title'], result.children[0], overlay.children[0]]) {
+  assert.equal(field.textContent, 'Starbucks Gangnam Station Branch');
+}
+for (const field of [panel.children[0], result.children[1], overlay.children[1]]) {
+  assert.equal(field.textContent, '123, Teheran-ro, Gangnam-gu, Seoul');
+}
+assert.equal(ids['place-subtitle'].textContent, 'Restaurant › Café');
+for (const link of [panel.children[1].children[0], overlay.children[2].children[0]]) {
+  assert.equal(link.href, 'https://place.map.kakao.com/123');
+  assert.match(link.textContent, /Korean/);
+}
+assert.equal(panel.children[2].children[0].children[1].textContent, store.place_name + '\n' + store.road_address_name);
+context.selectLanguage('ko');
+assert.equal(result.children[0].textContent, store.place_name);
+assert.equal(overlay.children[1].textContent, store.road_address_name);
+assert.equal(ids['place-subtitle'].textContent, store.category_name);
+context.PayKR.resetPlace();
 assert.equal(mapCount, 1, 'SDK initializes the map exactly once');
 assert.equal(ids['mobile-categories'].children.length, 14, 'all existing categories and All remain available');
 const category = name => ids['mobile-categories'].children.find(el => el.dataset.category === name);
@@ -104,7 +129,7 @@ const pendingNearby = requests.find(request => request.keyword === 'CU');
 category('생활/가전').fire('click');
 const stale = requests.at(-1);
 category('외식').fire('click');
-const place = { id: '1', place_name: '<b>테스트 장소</b>', x: '127.93', y: '37.34', address_name: '테스트 주소', category_name: '음식점', phone: '033-123-4567' };
+const place = { id: '1', place_name: '<b>테스트 장소</b>', x: '127.93', y: '37.34', address_name: '테스트 주소', category_name: '음식점 > 한식', category_group_code: 'FD6', phone: '033-123-4567' };
 const markerCount = markers.length;
 pendingNearby.callback([nearbyPlace], 'OK');
 stale.callback([place], 'OK');
@@ -181,6 +206,16 @@ for (const [code, key] of [[1, 'denied'], [2, 'unavailable'], [3, 'timeout']]) {
   assert.equal(state[2], marker);
   assert.equal(ids['map-status'].dataset.i18n, 'location.' + key);
 }
+context.PayKR.selectPlace(place);
+assert.equal(ids['place-subtitle'].textContent, place.category_name);
+context.selectLanguage('en');
+assert.equal(ids['place-subtitle'].textContent, 'Restaurant');
+assert.equal(ids['place-title'].textContent, '<b>Teseuteu Jangso</b>');
+assert.equal(ids['place-details'].children[0].children[0].textContent, 'Teseuteu Juso');
+assert.ok(elements.some(el => el.dataset.i18n === 'place.details' && el.href === 'https://place.map.kakao.com/1'));
+context.selectLanguage('ko');
+assert.equal(ids['place-title'].textContent, place.place_name);
+assert.equal(ids['place-subtitle'].textContent, place.category_name);
 context.selectLanguage('en');
 assert.equal(document.documentElement.lang, 'en');
 assert.equal(stored['paykr-language'], 'en');

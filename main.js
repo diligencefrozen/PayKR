@@ -80,6 +80,22 @@
       addLink(actions, 'place.directions', `https://map.kakao.com/link/to/${encodeURIComponent(place.place_name)},${Number(place.y)},${Number(place.x)}`);
     }
     content.append(actions);
+    if (!compact) {
+      const tools = document.createElement('div');
+      tools.className = 'place-language-tools';
+      const original = [place.place_name, addressText].filter(Boolean).join('\n');
+      if (/[가-힣]/.test(original)) {
+        const url = new URL('https://translate.google.com/');
+        url.search = new URLSearchParams({ sl: 'ko', tl: 'en', text: original, op: 'translate' });
+        addLink(tools, 'place.translateText', url.href);
+      }
+      if (place.id) {
+        const hint = document.createElement('p');
+        translatedText(hint, 'place.reviewLanguage');
+        tools.append(hint);
+      }
+      content.append(tools);
+    }
     return content;
   }
   function selectPlace(place) {
@@ -87,9 +103,13 @@
     const subtitle = $('place-subtitle');
     delete title.dataset.i18n;
     title.textContent = place.place_name;
-    if (place.category_name) {
+    const category = place.category_name || place.category_group_name;
+    const groupKey = 'place.group.' + place.category_group_code;
+    if (category && Object.hasOwn(messages, groupKey)) {
+      translatedText(subtitle, groupKey, { original: category });
+    } else if (category) {
       delete subtitle.dataset.i18n;
-      subtitle.textContent = place.category_name;
+      subtitle.textContent = category;
     } else translatedText(subtitle, 'place.info');
     $('place-clear').hidden = false;
     $('place-ad').hidden = false;

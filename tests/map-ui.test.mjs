@@ -104,7 +104,7 @@ const pendingNearby = requests.find(request => request.keyword === 'CU');
 category('생활/가전').fire('click');
 const stale = requests.at(-1);
 category('외식').fire('click');
-const place = { id: '1', place_name: '<b>테스트 장소</b>', x: '127.93', y: '37.34', address_name: '테스트 주소', category_name: '음식점', phone: '033-123-4567' };
+const place = { id: '1', place_name: '<b>테스트 장소</b>', x: '127.93', y: '37.34', address_name: '테스트 주소', category_name: '음식점 > 한식', category_group_code: 'FD6', phone: '033-123-4567' };
 const markerCount = markers.length;
 pendingNearby.callback([nearbyPlace], 'OK');
 stale.callback([place], 'OK');
@@ -181,6 +181,19 @@ for (const [code, key] of [[1, 'denied'], [2, 'unavailable'], [3, 'timeout']]) {
   assert.equal(state[2], marker);
   assert.equal(ids['map-status'].dataset.i18n, 'location.' + key);
 }
+context.PayKR.selectPlace(place);
+assert.equal(ids['place-subtitle'].textContent, place.category_name);
+context.selectLanguage('en');
+assert.equal(ids['place-subtitle'].textContent, 'Restaurant');
+assert.equal(ids['place-title'].textContent, place.place_name);
+const translationLink = elements.find(el => el.dataset.i18n === 'place.translateText');
+const translationURL = new URL(translationLink.href);
+assert.equal(translationURL.hostname, 'translate.google.com');
+assert.equal(translationURL.searchParams.get('text'), place.place_name + '\n' + place.address_name);
+assert.equal(translationURL.searchParams.get('tl'), 'en');
+assert.ok(elements.some(el => el.dataset.i18n === 'place.details' && el.href === 'https://place.map.kakao.com/1'));
+context.selectLanguage('ko');
+assert.equal(ids['place-subtitle'].textContent, place.category_name);
 context.selectLanguage('en');
 assert.equal(document.documentElement.lang, 'en');
 assert.equal(stored['paykr-language'], 'en');

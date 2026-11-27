@@ -1,0 +1,13 @@
+name: Bug report
+description: Bug report for PayKR
+title: "[Bug report] "
+body:
+  - type: markdown
+    attributes:
+      value: "Reports are public. Omit personal information."
+  - type: textarea
+    id: details
+    attributes:
+      label: Steps, expected outcome, actual outcome and browser
+    validations:
+      required: true

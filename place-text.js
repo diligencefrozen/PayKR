@@ -1,5 +1,6 @@
+import { koroman } from './vendor/koroman/koroman.browser.js';
 // English display values for Kakao Local results. Keep the provider's fields intact.
-const placeText = (() => {
+export const placeText = (() => {
   const brands = new Map(Object.entries({
     'GS25': 'GS25', 'CU': 'CU', 'KFC': 'KFC', '세븐일레븐': '7-Eleven', '이마트24': 'emart24', '미니스톱': 'MINISTOP',
     '스타벅스': 'Starbucks', '투썸플레이스': 'A Twosome Place', '이디야커피': 'EDIYA COFFEE',

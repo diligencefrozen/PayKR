@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#145bd6">
+  <meta name="robots" content="noindex">
+  <link rel="icon" href="./icons/paykr-192.png">
+  <link rel="manifest" href="./manifest.webmanifest">
+  <link rel="apple-touch-icon" href="./icons/apple-touch-icon.png">
+  <title>PayKR · Offline</title>
+  <link rel="stylesheet" href="./src/infrastructure/pwa/offline.css">
+</head>
+<body>
+  <main>
+    <header><a href="./" class="wordmark">Pay<span>KR</span></a>
+      <select data-locale data-i18n-aria-label="common.language" aria-label="Language"></select>
+    </header>
+    <h1 data-i18n="offline.title">You're offline</h1>
+    <p data-i18n="offline.body">Live map and branch searches need an internet connection. You can still use the guide and show these questions to staff.</p>
+    <blockquote lang="ko">애플페이로 결제할 수 있나요?</blockquote>
+    <blockquote lang="ko">해외에서 발급받은 카드인데 결제할 수 있나요?</blockquote>
+    <nav>
+      <a data-i18n="nav.guide" data-page="./guide.html" href="./guide.html">Travel guide</a>
+      <a class="retry" data-i18n="offline.retry" data-page="./" href="./">Try again</a>
+    </nav>
+  </main>
+  <script type="module" src="./src/infrastructure/pwa/offline.js"></script>
+</body>
+</html>

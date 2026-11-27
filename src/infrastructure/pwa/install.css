@@ -1,0 +1,42 @@
+.pwa-card {
+  box-sizing: border-box;
+  display: flex;
+  gap: 0.45rem 0.8rem;
+  flex-wrap: wrap;
+  align-items: center;
+  margin: 0.65rem 0;
+  padding: 0.7rem 0.9rem;
+  border: 1px solid color-mix(in srgb, currentColor 25%, transparent);
+  border-radius: 0.85rem;
+  background: color-mix(in srgb, #145bd6 8%, Canvas);
+  color: CanvasText;
+  font: inherit;
+}
+.pwa-card p {
+  flex: 1 1 12rem;
+  margin: 0;
+  line-height: 1.45;
+}
+.pwa-card button {
+  min-height: 44px;
+  padding: 0.45rem 0.8rem;
+  border: 1px solid transparent;
+  border-radius: 0.55rem;
+  font: inherit;
+  cursor: pointer;
+  color: #fff;
+  background: #145bd6;
+}
+.pwa-card button.secondary {
+  color: inherit;
+  background: transparent;
+  border-color: currentColor;
+}
+.pwa-card button:focus-visible {
+  outline: 3px solid currentColor;
+  outline-offset: 2px;
+}
+.pwa-card[hidden],
+[data-install][hidden] {
+  display: none !important;
+}

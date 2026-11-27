@@ -1,0 +1,1823 @@
+[
+  {
+    "id": "store-1",
+    "names": {
+      "ko": "GS25",
+      "en": "GS25"
+    },
+    "aliases": [],
+    "categories": [
+      "편의점&카페"
+    ],
+    "icon": "logo/conveniencestore.png"
+  },
+  {
+    "id": "store-2",
+    "names": {
+      "ko": "CU",
+      "en": "CU"
+    },
+    "aliases": [],
+    "categories": [
+      "편의점&카페"
+    ],
+    "icon": "logo/conveniencestore.png"
+  },
+  {
+    "id": "store-3",
+    "names": {
+      "ko": "세븐일레븐",
+      "en": "7-Eleven"
+    },
+    "aliases": [
+      "セブンイレブン",
+      "7 eleven"
+    ],
+    "categories": [
+      "편의점&카페"
+    ],
+    "icon": "logo/conveniencestore.png"
+  },
+  {
+    "id": "store-4",
+    "names": {
+      "ko": "이마트24",
+      "en": "emart24"
+    },
+    "aliases": [],
+    "categories": [
+      "편의점&카페"
+    ],
+    "icon": "logo/conveniencestore.png"
+  },
+  {
+    "id": "store-5",
+    "names": {
+      "ko": "미니스톱",
+      "en": "MINISTOP"
+    },
+    "aliases": [],
+    "categories": [
+      "편의점&카페"
+    ],
+    "icon": "logo/conveniencestore.png"
+  },
+  {
+    "id": "store-6",
+    "names": {
+      "ko": "스토리웨이"
+    },
+    "aliases": [],
+    "categories": [
+      "편의점&카페"
+    ],
+    "icon": "logo/conveniencestore.png"
+  },
+  {
+    "id": "store-7",
+    "names": {
+      "ko": "씨스페이스24"
+    },
+    "aliases": [],
+    "categories": [
+      "편의점&카페"
+    ],
+    "icon": "logo/conveniencestore.png"
+  },
+  {
+    "id": "store-8",
+    "names": {
+      "ko": "스타벅스",
+      "en": "Starbucks"
+    },
+    "aliases": [
+      "スターバックス",
+      "星巴克"
+    ],
+    "categories": [
+      "편의점&카페"
+    ],
+    "icon": "logo/cafe.png"
+  },
+  {
+    "id": "store-9",
+    "names": {
+      "ko": "투썸플레이스",
+      "en": "A Twosome Place"
+    },
+    "aliases": [],
+    "categories": [
+      "편의점&카페"
+    ],
+    "icon": "logo/cafe.png"
+  },
+  {
+    "id": "store-10",
+    "names": {
+      "ko": "빽다방",
+      "en": "Paik’s Coffee"
+    },
+    "aliases": [],
+    "categories": [
+      "편의점&카페"
+    ],
+    "icon": "logo/cafe.png"
+  },
+  {
+    "id": "store-11",
+    "names": {
+      "ko": "메가커피",
+      "en": "MEGA COFFEE"
+    },
+    "aliases": [],
+    "categories": [
+      "편의점&카페"
+    ],
+    "icon": "logo/cafe.png"
+  },
+  {
+    "id": "store-12",
+    "names": {
+      "ko": "이디야커피",
+      "en": "EDIYA COFFEE"
+    },
+    "aliases": [],
+    "categories": [
+      "편의점&카페"
+    ],
+    "icon": "logo/cafe.png"
+  },
+  {
+    "id": "store-13",
+    "names": {
+      "ko": "더벤티",
+      "en": "The Venti"
+    },
+    "aliases": [],
+    "categories": [
+      "편의점&카페"
+    ],
+    "icon": "logo/cafe.png"
+  },
+  {
+    "id": "store-14",
+    "names": {
+      "ko": "할리스",
+      "en": "HOLLYS"
+    },
+    "aliases": [],
+    "categories": [
+      "편의점&카페"
+    ],
+    "icon": "logo/cafe.png"
+  },
+  {
+    "id": "store-15",
+    "names": {
+      "ko": "공차",
+      "en": "Gong cha"
+    },
+    "aliases": [],
+    "categories": [
+      "편의점&카페"
+    ],
+    "icon": "logo/cafe.png"
+  },
+  {
+    "id": "store-16",
+    "names": {
+      "ko": "커피빈",
+      "en": "The Coffee Bean"
+    },
+    "aliases": [],
+    "categories": [
+      "편의점&카페"
+    ],
+    "icon": "logo/cafe.png"
+  },
+  {
+    "id": "store-17",
+    "names": {
+      "ko": "엔제리너스"
+    },
+    "aliases": [],
+    "categories": [
+      "편의점&카페"
+    ],
+    "icon": "logo/cafe.png"
+  },
+  {
+    "id": "store-18",
+    "names": {
+      "ko": "폴바셋",
+      "en": "Paul Bassett"
+    },
+    "aliases": [],
+    "categories": [
+      "편의점&카페"
+    ],
+    "icon": "logo/cafe.png"
+  },
+  {
+    "id": "store-19",
+    "names": {
+      "ko": "파스쿠찌",
+      "en": "Pascucci"
+    },
+    "aliases": [],
+    "categories": [
+      "편의점&카페"
+    ],
+    "icon": "logo/cafe.png"
+  },
+  {
+    "id": "store-20",
+    "names": {
+      "ko": "블루보틀",
+      "en": "Blue Bottle"
+    },
+    "aliases": [],
+    "categories": [
+      "편의점&카페"
+    ],
+    "icon": "logo/cafe.png"
+  },
+  {
+    "id": "store-21",
+    "names": {
+      "ko": "탐앤탐스"
+    },
+    "aliases": [],
+    "categories": [
+      "편의점&카페"
+    ],
+    "icon": "logo/cafe.png"
+  },
+  {
+    "id": "store-22",
+    "names": {
+      "ko": "아마스빈"
+    },
+    "aliases": [],
+    "categories": [
+      "편의점&카페"
+    ],
+    "icon": "logo/cafe.png"
+  },
+  {
+    "id": "store-23",
+    "names": {
+      "ko": "커피베이"
+    },
+    "aliases": [],
+    "categories": [
+      "편의점&카페"
+    ],
+    "icon": "logo/cafe.png"
+  },
+  {
+    "id": "store-24",
+    "names": {
+      "ko": "테라로사"
+    },
+    "aliases": [],
+    "categories": [
+      "편의점&카페"
+    ],
+    "icon": "logo/cafe.png"
+  },
+  {
+    "id": "store-25",
+    "names": {
+      "ko": "잠바주스"
+    },
+    "aliases": [],
+    "categories": [
+      "편의점&카페"
+    ],
+    "icon": "logo/cafe.png"
+  },
+  {
+    "id": "store-26",
+    "names": {
+      "ko": "커피앳웍스"
+    },
+    "aliases": [],
+    "categories": [
+      "편의점&카페"
+    ],
+    "icon": "logo/cafe.png"
+  },
+  {
+    "id": "store-27",
+    "names": {
+      "ko": "카페스토리웨이"
+    },
+    "aliases": [],
+    "categories": [
+      "편의점&카페"
+    ],
+    "icon": "logo/cafe.png"
+  },
+  {
+    "id": "store-28",
+    "names": {
+      "ko": "카페소비"
+    },
+    "aliases": [],
+    "categories": [
+      "편의점&카페"
+    ],
+    "icon": "logo/cafe.png"
+  },
+  {
+    "id": "store-29",
+    "names": {
+      "ko": "아티제"
+    },
+    "aliases": [],
+    "categories": [
+      "편의점&카페"
+    ],
+    "icon": "logo/cafe.png"
+  },
+  {
+    "id": "store-30",
+    "names": {
+      "ko": "댄싱컵"
+    },
+    "aliases": [],
+    "categories": [
+      "편의점&카페"
+    ],
+    "icon": "logo/cafe.png"
+  },
+  {
+    "id": "store-31",
+    "names": {
+      "ko": "팀홀튼",
+      "en": "Tim Hortons"
+    },
+    "aliases": [],
+    "categories": [
+      "편의점&카페"
+    ],
+    "icon": "logo/cafe.png"
+  },
+  {
+    "id": "store-32",
+    "names": {
+      "ko": "카페콤마"
+    },
+    "aliases": [],
+    "categories": [
+      "편의점&카페"
+    ],
+    "icon": "logo/cafe.png"
+  },
+  {
+    "id": "store-33",
+    "names": {
+      "ko": "하이오커피"
+    },
+    "aliases": [],
+    "categories": [
+      "편의점&카페"
+    ],
+    "icon": "logo/cafe.png"
+  },
+  {
+    "id": "store-34",
+    "names": {
+      "ko": "카페봄봄"
+    },
+    "aliases": [],
+    "categories": [
+      "편의점&카페"
+    ],
+    "icon": "logo/cafe.png"
+  },
+  {
+    "id": "store-35",
+    "names": {
+      "ko": "롯데백화점"
+    },
+    "aliases": [],
+    "categories": [
+      "백화점/쇼핑"
+    ],
+    "icon": "logo/departmentstore.png"
+  },
+  {
+    "id": "store-36",
+    "names": {
+      "ko": "롯데아울렛"
+    },
+    "aliases": [],
+    "categories": [
+      "백화점/쇼핑"
+    ],
+    "icon": "logo/mall.png"
+  },
+  {
+    "id": "store-37",
+    "names": {
+      "ko": "롯데몰"
+    },
+    "aliases": [],
+    "categories": [
+      "백화점/쇼핑"
+    ],
+    "icon": "logo/mall.png"
+  },
+  {
+    "id": "store-38",
+    "names": {
+      "ko": "롯데면세점"
+    },
+    "aliases": [],
+    "categories": [
+      "백화점/쇼핑"
+    ],
+    "icon": "logo/mall.png"
+  },
+  {
+    "id": "store-39",
+    "names": {
+      "ko": "현대백화점"
+    },
+    "aliases": [],
+    "categories": [
+      "백화점/쇼핑"
+    ],
+    "icon": "logo/departmentstore.png"
+  },
+  {
+    "id": "store-40",
+    "names": {
+      "ko": "현대아울렛"
+    },
+    "aliases": [],
+    "categories": [
+      "백화점/쇼핑"
+    ],
+    "icon": "logo/mall.png"
+  },
+  {
+    "id": "store-41",
+    "names": {
+      "ko": "현대백화점면세점"
+    },
+    "aliases": [],
+    "categories": [
+      "백화점/쇼핑"
+    ],
+    "icon": "logo/departmentstore.png"
+  },
+  {
+    "id": "store-42",
+    "names": {
+      "ko": "갤러리아"
+    },
+    "aliases": [],
+    "categories": [
+      "백화점/쇼핑"
+    ],
+    "icon": "logo/mall.png"
+  },
+  {
+    "id": "store-43",
+    "names": {
+      "ko": "AK플라자"
+    },
+    "aliases": [],
+    "categories": [
+      "백화점/쇼핑"
+    ],
+    "icon": "logo/mall.png"
+  },
+  {
+    "id": "store-44",
+    "names": {
+      "ko": "파르나스몰"
+    },
+    "aliases": [],
+    "categories": [
+      "백화점/쇼핑"
+    ],
+    "icon": "logo/mall.png"
+  },
+  {
+    "id": "store-45",
+    "names": {
+      "ko": "아이파크몰"
+    },
+    "aliases": [],
+    "categories": [
+      "백화점/쇼핑"
+    ],
+    "icon": "logo/mall.png"
+  },
+  {
+    "id": "store-46",
+    "names": {
+      "ko": "앨리웨이"
+    },
+    "aliases": [],
+    "categories": [
+      "백화점/쇼핑"
+    ],
+    "icon": "logo/mall.png"
+  },
+  {
+    "id": "store-47",
+    "names": {
+      "ko": "신라면세점"
+    },
+    "aliases": [],
+    "categories": [
+      "백화점/쇼핑"
+    ],
+    "icon": "logo/mall.png"
+  },
+  {
+    "id": "store-48",
+    "names": {
+      "ko": "무신사스탠다드"
+    },
+    "aliases": [],
+    "categories": [
+      "백화점/쇼핑"
+    ],
+    "icon": "logo/mall.png"
+  },
+  {
+    "id": "store-49",
+    "names": {
+      "ko": "이니스프리"
+    },
+    "aliases": [],
+    "categories": [
+      "백화점/쇼핑",
+      "패션/뷰티"
+    ],
+    "icon": "logo/mall.png"
+  },
+  {
+    "id": "store-50",
+    "names": {
+      "ko": "스타필드"
+    },
+    "aliases": [],
+    "categories": [
+      "백화점/쇼핑"
+    ],
+    "icon": "logo/mall.png"
+  },
+  {
+    "id": "store-51",
+    "names": {
+      "ko": "JDC면세점"
+    },
+    "aliases": [],
+    "categories": [
+      "백화점/쇼핑"
+    ],
+    "icon": "logo/mall.png"
+  },
+  {
+    "id": "store-52",
+    "names": {
+      "ko": "코스트코",
+      "en": "Costco"
+    },
+    "aliases": [
+      "コストコ",
+      "好市多"
+    ],
+    "categories": [
+      "마트/슈퍼"
+    ],
+    "icon": "logo/mart.png"
+  },
+  {
+    "id": "store-53",
+    "names": {
+      "ko": "롯데마트",
+      "en": "LOTTE Mart"
+    },
+    "aliases": [],
+    "categories": [
+      "마트/슈퍼"
+    ],
+    "icon": "logo/mart.png"
+  },
+  {
+    "id": "store-54",
+    "names": {
+      "ko": "롯데슈퍼",
+      "en": "LOTTE Super"
+    },
+    "aliases": [],
+    "categories": [
+      "마트/슈퍼"
+    ],
+    "icon": "logo/mart.png"
+  },
+  {
+    "id": "store-55",
+    "names": {
+      "ko": "홈플러스 마트"
+    },
+    "aliases": [],
+    "categories": [
+      "마트/슈퍼"
+    ],
+    "icon": "logo/mart.png"
+  },
+  {
+    "id": "store-56",
+    "names": {
+      "ko": "홈플러스 익스프레스"
+    },
+    "aliases": [],
+    "categories": [
+      "마트/슈퍼"
+    ],
+    "icon": "logo/mart.png"
+  },
+  {
+    "id": "store-57",
+    "names": {
+      "ko": "GS 더 프레시"
+    },
+    "aliases": [],
+    "categories": [
+      "마트/슈퍼"
+    ],
+    "icon": "logo/mart.png"
+  },
+  {
+    "id": "store-58",
+    "names": {
+      "ko": "농협하나로마트"
+    },
+    "aliases": [],
+    "categories": [
+      "마트/슈퍼"
+    ],
+    "icon": "logo/mart.png"
+  },
+  {
+    "id": "store-59",
+    "names": {
+      "ko": "초록마을"
+    },
+    "aliases": [],
+    "categories": [
+      "마트/슈퍼"
+    ],
+    "icon": "logo/mart.png"
+  },
+  {
+    "id": "store-60",
+    "names": {
+      "ko": "식자재왕도매마트"
+    },
+    "aliases": [],
+    "categories": [
+      "마트/슈퍼",
+      "제과/디저트"
+    ],
+    "icon": "logo/mart.png"
+  },
+  {
+    "id": "store-61",
+    "names": {
+      "ko": "고향뜨락"
+    },
+    "aliases": [],
+    "categories": [
+      "마트/슈퍼"
+    ],
+    "icon": "logo/mart.png"
+  },
+  {
+    "id": "store-62",
+    "names": {
+      "ko": "이마트 에브리데이"
+    },
+    "aliases": [],
+    "categories": [
+      "마트/슈퍼"
+    ],
+    "icon": "logo/mart.png"
+  },
+  {
+    "id": "store-63",
+    "names": {
+      "ko": "파리바게뜨",
+      "en": "Paris Baguette"
+    },
+    "aliases": [],
+    "categories": [
+      "제과/디저트"
+    ],
+    "icon": "logo/bakery.png"
+  },
+  {
+    "id": "store-64",
+    "names": {
+      "ko": "파리크라상"
+    },
+    "aliases": [],
+    "categories": [
+      "제과/디저트"
+    ],
+    "icon": "logo/bakery.png"
+  },
+  {
+    "id": "store-65",
+    "names": {
+      "ko": "뚜레주르",
+      "en": "Tous les Jours"
+    },
+    "aliases": [],
+    "categories": [
+      "제과/디저트"
+    ],
+    "icon": "logo/bakery.png"
+  },
+  {
+    "id": "store-66",
+    "names": {
+      "ko": "베스킨라빈스",
+      "en": "Baskin-Robbins"
+    },
+    "aliases": [],
+    "categories": [
+      "제과/디저트"
+    ],
+    "icon": "logo/bakery.png"
+  },
+  {
+    "id": "store-67",
+    "names": {
+      "ko": "던킨",
+      "en": "Dunkin’"
+    },
+    "aliases": [],
+    "categories": [
+      "제과/디저트"
+    ],
+    "icon": "logo/bakery.png"
+  },
+  {
+    "id": "store-68",
+    "names": {
+      "ko": "크리스피 크림 도넛"
+    },
+    "aliases": [],
+    "categories": [
+      "제과/디저트"
+    ],
+    "icon": "logo/bakery.png"
+  },
+  {
+    "id": "store-69",
+    "names": {
+      "ko": "디저트39"
+    },
+    "aliases": [],
+    "categories": [
+      "제과/디저트"
+    ],
+    "icon": "logo/bakery.png"
+  },
+  {
+    "id": "store-70",
+    "names": {
+      "ko": "트리핀"
+    },
+    "aliases": [],
+    "categories": [
+      "제과/디저트"
+    ],
+    "icon": "logo/bakery.png"
+  },
+  {
+    "id": "store-71",
+    "names": {
+      "ko": "빚은"
+    },
+    "aliases": [],
+    "categories": [
+      "제과/디저트"
+    ],
+    "icon": "logo/bakery.png"
+  },
+  {
+    "id": "store-72",
+    "names": {
+      "ko": "쿠키날"
+    },
+    "aliases": [],
+    "categories": [
+      "제과/디저트"
+    ],
+    "icon": "logo/bakery.png"
+  },
+  {
+    "id": "store-73",
+    "names": {
+      "ko": "쇼콜라팔레트"
+    },
+    "aliases": [],
+    "categories": [
+      "제과/디저트"
+    ],
+    "icon": "logo/bakery.png"
+  },
+  {
+    "id": "store-74",
+    "names": {
+      "ko": "롯데리아",
+      "en": "Lotteria"
+    },
+    "aliases": [],
+    "categories": [
+      "외식"
+    ],
+    "icon": "logo/restaurants.png"
+  },
+  {
+    "id": "store-75",
+    "names": {
+      "ko": "맥도날드",
+      "en": "McDonald’s"
+    },
+    "aliases": [
+      "マクドナルド",
+      "麦当劳",
+      "麥當勞"
+    ],
+    "categories": [
+      "외식"
+    ],
+    "icon": "logo/restaurants.png"
+  },
+  {
+    "id": "store-76",
+    "names": {
+      "ko": "KFC",
+      "en": "KFC"
+    },
+    "aliases": [],
+    "categories": [
+      "외식"
+    ],
+    "icon": "logo/restaurants.png"
+  },
+  {
+    "id": "store-77",
+    "names": {
+      "ko": "쉐이크쉑",
+      "en": "Shake Shack"
+    },
+    "aliases": [],
+    "categories": [
+      "외식"
+    ],
+    "icon": "logo/restaurants.png"
+  },
+  {
+    "id": "store-78",
+    "names": {
+      "ko": "라그릴리아"
+    },
+    "aliases": [],
+    "categories": [
+      "외식"
+    ],
+    "icon": "logo/restaurants.png"
+  },
+  {
+    "id": "store-79",
+    "names": {
+      "ko": "피그인더가든"
+    },
+    "aliases": [],
+    "categories": [
+      "외식"
+    ],
+    "icon": "logo/restaurants.png"
+  },
+  {
+    "id": "store-80",
+    "names": {
+      "ko": "김가네"
+    },
+    "aliases": [],
+    "categories": [
+      "외식"
+    ],
+    "icon": "logo/restaurants.png"
+  },
+  {
+    "id": "store-81",
+    "names": {
+      "ko": "봉추찜닭"
+    },
+    "aliases": [],
+    "categories": [
+      "외식"
+    ],
+    "icon": "logo/restaurants.png"
+  },
+  {
+    "id": "store-82",
+    "names": {
+      "ko": "스트릿"
+    },
+    "aliases": [],
+    "categories": [
+      "외식"
+    ],
+    "icon": "logo/restaurants.png"
+  },
+  {
+    "id": "store-83",
+    "names": {
+      "ko": "퀸즈파크"
+    },
+    "aliases": [],
+    "categories": [
+      "외식"
+    ],
+    "icon": "logo/restaurants.png"
+  },
+  {
+    "id": "store-84",
+    "names": {
+      "ko": "베라"
+    },
+    "aliases": [],
+    "categories": [
+      "외식"
+    ],
+    "icon": "logo/restaurants.png"
+  },
+  {
+    "id": "store-85",
+    "names": {
+      "ko": "라뜰리에"
+    },
+    "aliases": [],
+    "categories": [
+      "외식"
+    ],
+    "icon": "logo/restaurants.png"
+  },
+  {
+    "id": "store-86",
+    "names": {
+      "ko": "에그슬럿"
+    },
+    "aliases": [],
+    "categories": [
+      "외식"
+    ],
+    "icon": "logo/restaurants.png"
+  },
+  {
+    "id": "store-87",
+    "names": {
+      "ko": "시티델리"
+    },
+    "aliases": [],
+    "categories": [
+      "외식"
+    ],
+    "icon": "logo/restaurants.png"
+  },
+  {
+    "id": "store-88",
+    "names": {
+      "ko": "리나스"
+    },
+    "aliases": [],
+    "categories": [
+      "외식"
+    ],
+    "icon": "logo/restaurants.png"
+  },
+  {
+    "id": "store-89",
+    "names": {
+      "ko": "VIPS"
+    },
+    "aliases": [],
+    "categories": [
+      "외식"
+    ],
+    "icon": "logo/restaurants.png"
+  },
+  {
+    "id": "store-90",
+    "names": {
+      "ko": "제일제면소"
+    },
+    "aliases": [],
+    "categories": [
+      "외식"
+    ],
+    "icon": "logo/restaurants.png"
+  },
+  {
+    "id": "store-91",
+    "names": {
+      "ko": "더플레이스"
+    },
+    "aliases": [],
+    "categories": [
+      "외식"
+    ],
+    "icon": "logo/restaurants.png"
+  },
+  {
+    "id": "store-92",
+    "names": {
+      "ko": "더스테이크하우스"
+    },
+    "aliases": [],
+    "categories": [
+      "외식"
+    ],
+    "icon": "logo/restaurants.png"
+  },
+  {
+    "id": "store-93",
+    "names": {
+      "ko": "더테이스터블"
+    },
+    "aliases": [],
+    "categories": [
+      "외식"
+    ],
+    "icon": "logo/restaurants.png"
+  },
+  {
+    "id": "store-94",
+    "names": {
+      "ko": "파파이스"
+    },
+    "aliases": [],
+    "categories": [
+      "외식"
+    ],
+    "icon": "logo/restaurants.png"
+  },
+  {
+    "id": "store-95",
+    "names": {
+      "ko": "신라대학교 미대식당"
+    },
+    "aliases": [],
+    "categories": [
+      "외식"
+    ],
+    "icon": "logo/restaurants.png"
+  },
+  {
+    "id": "store-96",
+    "names": {
+      "ko": "쿠차라"
+    },
+    "aliases": [],
+    "categories": [
+      "외식"
+    ],
+    "icon": "logo/restaurants.png"
+  },
+  {
+    "id": "store-97",
+    "names": {
+      "ko": "아웃백 스테이크하우스"
+    },
+    "aliases": [],
+    "categories": [
+      "외식"
+    ],
+    "icon": "logo/restaurants.png"
+  },
+  {
+    "id": "store-98",
+    "names": {
+      "ko": "플레이팅"
+    },
+    "aliases": [],
+    "categories": [
+      "외식"
+    ],
+    "icon": "logo/restaurants.png"
+  },
+  {
+    "id": "store-99",
+    "names": {
+      "ko": "이삭토스트"
+    },
+    "aliases": [],
+    "categories": [
+      "외식"
+    ],
+    "icon": "logo/restaurants.png"
+  },
+  {
+    "id": "store-100",
+    "names": {
+      "ko": "한솥도시락"
+    },
+    "aliases": [],
+    "categories": [
+      "외식"
+    ],
+    "icon": "logo/restaurants.png"
+  },
+  {
+    "id": "store-101",
+    "names": {
+      "ko": "파이브가이즈",
+      "en": "Five Guys"
+    },
+    "aliases": [],
+    "categories": [
+      "외식"
+    ],
+    "icon": "logo/restaurants.png"
+  },
+  {
+    "id": "store-102",
+    "names": {
+      "ko": "이케아",
+      "en": "IKEA"
+    },
+    "aliases": [],
+    "categories": [
+      "생활/가전"
+    ],
+    "icon": "logo/homeappliances.png"
+  },
+  {
+    "id": "store-103",
+    "names": {
+      "ko": "다이소",
+      "en": "Daiso"
+    },
+    "aliases": [
+      "ダイソー",
+      "大创",
+      "大創"
+    ],
+    "categories": [
+      "생활/가전"
+    ],
+    "icon": "logo/homeappliances.png"
+  },
+  {
+    "id": "store-104",
+    "names": {
+      "ko": "롯데하이마트"
+    },
+    "aliases": [],
+    "categories": [
+      "생활/가전"
+    ],
+    "icon": "logo/homeappliances.png"
+  },
+  {
+    "id": "store-105",
+    "names": {
+      "ko": "LG전자 베스트샵"
+    },
+    "aliases": [],
+    "categories": [
+      "생활/가전"
+    ],
+    "icon": "logo/homeappliances.png"
+  },
+  {
+    "id": "store-106",
+    "names": {
+      "ko": "프리스비"
+    },
+    "aliases": [],
+    "categories": [
+      "생활/가전"
+    ],
+    "icon": "logo/homeappliances.png"
+  },
+  {
+    "id": "store-107",
+    "names": {
+      "ko": "에이샵"
+    },
+    "aliases": [],
+    "categories": [
+      "생활/가전"
+    ],
+    "icon": "logo/homeappliances.png"
+  },
+  {
+    "id": "store-108",
+    "names": {
+      "ko": "윌리스"
+    },
+    "aliases": [],
+    "categories": [
+      "생활/가전"
+    ],
+    "icon": "logo/homeappliances.png"
+  },
+  {
+    "id": "store-109",
+    "names": {
+      "ko": "아트박스",
+      "en": "ARTBOX"
+    },
+    "aliases": [],
+    "categories": [
+      "생활/가전"
+    ],
+    "icon": "logo/homeappliances.png"
+  },
+  {
+    "id": "store-110",
+    "names": {
+      "ko": "ABC마트"
+    },
+    "aliases": [],
+    "categories": [
+      "생활/가전",
+      "패션/뷰티"
+    ],
+    "icon": "logo/homeappliances.png"
+  },
+  {
+    "id": "store-111",
+    "names": {
+      "ko": "오피스디포"
+    },
+    "aliases": [],
+    "categories": [
+      "생활/가전"
+    ],
+    "icon": "logo/homeappliances.png"
+  },
+  {
+    "id": "store-112",
+    "names": {
+      "ko": "토이저러스"
+    },
+    "aliases": [],
+    "categories": [
+      "생활/가전"
+    ],
+    "icon": "logo/homeappliances.png"
+  },
+  {
+    "id": "store-113",
+    "names": {
+      "ko": "프린트카페"
+    },
+    "aliases": [],
+    "categories": [
+      "생활/가전"
+    ],
+    "icon": "logo/homeappliances.png"
+  },
+  {
+    "id": "store-114",
+    "names": {
+      "ko": "에이스침대"
+    },
+    "aliases": [],
+    "categories": [
+      "생활/가전"
+    ],
+    "icon": "logo/homeappliances.png"
+  },
+  {
+    "id": "store-115",
+    "names": {
+      "ko": "해비치호텔앤드 리조트"
+    },
+    "aliases": [],
+    "categories": [
+      "호텔/리조트"
+    ],
+    "icon": "logo/hotelandresort.png"
+  },
+  {
+    "id": "store-116",
+    "names": {
+      "ko": "롯데호텔",
+      "en": "Lotte Hotel"
+    },
+    "aliases": [],
+    "categories": [
+      "호텔/리조트"
+    ],
+    "icon": "logo/hotelandresort.png"
+  },
+  {
+    "id": "store-117",
+    "names": {
+      "ko": "호텔신라"
+    },
+    "aliases": [],
+    "categories": [
+      "호텔/리조트"
+    ],
+    "icon": "logo/hotelandresort.png"
+  },
+  {
+    "id": "store-118",
+    "names": {
+      "ko": "그랜드 하얏트 서울"
+    },
+    "aliases": [],
+    "categories": [
+      "호텔/리조트"
+    ],
+    "icon": "logo/hotelandresort.png"
+  },
+  {
+    "id": "store-119",
+    "names": {
+      "ko": "그랜드 하얏트 인천"
+    },
+    "aliases": [],
+    "categories": [
+      "호텔/리조트"
+    ],
+    "icon": "logo/hotelandresort.png"
+  },
+  {
+    "id": "store-120",
+    "names": {
+      "ko": "파크 하얏트 서울"
+    },
+    "aliases": [],
+    "categories": [
+      "호텔/리조트"
+    ],
+    "icon": "logo/hotelandresort.png"
+  },
+  {
+    "id": "store-121",
+    "names": {
+      "ko": "파크 하얏트 부산"
+    },
+    "aliases": [],
+    "categories": [
+      "호텔/리조트"
+    ],
+    "icon": "logo/hotelandresort.png"
+  },
+  {
+    "id": "store-122",
+    "names": {
+      "ko": "콘래드 서울"
+    },
+    "aliases": [],
+    "categories": [
+      "호텔/리조트"
+    ],
+    "icon": "logo/hotelandresort.png"
+  },
+  {
+    "id": "store-123",
+    "names": {
+      "ko": "포시즌스 호텔 서울"
+    },
+    "aliases": [],
+    "categories": [
+      "호텔/리조트"
+    ],
+    "icon": "logo/hotelandresort.png"
+  },
+  {
+    "id": "store-124",
+    "names": {
+      "ko": "파라다이스 호텔앤리조트"
+    },
+    "aliases": [],
+    "categories": [
+      "호텔/리조트"
+    ],
+    "icon": "logo/hotelandresort.png"
+  },
+  {
+    "id": "store-125",
+    "names": {
+      "ko": "반얀트리 클럽 앤 스파 서울"
+    },
+    "aliases": [],
+    "categories": [
+      "호텔/리조트"
+    ],
+    "icon": "logo/hotelandresort.png"
+  },
+  {
+    "id": "store-126",
+    "names": {
+      "ko": "조선호텔앤리조트"
+    },
+    "aliases": [],
+    "categories": [
+      "호텔/리조트"
+    ],
+    "icon": "logo/hotelandresort.png"
+  },
+  {
+    "id": "store-127",
+    "names": {
+      "ko": "그랜드 인터컨티넨탈 서울 파르나스"
+    },
+    "aliases": [],
+    "categories": [
+      "호텔/리조트"
+    ],
+    "icon": "logo/hotelandresort.png"
+  },
+  {
+    "id": "store-128",
+    "names": {
+      "ko": "인터컨티넨탈 서울 코엑스"
+    },
+    "aliases": [],
+    "categories": [
+      "호텔/리조트"
+    ],
+    "icon": "logo/hotelandresort.png"
+  },
+  {
+    "id": "store-129",
+    "names": {
+      "ko": "파르나스 호텔 제주"
+    },
+    "aliases": [],
+    "categories": [
+      "호텔/리조트"
+    ],
+    "icon": "logo/hotelandresort.png"
+  },
+  {
+    "id": "store-130",
+    "names": {
+      "ko": "워커힐 호텔앤리조트"
+    },
+    "aliases": [],
+    "categories": [
+      "호텔/리조트"
+    ],
+    "icon": "logo/hotelandresort.png"
+  },
+  {
+    "id": "store-131",
+    "names": {
+      "ko": "워커힐 환승호텔 (인천국제공항)"
+    },
+    "aliases": [],
+    "categories": [
+      "호텔/리조트"
+    ],
+    "icon": "logo/hotelandresort.png"
+  },
+  {
+    "id": "store-132",
+    "names": {
+      "ko": "한화호텔앤드리조트"
+    },
+    "aliases": [],
+    "categories": [
+      "호텔/리조트"
+    ],
+    "icon": "logo/hotelandresort.png"
+  },
+  {
+    "id": "store-133",
+    "names": {
+      "ko": "더 플라자"
+    },
+    "aliases": [],
+    "categories": [
+      "호텔/리조트"
+    ],
+    "icon": "logo/hotelandresort.png"
+  },
+  {
+    "id": "store-134",
+    "names": {
+      "ko": "안다즈 서울 강남"
+    },
+    "aliases": [],
+    "categories": [
+      "호텔/리조트"
+    ],
+    "icon": "logo/hotelandresort.png"
+  },
+  {
+    "id": "store-135",
+    "names": {
+      "ko": "라이즈 오토그래프 컬렉션"
+    },
+    "aliases": [],
+    "categories": [
+      "호텔/리조트"
+    ],
+    "icon": "logo/hotelandresort.png"
+  },
+  {
+    "id": "store-136",
+    "names": {
+      "ko": "오크밸리"
+    },
+    "aliases": [],
+    "categories": [
+      "호텔/리조트"
+    ],
+    "icon": "logo/hotelandresort.png"
+  },
+  {
+    "id": "store-137",
+    "names": {
+      "ko": "다락휴"
+    },
+    "aliases": [],
+    "categories": [
+      "호텔/리조트"
+    ],
+    "icon": "logo/hotelandresort.png"
+  },
+  {
+    "id": "store-138",
+    "names": {
+      "ko": "글래드호텔앤리조트"
+    },
+    "aliases": [],
+    "categories": [
+      "호텔/리조트"
+    ],
+    "icon": "logo/hotelandresort.png"
+  },
+  {
+    "id": "store-139",
+    "names": {
+      "ko": "소피텔 앰배서더 서울"
+    },
+    "aliases": [],
+    "categories": [
+      "호텔/리조트"
+    ],
+    "icon": "logo/hotelandresort.png"
+  },
+  {
+    "id": "store-140",
+    "names": {
+      "ko": "세이지우드"
+    },
+    "aliases": [],
+    "categories": [
+      "호텔/리조트"
+    ],
+    "icon": "logo/hotelandresort.png"
+  },
+  {
+    "id": "store-141",
+    "names": {
+      "ko": "페어몬트 앰배서더 서울"
+    },
+    "aliases": [],
+    "categories": [
+      "호텔/리조트"
+    ],
+    "icon": "logo/hotelandresort.png"
+  },
+  {
+    "id": "store-142",
+    "names": {
+      "ko": "올리브영",
+      "en": "Olive Young"
+    },
+    "aliases": [
+      "オリーブヤング",
+      "欧利芙洋",
+      "歐利芙洋"
+    ],
+    "categories": [
+      "패션/뷰티"
+    ],
+    "icon": "logo/fasion.png"
+  },
+  {
+    "id": "store-143",
+    "names": {
+      "ko": "무신사",
+      "en": "MUSINSA"
+    },
+    "aliases": [],
+    "categories": [
+      "패션/뷰티"
+    ],
+    "icon": "logo/fasion.png"
+  },
+  {
+    "id": "store-144",
+    "names": {
+      "ko": "엠플레이 그라운드"
+    },
+    "aliases": [],
+    "categories": [
+      "패션/뷰티"
+    ],
+    "icon": "logo/fasion.png"
+  },
+  {
+    "id": "store-145",
+    "names": {
+      "ko": "GS칼텍스",
+      "en": "GS Caltex"
+    },
+    "aliases": [],
+    "categories": [
+      "주유/충전"
+    ],
+    "icon": "logo/gasstation.png"
+  },
+  {
+    "id": "store-146",
+    "names": {
+      "ko": "E1"
+    },
+    "aliases": [],
+    "categories": [
+      "주유/충전"
+    ],
+    "icon": "logo/gasstation.png"
+  },
+  {
+    "id": "store-147",
+    "names": {
+      "ko": "롯데시네마"
+    },
+    "aliases": [],
+    "categories": [
+      "영화/도서"
+    ],
+    "icon": "logo/movieandbooks.png"
+  },
+  {
+    "id": "store-148",
+    "names": {
+      "ko": "교보문구"
+    },
+    "aliases": [],
+    "categories": [
+      "영화/도서"
+    ],
+    "icon": "logo/movieandbooks.png"
+  },
+  {
+    "id": "store-149",
+    "names": {
+      "ko": "교보핫트랙스"
+    },
+    "aliases": [],
+    "categories": [
+      "영화/도서"
+    ],
+    "icon": "logo/movieandbooks.png"
+  },
+  {
+    "id": "store-150",
+    "names": {
+      "ko": "영풍문구"
+    },
+    "aliases": [],
+    "categories": [
+      "영화/도서"
+    ],
+    "icon": "logo/movieandbooks.png"
+  },
+  {
+    "id": "store-151",
+    "names": {
+      "ko": "알라딘 중고서점"
+    },
+    "aliases": [],
+    "categories": [
+      "영화/도서"
+    ],
+    "icon": "logo/movieandbooks.png"
+  },
+  {
+    "id": "store-152",
+    "names": {
+      "ko": "종로서적"
+    },
+    "aliases": [],
+    "categories": [
+      "영화/도서"
+    ],
+    "icon": "logo/movieandbooks.png"
+  },
+  {
+    "id": "store-153",
+    "names": {
+      "ko": "서울랜드"
+    },
+    "aliases": [],
+    "categories": [
+      "레저/여행"
+    ],
+    "icon": "logo/leisure.png"
+  },
+  {
+    "id": "store-154",
+    "names": {
+      "ko": "아쿠아플라넷"
+    },
+    "aliases": [],
+    "categories": [
+      "레저/여행"
+    ],
+    "icon": "logo/leisure.png"
+  },
+  {
+    "id": "store-155",
+    "names": {
+      "ko": "설악 워터피아"
+    },
+    "aliases": [],
+    "categories": [
+      "레저/여행"
+    ],
+    "icon": "logo/leisure.png"
+  },
+  {
+    "id": "store-156",
+    "names": {
+      "ko": "N서울타워"
+    },
+    "aliases": [],
+    "categories": [
+      "레저/여행"
+    ],
+    "icon": "logo/leisure.png"
+  },
+  {
+    "id": "store-157",
+    "names": {
+      "ko": "공항철도"
+    },
+    "aliases": [],
+    "categories": [
+      "레저/여행"
+    ],
+    "icon": "logo/leisure.png"
+  },
+  {
+    "id": "store-158",
+    "names": {
+      "ko": "마티나 골드"
+    },
+    "aliases": [],
+    "categories": [
+      "레저/여행"
+    ],
+    "icon": "logo/leisure.png"
+  },
+  {
+    "id": "store-159",
+    "names": {
+      "ko": "마티나 라운지"
+    },
+    "aliases": [],
+    "categories": [
+      "레저/여행"
+    ],
+    "icon": "logo/leisure.png"
+  },
+  {
+    "id": "store-160",
+    "names": {
+      "ko": "성문안 컨트리클럽"
+    },
+    "aliases": [],
+    "categories": [
+      "레저/여행"
+    ],
+    "icon": "logo/leisure.png"
+  }
+]

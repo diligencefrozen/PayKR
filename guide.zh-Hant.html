@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="zh-Hant" dir="ltr" data-entry-locale="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#145bd6">
+  <title data-i18n="guide.meta">韓國旅遊 Apple Pay 指南 · PayKR</title>
+  <meta name="description" data-i18n-content="guide.description" content="確認用卡條件，查看可向店員出示的韓語問題，以及交通與現金使用說明。">
+  <link rel="icon" href="./favicon.svg" type="image/svg+xml">
+  <link rel="manifest" href="./manifest.webmanifest">
+  <link rel="apple-touch-icon" href="./icons/apple-touch-icon.png">
+  <link rel="stylesheet" href="./shared.css">
+  <script src="./theme.js"></script>
+  <script type="module" src="./src/app/bootstrap.js"></script>
+  <style>
+    .travel-guide { max-width: 56rem; margin-inline: auto; padding: clamp(1rem, 4vw, 2.5rem); padding-bottom: 9rem; line-height: 1.6; }
+    .travel-guide h1 { font-size: clamp(1.65rem, 4vw, 2.65rem); line-height: 1.15; margin-block: 1rem .5rem; }
+    .travel-guide h2 { font-size: 1.2rem; line-height: 1.35; margin-block: 0 .45rem; }
+    .travel-guide p { margin-block: 0 .75rem; }
+    .travel-guide a { text-underline-offset: .18em; }
+    .guide-section { padding-block: 1.3rem; border-bottom: 1px solid var(--line,#ccd6e3); scroll-margin-top: 6rem; }
+    .guide-card { padding: 1rem 1.15rem; border: 1px solid var(--line,#ccd6e3); border-inline-start: .25rem solid #3975dd; border-radius: .65rem; margin: .6rem 0; }
+    .guide-card strong { display: block; font-size: 1.22rem; }
+    .guide-card span { display: block; margin-top: .15rem; }
+    html:lang(ko) .guide-card span { display: none; }
+  </style>
+  <link rel="stylesheet" href="./online.css"><link rel="stylesheet" href="./extensions.css">
+  <link rel="canonical" href="https://diligencefrozen.github.io/PayKR/guide.zh-Hant.html">
+  <link rel="alternate" hreflang="en" href="https://diligencefrozen.github.io/PayKR/guide.html">
+  <link rel="alternate" hreflang="ko" href="https://diligencefrozen.github.io/PayKR/guide.ko.html">
+  <link rel="alternate" hreflang="ja" href="https://diligencefrozen.github.io/PayKR/guide.ja.html">
+  <link rel="alternate" hreflang="zh-Hans" href="https://diligencefrozen.github.io/PayKR/guide.zh-Hans.html">
+  <link rel="alternate" hreflang="zh-Hant" href="https://diligencefrozen.github.io/PayKR/guide.zh-Hant.html">
+  <link rel="alternate" hreflang="x-default" href="https://diligencefrozen.github.io/PayKR/guide.html">
+</head>
+<body data-page-type="guide">
+  <header data-header><a class="skip" href="#main-content" data-i18n="common.skip">跳至正文</a><div class="masthead"><div class="wrap"><a class="wordmark" href="./index.zh-Hant.html" data-page="./">Pay<span>KR</span></a>
+    <nav class="top-nav" data-i18n-aria-label="common.navigation" aria-label="主導覽"><a href="./index.zh-Hant.html" data-page="./"  data-i18n="nav.explore">探索地圖</a><a href="./online.zh-Hant.html" data-page="./online.html"  data-i18n="nav.online">線上商店</a><a href="./guide.zh-Hant.html" data-page="./guide.html" aria-current="page" data-i18n="nav.guide">旅遊指南</a><button type="button" data-more aria-haspopup="dialog" data-i18n="nav.more">更多</button></nav>
+    <div class="header-actions"><select data-locale data-compact class="language" data-i18n-aria-label="common.language" aria-label="語言"><option value="en">EN</option><option value="ko">KO</option><option value="ja">JA</option><option value="zh-Hans">简中</option><option value="zh-Hant" selected>繁中</option></select>
+    <select class="header-theme theme-choice" data-theme-choice data-i18n-aria-label="theme.label" aria-label="外觀"><option value="system" data-i18n="theme.system">跟隨系統</option><option value="light" data-i18n="theme.light">淺色</option><option value="dark" data-i18n="theme.dark">深色</option></select>
+    <button class="header-install" data-install data-i18n="install.action" hidden>安裝 App</button></div></div></div></header>
+  <main class="travel-guide" id="main-content">
+    <h1 data-i18n="guide.title">在韓國使用 Apple Pay</h1>
+    <p data-i18n="guide.description">確認用卡條件，查看可向店員出示的韓語問題，以及交通與現金使用說明。</p>
+    <section class="guide-section" id="phrases" aria-labelledby="phrases-title">
+      <h2 id="phrases-title" data-i18n="guide.staff">向店員詢問</h2>
+      <p data-i18n="guide.staffHint">付款前，可向店員出示下列韓語問題。</p>
+      <div class="guide-card"><strong lang="ko">애플페이로 결제할 수 있나요?</strong><span data-i18n="guide.askApple">可以用 Apple Pay 付款嗎？</span></div>
+      <div class="guide-card"><strong lang="ko">해외에서 발급받은 카드인데 결제할 수 있나요?</strong><span data-i18n="guide.askCard">可以使用韓國境外發行的卡付款嗎？</span></div>
+    </section>
+    <section class="guide-section" id="store" aria-labelledby="store-title">
+      <h2 id="store-title" data-i18n="guide.store">在門市感應付款前</h2>
+      <p data-i18n="guide.storeBody">請確認終端機已啟用感應付款，並支援你的卡片組織。即使感應功能尚未啟用，標誌也可能仍在。</p>
+      <a href="https://support.apple.com/ko-kr/120364" data-i18n="guide.networkSource">Apple · 可使用 Apple Pay 的地點</a>
+    </section>
+    <section class="guide-section" id="declined" aria-labelledby="declined-title">
+      <h2 id="declined-title" data-i18n="guide.declined">付款遭拒時</h2>
+      <p data-i18n="guide.declinedBody">請店員核對付款方式。若使用境外發行的卡，請向發卡機構查詢海外消費條件或交易遭拒原因。</p>
+      <a href="https://support.apple.com/en-us/120002" data-i18n="guide.declinedSource">Apple · 付款遭拒時的處理方式</a>
+    </section>
+    <section class="guide-section" id="transit" aria-labelledby="transit-title">
+      <h2 id="transit-title" data-i18n="guide.transit">大眾運輸</h2>
+      <p data-i18n="guide.transitBody">搭車前請確認路線所需的交通卡及加值方式。Apple 列出了「錢包」支援的交通系統與卡片。</p>
+      <a href="https://support.apple.com/ko-kr/118625" data-i18n="guide.transitSource">Apple · 交通系統與交通卡</a>
+    </section>
+    <section class="guide-section" id="cash" aria-labelledby="cash-title">
+      <h2 id="cash-title" data-i18n="guide.cash">現金與提款機</h2>
+      <p data-i18n="guide.cashBody">提款前請核對提款機支援的卡片組織及顯示的手續費，並向發卡機構確認海外提款費用。</p>
+      <a href="https://english.visitkorea.or.kr/svc/contents/infoHtmlView.do?menuSn=374&amp;vcontsId=140040" data-i18n="guide.cashSource">韓國觀光公社 · 貨幣與兌換</a>
+      · <a href="https://www.visa.co.uk/travel-with-visa/travel.html" data-i18n="guide.visaSource">Visa · 在海外使用提款機</a>
+    </section>
+    <section class="guide-section" id="online" aria-labelledby="online-title">
+      <h2 id="online-title" data-i18n="guide.online">網站與 App</h2>
+      <p data-i18n="guide.onlineBody">結帳時，請查看該筆訂單的付款方式中是否有 Apple Pay。</p>
+      <a href="https://support.apple.com/en-us/102626" data-i18n="guide.paymentSource">Apple · 門市、App 內與網站付款</a>
+    </section>
+    <p><span data-i18n="guide.reviewed">資料查核日期</span> · <time data-local-date datetime="2026-11-26">November 26, 2026</time></p>
+    <aside data-slot="guide" data-i18n-aria-label="advertisement.label" aria-label="廣告" hidden></aside>
+    <section class="guide-section" id="privacy" aria-labelledby="privacy-title">
+      <h2 id="privacy-title" data-i18n="common.privacy">隱私說明</h2>
+      <p data-i18n="privacy.location">選擇「附近」後，瀏覽器會要求定位權限。Kakao 會收到包含顯示區域的地圖與搜尋請求。PayKR 不會儲存你的精確位置或搜尋紀錄。</p>
+      <p data-i18n="privacy.storage">此裝置可儲存 App、指南、品牌名錄、語言、外觀和安裝提示偏好，以供下次造訪。</p>
+      <p data-i18n="privacy.external">開啟 GitHub 議題或 Discord 聊天會連線至該服務。其他人可以閱讀公開回報。啟用 Google 廣告與同意管理服務後，可能會依你的設定使用 Cookie 和裝置識別碼。</p>
+    </section>
+  </main>
+  <footer data-footer><div class="app-dock"><div data-pwa-panel></div><nav class="bottom-nav" data-i18n-aria-label="common.navigation" aria-label="主導覽"><a href="./index.zh-Hant.html" data-page="./"  data-i18n="nav.explore">探索地圖</a><a href="./online.zh-Hant.html" data-page="./online.html"  data-i18n="nav.online">線上商店</a><a href="./guide.zh-Hant.html" data-page="./guide.html" aria-current="page" data-i18n="nav.guide">旅遊指南</a><button type="button" data-more aria-haspopup="dialog" data-i18n="nav.more">更多</button></nav></div>
+    <button class="feedback-trigger" id="feedback-open"><span data-i18n="feedback.open">意見回饋</span></button>
+    <dialog id="settings" aria-labelledby="settings-title"><h2 id="settings-title" data-i18n="nav.more">更多</h2>
+      <label class="setting-row"><span data-i18n="theme.label">外觀</span><select data-theme-choice>
+      <option value="system" data-i18n="theme.system">跟隨系統</option><option value="light" data-i18n="theme.light">淺色</option><option value="dark" data-i18n="theme.dark">深色</option></select></label>
+      <a href="guide.zh-Hant.html#privacy" data-page="guide.html#privacy" data-i18n="common.privacy">隱私說明</a>
+      <a href="./docs/release-history.txt" data-i18n="common.history">更新紀錄（韓文與英文）</a><button data-install data-i18n="install.action" hidden>安裝 App</button><button id="clear-cache" data-i18n="common.clearCache">清除已儲存的名錄</button><p id="cache-status" role="status"></p>
+      <button data-install-help data-i18n="install.iosGuide" hidden>如何加入主畫面</button>
+      <form method="dialog"><button data-i18n="common.close">關閉</button></form></dialog>
+    <dialog id="feedback-dialog" aria-labelledby="feedback-title">
+      <div class="feedback-heading"><h2 id="feedback-title" data-i18n="feedback.title">提交意見</h2>
+      <form method="dialog"><button class="feedback-close" data-i18n-aria-label="common.close" aria-label="關閉">×</button></form></div>
+      <section aria-labelledby="issues-heading"><h3 id="issues-heading">GitHub Issues</h3>
+      <p class="feedback-note" data-i18n="feedback.public">GitHub 議題會公開顯示。提交回報需登入 GitHub。</p>
+      <div id="issue-links"><a href="https://github.com/diligencefrozen/PayKR/issues/new?template=merchant.yml" target="_blank" rel="noopener noreferrer" data-i18n="feedback.report">回報門市資訊或付款結果</a><a href="https://github.com/diligencefrozen/PayKR/issues/new?template=bug.yml" target="_blank" rel="noopener noreferrer" data-i18n="feedback.bug">回報錯誤</a><a href="https://github.com/diligencefrozen/PayKR/issues/new?template=feature.yml" target="_blank" rel="noopener noreferrer" data-i18n="feedback.feature">提出功能建議</a><a href="https://github.com/diligencefrozen/PayKR/issues/new?template=translation.yml" target="_blank" rel="noopener noreferrer" data-i18n="feedback.translation">建議修正翻譯</a></div></section>
+      <button id="open-discord" class="chat-action" data-i18n="feedback.discord">在 Discord 聊天</button>
+      <p id="chat-error" class="feedback-note" role="status" data-i18n="feedback.unavailable" hidden>無法載入聊天，請直接開啟 Discord。</p>
+      <a class="chat-action" id="discord-fallback" href="https://discord.com/channels/1574706452671504474/1574706454353412239" target="_blank" rel="noopener noreferrer" data-i18n="common.chatFallback" hidden>開啟 Discord 頻道</a></dialog></footer>
+</body>
+</html>

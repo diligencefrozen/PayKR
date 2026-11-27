@@ -7,8 +7,7 @@
   function apply() {
     const dark = preference === 'dark' || (preference === 'system' && display.matches);
     document.documentElement.dataset.scheme = dark ? 'dark' : 'light';
-    const select = document.querySelector('[data-theme-choice]');
-    if (select) select.value = preference;
+    document.querySelectorAll('[data-theme-choice]').forEach(select => { select.value = preference; });
   }
 
   function restore() {
@@ -19,19 +18,18 @@
     apply();
   }
 
+  document.documentElement.classList.toggle('ad-preview',new URLSearchParams(location.search).get('adpreview')==='1');
   restore();
   display.addEventListener('change', apply);
   window.addEventListener('storage', event => {
     if (event.key === key || event.key === null) restore();
   });
   window.addEventListener('pageshow', event => { if (event.persisted) restore(); });
-  document.addEventListener('DOMContentLoaded', () => {
-    const select = document.querySelector('[data-theme-choice]');
-    select.value = preference;
-    select.addEventListener('change', () => {
-      preference = select.value;
-      try { localStorage.setItem(key, preference); } catch { /* Keep this page usable. */ }
-      apply();
-    });
+  document.addEventListener('paykr:shell', apply);
+  document.addEventListener('change', event => {
+    if (!event.target.matches('[data-theme-choice]')) return;
+    preference = event.target.value;
+    try { localStorage.setItem(key, preference); } catch { /* Optional persistence. */ }
+    apply();
   });
 })();

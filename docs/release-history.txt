@@ -1,0 +1,147 @@
+2026-11-25
+주변 매장에 카페를 추가했습니다. 화면 테마를 선택할 수 있으며, 카테고리를 여는 동안 Discord 버튼을 숨깁니다.
+Nearby searches now include cafés. You can choose a display theme, and the Discord button is hidden while categories are open.
+
+2026-11-24
+한·영 전환과 온라인 브랜드 검색을 개선했습니다. 지도 접속 시 현재 위치를 확인해 주변 매장을 표시하며, PC에서 필독사항과 패치노트를 볼 수 있습니다.
+Improved language switching and online brand search. The map now requests your location on arrival to show nearby stores. Notices and release notes are available in the desktop sidebar.
+
+20260510.1
+사용자 편의성 개선 (현재 위치를 불러오지 못하면, IP 주소로 사용자 위치를 확인 시도함.)
+Introduced IP-based location lookup when device location was unavailable.
+
+20251105.3
+사용자 편의성 업데이트 (💬 포럼 기능 추가)
+Added the community forum.
+
+20251031.2
+사용자 인터페이스 개선 (검색 결과 표시 방식 개선)
+Updated the search results display.
+
+20251030.1
+사용자 인터페이스 개선 (데스크탑 최적화)
+Improved the desktop layout.
+
+20251021.2
+사용자 인터페이스 개선 (모바일 최적화)
+Improved the mobile layout.
+
+20250517.11
+기능 개선 (영어 지원 1/10)
+Introduced partial English support.
+
+20250101.5
+가맹점 업데이트 (생활/가전, 커피, 제과/디저트, 온라인)
+Updated home and electronics, cafés, bakeries, desserts and online stores.
+
+20240914.10
+가맹점 업데이트 및 UI 개선 (편의점, 패션, 카페, 외식)
+Updated convenience stores, fashion, cafés and dining listings and improved the interface.
+
+20240613.3
+가맹점 업데이트 (커피, 백화점, 온라인)
+Updated cafés, department stores and online stores.
+
+20240225.2
+가맹점 업데이트 (커피, 외식)
+Updated cafés and dining listings.
+
+20240125.7
+사용자 인터페이스 개선 (사이트 하단에 애플페이 스티커 관련 안내 문구 추가)
+Added an Apple Pay sticker reminder.
+
+20231226.6
+가맹점 업데이트 (외식, 백화점/쇼핑) 및 사용자 인터페이스 개선
+Updated dining and department store listings and the interface.
+
+20231221.3
+가맹점 업데이트 (외식, 온라인)
+Updated dining and online stores.
+
+20231201.6
+가맹점 업데이트 (백화점/쇼핑, 마트/슈퍼, 커피, 외식, 온라인)
+Updated department stores, supermarkets, cafés, dining and online stores.
+
+20231105.10
+사용자 인터페이스 개선 ('기타' 메뉴 삭제(약국 삭제), 온라인 메뉴 추가, 문의 메뉴 추가)
+Removed the Other menu and pharmacy category and added online stores and contact options.
+
+20231017.2
+사용자 인터페이스 수정 (검색 버튼 수정)
+Updated the search button.
+
+20231014.1
+사용자 인터페이스 수정 (화면 비율 수정)
+Adjusted the layout for different screen sizes.
+
+20231008.5
+사용자 인터페이스 수정 (카테고리, 필독사항)
+Updated categories and notices.
+
+20230822.1
+가맹점 수정 (기타, 생활&가전)
+Corrected miscellaneous, home and electronics listings.
+
+20230821.3
+사용자 인터페이스 개선 (패치노트 영역, 현재 위치 표시 기능 개선)
+Updated the release notes and current location display.
+
+20230818.5
+가맹점 추가(약국) 및 수정(외식) 그리고 사용자 인터페이스 개선(패치노트, 필독사항 영역)
+Added pharmacies, corrected dining listings and updated the notes and notices.
+
+20230811.1
+가맹점 추가(레저, 여행)
+Added leisure and travel listings.
+
+20230809.2
+가맹점 추가(영화, 도서) 및 가맹점 수정(편의점)
+Added cinemas and bookstores and corrected convenience store listings.
+
+20230808.1
+가맹점 추가(주유,충전)
+Added fuel and charging stations.
+
+20230805.8
+사용자 인터페이스 개선
+Updated the interface.
+
+20230804.4
+가맹점 추가(호텔,리조트) 및 사용자 인터페이스 업데이트
+Added hotels and resorts and updated the interface.
+
+20230803.11
+가맹점 추가(외식/생활,가전) 및 사용자 인터페이스 개선
+Added dining, home and electronics listings and updated the interface.
+
+20230802.9
+사용자 인터페이스 개선
+Updated the interface.
+
+20230726.16
+가맹점 수정 (롯데마트/롯데백화점/롯데슈퍼)
+Corrected listings for Lotte Mart, Lotte Department Store and Lotte Super.
+
+20230724.1
+사용자 인터페이스 개선
+Updated the interface.
+
+20230723.9
+사용자 인터페이스 개선 (검색 기능 디자인 변경 / 모바일 기기로 접속시 반응하는 인터페이스 개선)
+Updated search controls and the mobile layout.
+
+20230721.9
+가맹점 추가 (제과/디저트) 및 사용자 인터페이스 개선 (검색 기능 개선 / 마커 기능 추가)
+Added bakeries and dessert shops, improved search and added map markers.
+
+20230720.11
+가맹점 추가 (마트/슈퍼) 및 사용자 인터페이스 개선 (검색 기능 추가)
+Added supermarkets and a search feature.
+
+20230718.7
+사용자 인터페이스 업데이트 및 가맹점 추가 (편의점, 카페)
+Updated the interface and added convenience stores and cafés.
+
+20230524.1
+초기 버전 출시
+First release.

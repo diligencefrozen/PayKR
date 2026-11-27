@@ -1,0 +1,489 @@
+[
+  {
+    "id": "online-1",
+    "names": {
+      "ko": "배달의민족",
+      "en": "Baemin"
+    },
+    "aliases": [
+      "배민"
+    ],
+    "categories": [
+      "food"
+    ],
+    "label": "brandCategory.음식 배달",
+    "icon": "logo_online/logo01.png"
+  },
+  {
+    "id": "online-2",
+    "names": {
+      "ko": "코스트코",
+      "en": "Costco"
+    },
+    "aliases": [
+      "Costco Wholesale"
+    ],
+    "categories": [
+      "shopping"
+    ],
+    "label": "brandCategory.쇼핑",
+    "icon": "logo_online/logo02.png"
+  },
+  {
+    "id": "online-3",
+    "names": {
+      "ko": "무신사",
+      "en": "MUSINSA"
+    },
+    "aliases": [],
+    "categories": [
+      "shopping"
+    ],
+    "label": "brandCategory.패션",
+    "icon": "logo_online/logo03.png"
+  },
+  {
+    "id": "online-4",
+    "names": {
+      "ko": "대한항공",
+      "en": "Korean Air"
+    },
+    "aliases": [],
+    "categories": [
+      "travel"
+    ],
+    "label": "brandCategory.항공",
+    "icon": "logo_online/logo04.png"
+  },
+  {
+    "id": "online-5",
+    "names": {
+      "ko": "진에어",
+      "en": "Jin Air"
+    },
+    "aliases": [],
+    "categories": [
+      "travel"
+    ],
+    "label": "brandCategory.항공",
+    "icon": "logo_online/logo05.png"
+  },
+  {
+    "id": "online-6",
+    "names": {
+      "ko": "롯데ON",
+      "en": "LOTTE ON"
+    },
+    "aliases": [
+      "롯데온"
+    ],
+    "categories": [
+      "shopping"
+    ],
+    "label": "brandCategory.이커머스",
+    "icon": "logo_online/logo06.png"
+  },
+  {
+    "id": "online-7",
+    "names": {
+      "ko": "티몬",
+      "en": "TMON"
+    },
+    "aliases": [],
+    "categories": [
+      "shopping"
+    ],
+    "label": "brandCategory.이커머스",
+    "icon": "logo_online/logo07.png"
+  },
+  {
+    "id": "online-8",
+    "names": {
+      "ko": "버거킹",
+      "en": "Burger King"
+    },
+    "aliases": [],
+    "categories": [
+      "food"
+    ],
+    "label": "brandCategory.패스트푸드",
+    "icon": "logo_online/logo08.png"
+  },
+  {
+    "id": "online-9",
+    "names": {
+      "ko": "폴바셋",
+      "en": "Paul Bassett"
+    },
+    "aliases": [],
+    "categories": [
+      "food"
+    ],
+    "label": "brandCategory.카페",
+    "icon": "logo_online/logo09.png"
+  },
+  {
+    "id": "online-10",
+    "names": {
+      "ko": "우리동네 GS",
+      "en": "Our Neighborhood GS"
+    },
+    "aliases": [
+      "GS25"
+    ],
+    "categories": [
+      "convenience"
+    ],
+    "label": "brandCategory.배달",
+    "icon": "logo_online/logo10.png"
+  },
+  {
+    "id": "online-11",
+    "names": {
+      "ko": "포켓 CU",
+      "en": "Pocket CU"
+    },
+    "aliases": [
+      "포켓씨유"
+    ],
+    "categories": [
+      "convenience"
+    ],
+    "label": "brandCategory.편의점",
+    "icon": "logo_online/logo11.png"
+  },
+  {
+    "id": "online-12",
+    "names": {
+      "ko": "현대홈쇼핑",
+      "en": "Hmall"
+    },
+    "aliases": [
+      "현대H몰",
+      "Hyundai Home Shopping"
+    ],
+    "categories": [
+      "shopping"
+    ],
+    "label": "brandCategory.홈쇼핑",
+    "icon": "logo_online/logo12.png"
+  },
+  {
+    "id": "online-13",
+    "names": {
+      "ko": "롯데시네마",
+      "en": "LOTTE Cinema"
+    },
+    "aliases": [],
+    "categories": [
+      "other"
+    ],
+    "label": "brandCategory.영화관",
+    "icon": "logo_online/logo13.png"
+  },
+  {
+    "id": "online-14",
+    "names": {
+      "ko": "갤러리아몰",
+      "en": "The Galleria"
+    },
+    "aliases": [
+      "Galleria Mall"
+    ],
+    "categories": [
+      "shopping"
+    ],
+    "label": "brandCategory.백화점",
+    "icon": "logo_online/logo14.png"
+  },
+  {
+    "id": "online-15",
+    "names": {
+      "ko": "GS SHOP",
+      "en": "GS SHOP"
+    },
+    "aliases": [],
+    "categories": [
+      "shopping"
+    ],
+    "label": "brandCategory.홈쇼핑",
+    "icon": "logo_online/logo15.png"
+  },
+  {
+    "id": "online-16",
+    "names": {
+      "ko": "GS 프레시몰",
+      "en": "GS Fresh Mall"
+    },
+    "aliases": [],
+    "categories": [
+      "shopping"
+    ],
+    "label": "brandCategory.식품",
+    "icon": "logo_online/logo16.png"
+  },
+  {
+    "id": "online-17",
+    "names": {
+      "ko": "도미노피자",
+      "en": "Domino’s Pizza"
+    },
+    "aliases": [],
+    "categories": [
+      "food"
+    ],
+    "label": "brandCategory.음식 배달",
+    "icon": "logo_online/logo17.png"
+  },
+  {
+    "id": "online-18",
+    "names": {
+      "ko": "이니스프리",
+      "en": "innisfree"
+    },
+    "aliases": [],
+    "categories": [
+      "shopping"
+    ],
+    "label": "brandCategory.뷰티",
+    "icon": "logo_online/logo18.png"
+  },
+  {
+    "id": "online-19",
+    "names": {
+      "ko": "텐바이텐",
+      "en": "10x10"
+    },
+    "aliases": [
+      "Ten by Ten"
+    ],
+    "categories": [
+      "shopping"
+    ],
+    "label": "brandCategory.라이프스타일",
+    "icon": "logo_online/logo19.png"
+  },
+  {
+    "id": "online-20",
+    "names": {
+      "ko": "SRT Play",
+      "en": "SRT Play"
+    },
+    "aliases": [],
+    "categories": [
+      "travel"
+    ],
+    "label": "brandCategory.기차",
+    "icon": "logo_online/logo20.png"
+  },
+  {
+    "id": "online-21",
+    "names": {
+      "ko": "현대이지웰",
+      "en": "Hyundai Ezwel"
+    },
+    "aliases": [],
+    "categories": [
+      "shopping"
+    ],
+    "label": "brandCategory.이커머스",
+    "icon": "logo_online/logo21.png"
+  },
+  {
+    "id": "online-22",
+    "names": {
+      "ko": "파스텔몰",
+      "en": "Pastel Mall"
+    },
+    "aliases": [],
+    "categories": [
+      "shopping"
+    ],
+    "label": "brandCategory.뷰티",
+    "icon": "logo_online/logo22.png"
+  },
+  {
+    "id": "online-23",
+    "names": {
+      "ko": "하이마트몰",
+      "en": "LOTTE HIMART"
+    },
+    "aliases": [],
+    "categories": [
+      "shopping"
+    ],
+    "label": "brandCategory.전자제품",
+    "icon": "logo_online/logo23.png"
+  },
+  {
+    "id": "online-24",
+    "names": {
+      "ko": "모두투어",
+      "en": "Modetour"
+    },
+    "aliases": [],
+    "categories": [
+      "travel"
+    ],
+    "label": "brandCategory.여행사",
+    "icon": "logo_online/logo24.png"
+  },
+  {
+    "id": "online-25",
+    "names": {
+      "ko": "S.I. 빌리지",
+      "en": "S.I.VILLAGE"
+    },
+    "aliases": [
+      "에스아이빌리지"
+    ],
+    "categories": [
+      "shopping"
+    ],
+    "label": "brandCategory.패션",
+    "icon": "logo_online/logo25.png"
+  },
+  {
+    "id": "online-26",
+    "names": {
+      "ko": "알라딘 중고서점",
+      "en": "Aladin Used Bookstore"
+    },
+    "aliases": [],
+    "categories": [
+      "shopping"
+    ],
+    "label": "brandCategory.서점",
+    "icon": "logo_online/logo26.png"
+  },
+  {
+    "id": "online-27",
+    "names": {
+      "ko": "롯데홈쇼핑",
+      "en": "LOTTE Home Shopping"
+    },
+    "aliases": [],
+    "categories": [
+      "shopping"
+    ],
+    "label": "brandCategory.홈쇼핑",
+    "icon": "logo_online/logo27.png"
+  },
+  {
+    "id": "online-28",
+    "names": {
+      "ko": "I'M ALIVE",
+      "en": "I'M ALIVE"
+    },
+    "aliases": [],
+    "categories": [
+      "shopping"
+    ],
+    "label": "brandCategory.패션",
+    "icon": "logo_online/logo28.png"
+  },
+  {
+    "id": "online-29",
+    "names": {
+      "ko": "OASiS",
+      "en": "OASiS"
+    },
+    "aliases": [],
+    "categories": [
+      "shopping"
+    ],
+    "label": "brandCategory.패션",
+    "icon": "logo_online/logo29.png"
+  },
+  {
+    "id": "online-30",
+    "names": {
+      "ko": "아시아나항공",
+      "en": "Asiana Airlines"
+    },
+    "aliases": [],
+    "categories": [
+      "travel"
+    ],
+    "label": "brandCategory.항공",
+    "icon": "logo_online/logo30.png"
+  },
+  {
+    "id": "online-31",
+    "names": {
+      "ko": "안다르",
+      "en": "andar"
+    },
+    "aliases": [],
+    "categories": [
+      "shopping"
+    ],
+    "label": "brandCategory.운동복",
+    "icon": "logo_online/logo31.png"
+  },
+  {
+    "id": "online-32",
+    "names": {
+      "ko": "라엘",
+      "en": "Rael"
+    },
+    "aliases": [],
+    "categories": [
+      "shopping"
+    ],
+    "label": "brandCategory.헬스케어",
+    "icon": "logo_online/logo32.png"
+  },
+  {
+    "id": "online-33",
+    "names": {
+      "ko": "신세계면세점",
+      "en": "Shinsegae Duty Free"
+    },
+    "aliases": [],
+    "categories": [
+      "shopping"
+    ],
+    "label": "brandCategory.면세점",
+    "icon": "logo_online/logo33.png"
+  },
+  {
+    "id": "online-34",
+    "names": {
+      "ko": "쿠캣",
+      "en": "Cookat"
+    },
+    "aliases": [],
+    "categories": [
+      "other"
+    ],
+    "label": "brandCategory.반려동물",
+    "icon": "logo_online/logo34.png"
+  },
+  {
+    "id": "online-35",
+    "names": {
+      "ko": "패스오더",
+      "en": "Passorder"
+    },
+    "aliases": [],
+    "categories": [
+      "food"
+    ],
+    "label": "brandCategory.음식 배달",
+    "icon": "logo_online/logo35.png"
+  },
+  {
+    "id": "online-36",
+    "names": {
+      "ko": "크림",
+      "en": "KREAM"
+    },
+    "aliases": [],
+    "categories": [
+      "shopping"
+    ],
+    "label": "brandCategory.패션",
+    "icon": "logo_online/logo36.png"
+  }
+]

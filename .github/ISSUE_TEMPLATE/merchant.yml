@@ -1,0 +1,44 @@
+name: Store or payment report
+description: Report a payment experience or a listing correction.
+title: "[Merchant] "
+body:
+  - type: markdown
+    attributes:
+      value: "This report is public. Omit card numbers, receipts, contact information and precise coordinates."
+  - type: input
+    id: merchant
+    attributes:
+      label: Store and branch name
+    validations:
+      required: true
+  - type: dropdown
+    id: outcome
+    attributes:
+      label: What happened?
+      options:
+        - Payment succeeded
+        - Payment declined
+        - Listing correction
+    validations:
+      required: true
+  - type: input
+    id: date
+    attributes:
+      label: Observation date
+      placeholder: YYYY-MM-DD
+    validations:
+      required: true
+  - type: dropdown
+    id: channel
+    attributes:
+      label: Payment channel
+      options:
+        - In store
+        - Website
+        - App
+        - Unknown
+  - type: textarea
+    id: context
+    attributes:
+      label: Optional details
+      description: Card network and issuing country may help the reviewer.

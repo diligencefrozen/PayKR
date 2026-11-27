@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="zh-Hant" dir="ltr" data-entry-locale="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#145bd6">
+  <meta name="google-site-verification" content="c4eTxK6D1wFIOq01h8LLX02-f44HSO5gXqCsqGhr8AE">
+  <meta name="naver-site-verification" content="6e4589a660b9931c130ae7e4cb83b843534b542c">
+  <meta name="msvalidate.01" content="4922F3F89BC9061D5E31D97E09092268">
+  <meta name="google-adsense-account" content="ca-pub-3313505766731703">
+  <meta name="description" data-i18n-content="ecommerce.description" content="瀏覽 PayKR 線上商店名錄，在商家結帳頁面確認 Apple Pay 選項。">
+  <title data-i18n="ecommerce.title">Apple Pay 線上商店名錄 · PayKR</title>
+  <link rel="manifest" href="./manifest.webmanifest">
+  <link rel="apple-touch-icon" href="./icons/apple-touch-icon.png">
+  <link rel="icon" href="./favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="./shared.css">
+  <link rel="stylesheet" href="./online.css">
+  <script src="./theme.js"></script>
+  <script type="module" src="./src/app/bootstrap.js"></script>
+  <!-- Official account-issued CMP and ad-blocking recovery tags belong here after operator verification. -->
+  <link rel="stylesheet" href="./extensions.css">
+  <link rel="canonical" href="https://diligencefrozen.github.io/PayKR/online.zh-Hant.html">
+  <link rel="alternate" hreflang="en" href="https://diligencefrozen.github.io/PayKR/online.html">
+  <link rel="alternate" hreflang="ko" href="https://diligencefrozen.github.io/PayKR/online.ko.html">
+  <link rel="alternate" hreflang="ja" href="https://diligencefrozen.github.io/PayKR/online.ja.html">
+  <link rel="alternate" hreflang="zh-Hans" href="https://diligencefrozen.github.io/PayKR/online.zh-Hans.html">
+  <link rel="alternate" hreflang="zh-Hant" href="https://diligencefrozen.github.io/PayKR/online.zh-Hant.html">
+  <link rel="alternate" hreflang="x-default" href="https://diligencefrozen.github.io/PayKR/online.html">
+</head>
+<body data-page-type="online" class="explorer">
+  <header data-header><a class="skip" href="#main-content" data-i18n="common.skip">跳至正文</a><div class="masthead"><div class="wrap"><a class="wordmark" href="./index.zh-Hant.html" data-page="./">Pay<span>KR</span></a>
+    <nav class="top-nav" data-i18n-aria-label="common.navigation" aria-label="主導覽"><a href="./index.zh-Hant.html" data-page="./"  data-i18n="nav.explore">探索地圖</a><a href="./online.zh-Hant.html" data-page="./online.html" aria-current="page" data-i18n="nav.online">線上商店</a><a href="./guide.zh-Hant.html" data-page="./guide.html"  data-i18n="nav.guide">旅遊指南</a><button type="button" data-more aria-haspopup="dialog" data-i18n="nav.more">更多</button></nav>
+    <div class="header-actions"><select data-locale data-compact class="language" data-i18n-aria-label="common.language" aria-label="語言"><option value="en">EN</option><option value="ko">KO</option><option value="ja">JA</option><option value="zh-Hans">简中</option><option value="zh-Hant" selected>繁中</option></select>
+    <select class="header-theme theme-choice" data-theme-choice data-i18n-aria-label="theme.label" aria-label="外觀"><option value="system" data-i18n="theme.system">跟隨系統</option><option value="light" data-i18n="theme.light">淺色</option><option value="dark" data-i18n="theme.dark">深色</option></select>
+    <button class="header-install" data-install data-i18n="install.action" hidden>安裝 App</button></div></div></div></header>
+  <main id="main-content">
+    <section class="directory-toolbar" role="search" data-i18n-aria-label="ecommerce.search" aria-label="搜尋品牌">
+      <div class="explore-search">
+        <span class="search-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="7.5"/><path d="m16 16 5 5"/></svg></span>
+        <input id="searchInput" type="search" data-i18n-aria-label="ecommerce.search" aria-label="搜尋品牌" data-i18n-placeholder="ecommerce.placeholder" placeholder="品牌名稱或別名">
+        <button type="button" id="directory-filter-toggle" class="filter-toggle" aria-expanded="false" aria-controls="directory-filters" data-i18n-aria-label="map.openFilter" hidden aria-label="選擇類別"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/><circle cx="8" cy="6" r="2"/><circle cx="16" cy="12" r="2"/><circle cx="8" cy="18" r="2"/></svg></button>
+      </div>
+      <div class="nav-control-categories" id="directory-filters"><button type="button" data-category="all" aria-pressed="true"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg><span data-i18n="filter.all">全部</span></button><button type="button" data-category="shopping" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="8" width="16" height="13" rx="2"/><path d="M8 9V6a4 4 0 0 1 8 0v3"/></svg><span data-i18n="filter.shopping">購物</span></button><button type="button" data-category="food" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 3v6m3-6v6M2 3v6c0 4 6 4 6 0M5 12v9M17 3v18M17 3c-5 3-5 10 0 10"/></svg><span data-i18n="filter.food">餐飲</span></button><button type="button" data-category="travel" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 5v16m18-12v12M3 17h18M3 10h18v7M7 7h4v3"/></svg><span data-i18n="filter.travel">旅遊</span></button><button type="button" data-category="convenience" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 10l2-6h14l2 6M4 12v8h16v-8M3 10c0 3 4 3 4 0 0 3 5 3 5 0 0 3 5 3 5 0 0 3 4 3 4 0M8 20v-5h4v5"/></svg><span data-i18n="filter.convenience">便利商店</span></button><button type="button" data-category="other" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="5" cy="12" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="19" cy="12" r="1.5"/></svg><span data-i18n="filter.other">其他</span></button></div>
+    </section>
+    <section class="directory-panel" aria-labelledby="directory-title">
+    <div class="directory-heading">
+      <h1 id="directory-title" data-i18n="ecommerce.heading">線上商店</h1>
+      <p id="totalCount" role="status">36 個品牌</p>
+      <p class="directory-intro" data-i18n="ecommerce.description">瀏覽 PayKR 線上商店名錄，在商家結帳頁面確認 Apple Pay 選項。</p>
+    </div>
+    <aside class="ad-space" data-slot="directory-top" hidden data-i18n-aria-label="advertisement.label" aria-label="廣告"><span data-i18n="advertisement.preview">廣告版位預覽</span></aside>
+    <div class="directory" id="directory">
+<div id="first-cards"><article class="brand"><div class="brand-logo"><img loading="lazy" src="logo_online/logo01.png" alt="" width="120" height="64"></div><div class="brand-info"><span class="brand-name">Baemin</span><span class="brand-category">餐點外送</span></div><details><summary class="badge brand_listed">請在結帳時確認</summary><p>線上收錄 · 請在網站或 App 結帳時確認</p></details></article>
+<article class="brand"><div class="brand-logo"><img loading="lazy" src="logo_online/logo02.png" alt="" width="120" height="64"></div><div class="brand-info"><span class="brand-name">Costco</span><span class="brand-category">購物</span></div><details><summary class="badge brand_listed">請在結帳時確認</summary><p>線上收錄 · 請在網站或 App 結帳時確認</p></details></article>
+<article class="brand"><div class="brand-logo"><img loading="lazy" src="logo_online/logo03.png" alt="" width="120" height="64"></div><div class="brand-info"><span class="brand-name">MUSINSA</span><span class="brand-category">時尚</span></div><details><summary class="badge brand_listed">請在結帳時確認</summary><p>線上收錄 · 請在網站或 App 結帳時確認</p></details></article>
+<article class="brand"><div class="brand-logo"><img loading="lazy" src="logo_online/logo04.png" alt="" width="120" height="64"></div><div class="brand-info"><span class="brand-name">Korean Air</span><span class="brand-category">航空公司</span></div><details><summary class="badge brand_listed">請在結帳時確認</summary><p>線上收錄 · 請在網站或 App 結帳時確認</p></details></article>
+<article class="brand"><div class="brand-logo"><img loading="lazy" src="logo_online/logo05.png" alt="" width="120" height="64"></div><div class="brand-info"><span class="brand-name">Jin Air</span><span class="brand-category">航空公司</span></div><details><summary class="badge brand_listed">請在結帳時確認</summary><p>線上收錄 · 請在網站或 App 結帳時確認</p></details></article>
+<article class="brand"><div class="brand-logo"><img loading="lazy" src="logo_online/logo06.png" alt="" width="120" height="64"></div><div class="brand-info"><span class="brand-name">LOTTE ON</span><span class="brand-category">電子商務</span></div><details><summary class="badge brand_listed">請在結帳時確認</summary><p>線上收錄 · 請在網站或 App 結帳時確認</p></details></article>
+<article class="brand"><div class="brand-logo"><img loading="lazy" src="logo_online/logo07.png" alt="" width="120" height="64"></div><div class="brand-info"><span class="brand-name">TMON</span><span class="brand-category">電子商務</span></div><details><summary class="badge brand_listed">請在結帳時確認</summary><p>線上收錄 · 請在網站或 App 結帳時確認</p></details></article>
+<article class="brand"><div class="brand-logo"><img loading="lazy" src="logo_online/logo08.png" alt="" width="120" height="64"></div><div class="brand-info"><span class="brand-name">Burger King</span><span class="brand-category">速食</span></div><details><summary class="badge brand_listed">請在結帳時確認</summary><p>線上收錄 · 請在網站或 App 結帳時確認</p></details></article></div>
+<aside data-slot="directory-middle" class="ad-space" hidden></aside>
+<div id="other-cards"><article class="brand"><div class="brand-logo"><img loading="lazy" src="logo_online/logo09.png" alt="" width="120" height="64"></div><div class="brand-info"><span class="brand-name">Paul Bassett</span><span class="brand-category">咖啡店</span></div><details><summary class="badge brand_listed">請在結帳時確認</summary><p>線上收錄 · 請在網站或 App 結帳時確認</p></details></article>
+<article class="brand"><div class="brand-logo"><img loading="lazy" src="logo_online/logo10.png" alt="" width="120" height="64"></div><div class="brand-info"><span class="brand-name">Our Neighborhood GS</span><span class="brand-category">配送</span></div><details><summary class="badge brand_listed">請在結帳時確認</summary><p>線上收錄 · 請在網站或 App 結帳時確認</p></details></article>
+<article class="brand"><div class="brand-logo"><img loading="lazy" src="logo_online/logo11.png" alt="" width="120" height="64"></div><div class="brand-info"><span class="brand-name">Pocket CU</span><span class="brand-category">便利商店</span></div><details><summary class="badge brand_listed">請在結帳時確認</summary><p>線上收錄 · 請在網站或 App 結帳時確認</p></details></article>
+<article class="brand"><div class="brand-logo"><img loading="lazy" src="logo_online/logo12.png" alt="" width="120" height="64"></div><div class="brand-info"><span class="brand-name">Hmall</span><span class="brand-category">電視購物</span></div><details><summary class="badge brand_listed">請在結帳時確認</summary><p>線上收錄 · 請在網站或 App 結帳時確認</p></details></article>
+<article class="brand"><div class="brand-logo"><img loading="lazy" src="logo_online/logo13.png" alt="" width="120" height="64"></div><div class="brand-info"><span class="brand-name">LOTTE Cinema</span><span class="brand-category">電影院</span></div><details><summary class="badge brand_listed">請在結帳時確認</summary><p>線上收錄 · 請在網站或 App 結帳時確認</p></details></article>
+<article class="brand"><div class="brand-logo"><img loading="lazy" src="logo_online/logo14.png" alt="" width="120" height="64"></div><div class="brand-info"><span class="brand-name">The Galleria</span><span class="brand-category">百貨公司</span></div><details><summary class="badge brand_listed">請在結帳時確認</summary><p>線上收錄 · 請在網站或 App 結帳時確認</p></details></article>
+<article class="brand"><div class="brand-logo"><img loading="lazy" src="logo_online/logo15.png" alt="" width="120" height="64"></div><div class="brand-info"><span class="brand-name">GS SHOP</span><span class="brand-category">電視購物</span></div><details><summary class="badge brand_listed">請在結帳時確認</summary><p>線上收錄 · 請在網站或 App 結帳時確認</p></details></article>
+<article class="brand"><div class="brand-logo"><img loading="lazy" src="logo_online/logo16.png" alt="" width="120" height="64"></div><div class="brand-info"><span class="brand-name">GS Fresh Mall</span><span class="brand-category">食品</span></div><details><summary class="badge brand_listed">請在結帳時確認</summary><p>線上收錄 · 請在網站或 App 結帳時確認</p></details></article>
+<article class="brand"><div class="brand-logo"><img loading="lazy" src="logo_online/logo17.png" alt="" width="120" height="64"></div><div class="brand-info"><span class="brand-name">Domino’s Pizza</span><span class="brand-category">餐點外送</span></div><details><summary class="badge brand_listed">請在結帳時確認</summary><p>線上收錄 · 請在網站或 App 結帳時確認</p></details></article>
+<article class="brand"><div class="brand-logo"><img loading="lazy" src="logo_online/logo18.png" alt="" width="120" height="64"></div><div class="brand-info"><span class="brand-name">innisfree</span><span class="brand-category">美妝</span></div><details><summary class="badge brand_listed">請在結帳時確認</summary><p>線上收錄 · 請在網站或 App 結帳時確認</p></details></article>
+<article class="brand"><div class="brand-logo"><img loading="lazy" src="logo_online/logo19.png" alt="" width="120" height="64"></div><div class="brand-info"><span class="brand-name">10x10</span><span class="brand-category">生活用品</span></div><details><summary class="badge brand_listed">請在結帳時確認</summary><p>線上收錄 · 請在網站或 App 結帳時確認</p></details></article>
+<article class="brand"><div class="brand-logo"><img loading="lazy" src="logo_online/logo20.png" alt="" width="120" height="64"></div><div class="brand-info"><span class="brand-name">SRT Play</span><span class="brand-category">鐵路</span></div><details><summary class="badge brand_listed">請在結帳時確認</summary><p>線上收錄 · 請在網站或 App 結帳時確認</p></details></article>
+<article class="brand"><div class="brand-logo"><img loading="lazy" src="logo_online/logo21.png" alt="" width="120" height="64"></div><div class="brand-info"><span class="brand-name">Hyundai Ezwel</span><span class="brand-category">電子商務</span></div><details><summary class="badge brand_listed">請在結帳時確認</summary><p>線上收錄 · 請在網站或 App 結帳時確認</p></details></article>
+<article class="brand"><div class="brand-logo"><img loading="lazy" src="logo_online/logo22.png" alt="" width="120" height="64"></div><div class="brand-info"><span class="brand-name">Pastel Mall</span><span class="brand-category">美妝</span></div><details><summary class="badge brand_listed">請在結帳時確認</summary><p>線上收錄 · 請在網站或 App 結帳時確認</p></details></article>
+<article class="brand"><div class="brand-logo"><img loading="lazy" src="logo_online/logo23.png" alt="" width="120" height="64"></div><div class="brand-info"><span class="brand-name">LOTTE HIMART</span><span class="brand-category">電子產品</span></div><details><summary class="badge brand_listed">請在結帳時確認</summary><p>線上收錄 · 請在網站或 App 結帳時確認</p></details></article>
+<article class="brand"><div class="brand-logo"><img loading="lazy" src="logo_online/logo24.png" alt="" width="120" height="64"></div><div class="brand-info"><span class="brand-name">Modetour</span><span class="brand-category">旅行社</span></div><details><summary class="badge brand_listed">請在結帳時確認</summary><p>線上收錄 · 請在網站或 App 結帳時確認</p></details></article>
+<article class="brand"><div class="brand-logo"><img loading="lazy" src="logo_online/logo25.png" alt="" width="120" height="64"></div><div class="brand-info"><span class="brand-name">S.I.VILLAGE</span><span class="brand-category">時尚</span></div><details><summary class="badge brand_listed">請在結帳時確認</summary><p>線上收錄 · 請在網站或 App 結帳時確認</p></details></article>
+<article class="brand"><div class="brand-logo"><img loading="lazy" src="logo_online/logo26.png" alt="" width="120" height="64"></div><div class="brand-info"><span class="brand-name">Aladin Used Bookstore</span><span class="brand-category">書店</span></div><details><summary class="badge brand_listed">請在結帳時確認</summary><p>線上收錄 · 請在網站或 App 結帳時確認</p></details></article>
+<article class="brand"><div class="brand-logo"><img loading="lazy" src="logo_online/logo27.png" alt="" width="120" height="64"></div><div class="brand-info"><span class="brand-name">LOTTE Home Shopping</span><span class="brand-category">電視購物</span></div><details><summary class="badge brand_listed">請在結帳時確認</summary><p>線上收錄 · 請在網站或 App 結帳時確認</p></details></article>
+<article class="brand"><div class="brand-logo"><img loading="lazy" src="logo_online/logo28.png" alt="" width="120" height="64"></div><div class="brand-info"><span class="brand-name">I'M ALIVE</span><span class="brand-category">時尚</span></div><details><summary class="badge brand_listed">請在結帳時確認</summary><p>線上收錄 · 請在網站或 App 結帳時確認</p></details></article>
+<article class="brand"><div class="brand-logo"><img loading="lazy" src="logo_online/logo29.png" alt="" width="120" height="64"></div><div class="brand-info"><span class="brand-name">OASiS</span><span class="brand-category">時尚</span></div><details><summary class="badge brand_listed">請在結帳時確認</summary><p>線上收錄 · 請在網站或 App 結帳時確認</p></details></article>
+<article class="brand"><div class="brand-logo"><img loading="lazy" src="logo_online/logo30.png" alt="" width="120" height="64"></div><div class="brand-info"><span class="brand-name">Asiana Airlines</span><span class="brand-category">航空公司</span></div><details><summary class="badge brand_listed">請在結帳時確認</summary><p>線上收錄 · 請在網站或 App 結帳時確認</p></details></article>
+<article class="brand"><div class="brand-logo"><img loading="lazy" src="logo_online/logo31.png" alt="" width="120" height="64"></div><div class="brand-info"><span class="brand-name">andar</span><span class="brand-category">運動服飾</span></div><details><summary class="badge brand_listed">請在結帳時確認</summary><p>線上收錄 · 請在網站或 App 結帳時確認</p></details></article>
+<article class="brand"><div class="brand-logo"><img loading="lazy" src="logo_online/logo32.png" alt="" width="120" height="64"></div><div class="brand-info"><span class="brand-name">Rael</span><span class="brand-category">個人護理</span></div><details><summary class="badge brand_listed">請在結帳時確認</summary><p>線上收錄 · 請在網站或 App 結帳時確認</p></details></article>
+<article class="brand"><div class="brand-logo"><img loading="lazy" src="logo_online/logo33.png" alt="" width="120" height="64"></div><div class="brand-info"><span class="brand-name">Shinsegae Duty Free</span><span class="brand-category">免稅店</span></div><details><summary class="badge brand_listed">請在結帳時確認</summary><p>線上收錄 · 請在網站或 App 結帳時確認</p></details></article>
+<article class="brand"><div class="brand-logo"><img loading="lazy" src="logo_online/logo34.png" alt="" width="120" height="64"></div><div class="brand-info"><span class="brand-name">Cookat</span><span class="brand-category">寵物用品</span></div><details><summary class="badge brand_listed">請在結帳時確認</summary><p>線上收錄 · 請在網站或 App 結帳時確認</p></details></article>
+<article class="brand"><div class="brand-logo"><img loading="lazy" src="logo_online/logo35.png" alt="" width="120" height="64"></div><div class="brand-info"><span class="brand-name">Passorder</span><span class="brand-category">餐點外送</span></div><details><summary class="badge brand_listed">請在結帳時確認</summary><p>線上收錄 · 請在網站或 App 結帳時確認</p></details></article>
+<article class="brand"><div class="brand-logo"><img loading="lazy" src="logo_online/logo36.png" alt="" width="120" height="64"></div><div class="brand-info"><span class="brand-name">KREAM</span><span class="brand-category">時尚</span></div><details><summary class="badge brand_listed">請在結帳時確認</summary><p>線上收錄 · 請在網站或 App 結帳時確認</p></details></article></div>
+</div>
+    <div class="empty" id="empty" hidden>
+      <p data-i18n="ecommerce.empty">找不到符合條件的品牌。</p>
+      <button data-i18n="ecommerce.reset" class="reset" id="reset" type="button">清除搜尋與篩選</button>
+    </div>
+    <aside class="ad-space" data-slot="directory-bottom" hidden data-i18n-aria-label="advertisement.label" aria-label="廣告"><span data-i18n="advertisement.preview">廣告版位預覽</span></aside>
+    </section>
+  </main>
+  <footer class="wrap">
+    <details>
+      <summary data-i18n="ecommerce.faq">如何確認線上付款支援情況？</summary>
+      <p data-i18n="ecommerce.answer">下單前請查看商家的付款選項中是否有 Apple Pay。</p>
+    </details>
+    <p data-i18n="ecommerce.note">以下品牌來自原有名錄。請在結帳時確認卡片與付款選項。</p>
+    <a data-i18n="ecommerce.map" href="./index.zh-Hant.html" data-page="./">探索門市地圖</a>
+  </footer><footer data-footer><div class="app-dock"><div data-pwa-panel></div><nav class="bottom-nav" data-i18n-aria-label="common.navigation" aria-label="主導覽"><a href="./index.zh-Hant.html" data-page="./"  data-i18n="nav.explore">探索地圖</a><a href="./online.zh-Hant.html" data-page="./online.html" aria-current="page" data-i18n="nav.online">線上商店</a><a href="./guide.zh-Hant.html" data-page="./guide.html"  data-i18n="nav.guide">旅遊指南</a><button type="button" data-more aria-haspopup="dialog" data-i18n="nav.more">更多</button></nav></div>
+    <button class="feedback-trigger" id="feedback-open"><span data-i18n="feedback.open">意見回饋</span></button>
+    <dialog id="settings" aria-labelledby="settings-title"><h2 id="settings-title" data-i18n="nav.more">更多</h2>
+      <label class="setting-row"><span data-i18n="theme.label">外觀</span><select data-theme-choice>
+      <option value="system" data-i18n="theme.system">跟隨系統</option><option value="light" data-i18n="theme.light">淺色</option><option value="dark" data-i18n="theme.dark">深色</option></select></label>
+      <a href="guide.zh-Hant.html#privacy" data-page="guide.html#privacy" data-i18n="common.privacy">隱私說明</a>
+      <a href="./docs/release-history.txt" data-i18n="common.history">更新紀錄（韓文與英文）</a><button data-install data-i18n="install.action" hidden>安裝 App</button><button id="clear-cache" data-i18n="common.clearCache">清除已儲存的名錄</button><p id="cache-status" role="status"></p>
+      <button data-install-help data-i18n="install.iosGuide" hidden>如何加入主畫面</button>
+      <form method="dialog"><button data-i18n="common.close">關閉</button></form></dialog>
+    <dialog id="feedback-dialog" aria-labelledby="feedback-title">
+      <div class="feedback-heading"><h2 id="feedback-title" data-i18n="feedback.title">提交意見</h2>
+      <form method="dialog"><button class="feedback-close" data-i18n-aria-label="common.close" aria-label="關閉">×</button></form></div>
+      <section aria-labelledby="issues-heading"><h3 id="issues-heading">GitHub Issues</h3>
+      <p class="feedback-note" data-i18n="feedback.public">GitHub 議題會公開顯示。提交回報需登入 GitHub。</p>
+      <div id="issue-links"><a href="https://github.com/diligencefrozen/PayKR/issues/new?template=merchant.yml" target="_blank" rel="noopener noreferrer" data-i18n="feedback.report">回報門市資訊或付款結果</a><a href="https://github.com/diligencefrozen/PayKR/issues/new?template=bug.yml" target="_blank" rel="noopener noreferrer" data-i18n="feedback.bug">回報錯誤</a><a href="https://github.com/diligencefrozen/PayKR/issues/new?template=feature.yml" target="_blank" rel="noopener noreferrer" data-i18n="feedback.feature">提出功能建議</a><a href="https://github.com/diligencefrozen/PayKR/issues/new?template=translation.yml" target="_blank" rel="noopener noreferrer" data-i18n="feedback.translation">建議修正翻譯</a></div></section>
+      <button id="open-discord" class="chat-action" data-i18n="feedback.discord">在 Discord 聊天</button>
+      <p id="chat-error" class="feedback-note" role="status" data-i18n="feedback.unavailable" hidden>無法載入聊天，請直接開啟 Discord。</p>
+      <a class="chat-action" id="discord-fallback" href="https://discord.com/channels/1574706452671504474/1574706454353412239" target="_blank" rel="noopener noreferrer" data-i18n="common.chatFallback" hidden>開啟 Discord 頻道</a></dialog></footer>
+</body>
+</html>

@@ -1,0 +1,187 @@
+[
+  {
+    "date": "2026-11-25",
+    "ko": "주변 매장에 카페를 추가했습니다. 화면 테마를 선택할 수 있으며, 카테고리를 여는 동안 Discord 버튼을 숨깁니다.",
+    "en": "Nearby searches now include cafés. You can choose a display theme, and the Discord button is hidden while categories are open."
+  },
+  {
+    "date": "2026-11-24",
+    "ko": "한·영 전환과 온라인 브랜드 검색을 개선했습니다. 지도 접속 시 현재 위치를 확인해 주변 매장을 표시하며, PC에서 필독사항과 패치노트를 볼 수 있습니다.",
+    "en": "Improved language switching and online brand search. The map now requests your location on arrival to show nearby stores. Notices and release notes are available in the desktop sidebar."
+  },
+  {
+    "date": "20260510.1",
+    "ko": "사용자 편의성 개선 (현재 위치를 불러오지 못하면, IP 주소로 사용자 위치를 확인 시도함.)",
+    "en": "Introduced IP-based location lookup when device location was unavailable."
+  },
+  {
+    "date": "20251105.3",
+    "ko": "사용자 편의성 업데이트 (💬 포럼 기능 추가)",
+    "en": "Added the community forum."
+  },
+  {
+    "date": "20251031.2",
+    "ko": "사용자 인터페이스 개선 (검색 결과 표시 방식 개선)",
+    "en": "Updated the search results display."
+  },
+  {
+    "date": "20251030.1",
+    "ko": "사용자 인터페이스 개선 (데스크탑 최적화)",
+    "en": "Improved the desktop layout."
+  },
+  {
+    "date": "20251021.2",
+    "ko": "사용자 인터페이스 개선 (모바일 최적화)",
+    "en": "Improved the mobile layout."
+  },
+  {
+    "date": "20250517.11",
+    "ko": "기능 개선 (영어 지원 1/10)",
+    "en": "Introduced partial English support."
+  },
+  {
+    "date": "20250101.5",
+    "ko": "가맹점 업데이트 (생활/가전, 커피, 제과/디저트, 온라인)",
+    "en": "Updated home and electronics, cafés, bakeries, desserts and online stores."
+  },
+  {
+    "date": "20240914.10",
+    "ko": "가맹점 업데이트 및 UI 개선 (편의점, 패션, 카페, 외식)",
+    "en": "Updated convenience stores, fashion, cafés and dining listings and improved the interface."
+  },
+  {
+    "date": "20240613.3",
+    "ko": "가맹점 업데이트 (커피, 백화점, 온라인)",
+    "en": "Updated cafés, department stores and online stores."
+  },
+  {
+    "date": "20240225.2",
+    "ko": "가맹점 업데이트 (커피, 외식)",
+    "en": "Updated cafés and dining listings."
+  },
+  {
+    "date": "20240125.7",
+    "ko": "사용자 인터페이스 개선 (사이트 하단에 애플페이 스티커 관련 안내 문구 추가)",
+    "en": "Added an Apple Pay sticker reminder."
+  },
+  {
+    "date": "20231226.6",
+    "ko": "가맹점 업데이트 (외식, 백화점/쇼핑) 및 사용자 인터페이스 개선",
+    "en": "Updated dining and department store listings and the interface."
+  },
+  {
+    "date": "20231221.3",
+    "ko": "가맹점 업데이트 (외식, 온라인)",
+    "en": "Updated dining and online stores."
+  },
+  {
+    "date": "20231201.6",
+    "ko": "가맹점 업데이트 (백화점/쇼핑, 마트/슈퍼, 커피, 외식, 온라인)",
+    "en": "Updated department stores, supermarkets, cafés, dining and online stores."
+  },
+  {
+    "date": "20231105.10",
+    "ko": "사용자 인터페이스 개선 ('기타' 메뉴 삭제(약국 삭제), 온라인 메뉴 추가, 문의 메뉴 추가)",
+    "en": "Removed the Other menu and pharmacy category and added online stores and contact options."
+  },
+  {
+    "date": "20231017.2",
+    "ko": "사용자 인터페이스 수정 (검색 버튼 수정)",
+    "en": "Updated the search button."
+  },
+  {
+    "date": "20231014.1",
+    "ko": "사용자 인터페이스 수정 (화면 비율 수정)",
+    "en": "Adjusted the layout for different screen sizes."
+  },
+  {
+    "date": "20231008.5",
+    "ko": "사용자 인터페이스 수정 (카테고리, 필독사항)",
+    "en": "Updated categories and notices."
+  },
+  {
+    "date": "20230822.1",
+    "ko": "가맹점 수정 (기타, 생활&가전)",
+    "en": "Corrected miscellaneous, home and electronics listings."
+  },
+  {
+    "date": "20230821.3",
+    "ko": "사용자 인터페이스 개선 (패치노트 영역, 현재 위치 표시 기능 개선)",
+    "en": "Updated the release notes and current location display."
+  },
+  {
+    "date": "20230818.5",
+    "ko": "가맹점 추가(약국) 및 수정(외식) 그리고 사용자 인터페이스 개선(패치노트, 필독사항 영역)",
+    "en": "Added pharmacies, corrected dining listings and updated the notes and notices."
+  },
+  {
+    "date": "20230811.1",
+    "ko": "가맹점 추가(레저, 여행)",
+    "en": "Added leisure and travel listings."
+  },
+  {
+    "date": "20230809.2",
+    "ko": "가맹점 추가(영화, 도서) 및 가맹점 수정(편의점)",
+    "en": "Added cinemas and bookstores and corrected convenience store listings."
+  },
+  {
+    "date": "20230808.1",
+    "ko": "가맹점 추가(주유,충전)",
+    "en": "Added fuel and charging stations."
+  },
+  {
+    "date": "20230805.8",
+    "ko": "사용자 인터페이스 개선",
+    "en": "Updated the interface."
+  },
+  {
+    "date": "20230804.4",
+    "ko": "가맹점 추가(호텔,리조트) 및 사용자 인터페이스 업데이트",
+    "en": "Added hotels and resorts and updated the interface."
+  },
+  {
+    "date": "20230803.11",
+    "ko": "가맹점 추가(외식/생활,가전) 및 사용자 인터페이스 개선",
+    "en": "Added dining, home and electronics listings and updated the interface."
+  },
+  {
+    "date": "20230802.9",
+    "ko": "사용자 인터페이스 개선",
+    "en": "Updated the interface."
+  },
+  {
+    "date": "20230726.16",
+    "ko": "가맹점 수정 (롯데마트/롯데백화점/롯데슈퍼)",
+    "en": "Corrected listings for Lotte Mart, Lotte Department Store and Lotte Super."
+  },
+  {
+    "date": "20230724.1",
+    "ko": "사용자 인터페이스 개선",
+    "en": "Updated the interface."
+  },
+  {
+    "date": "20230723.9",
+    "ko": "사용자 인터페이스 개선 (검색 기능 디자인 변경 / 모바일 기기로 접속시 반응하는 인터페이스 개선)",
+    "en": "Updated search controls and the mobile layout."
+  },
+  {
+    "date": "20230721.9",
+    "ko": "가맹점 추가 (제과/디저트) 및 사용자 인터페이스 개선 (검색 기능 개선 / 마커 기능 추가)",
+    "en": "Added bakeries and dessert shops, improved search and added map markers."
+  },
+  {
+    "date": "20230720.11",
+    "ko": "가맹점 추가 (마트/슈퍼) 및 사용자 인터페이스 개선 (검색 기능 추가)",
+    "en": "Added supermarkets and a search feature."
+  },
+  {
+    "date": "20230718.7",
+    "ko": "사용자 인터페이스 업데이트 및 가맹점 추가 (편의점, 카페)",
+    "en": "Updated the interface and added convenience stores and cafés."
+  },
+  {
+    "date": "20230524.1",
+    "ko": "초기 버전 출시",
+    "en": "First release."
+  }
+]

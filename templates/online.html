@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#145bd6">
+  <meta name="google-site-verification" content="c4eTxK6D1wFIOq01h8LLX02-f44HSO5gXqCsqGhr8AE">
+  <meta name="naver-site-verification" content="6e4589a660b9931c130ae7e4cb83b843534b542c">
+  <meta name="msvalidate.01" content="4922F3F89BC9061D5E31D97E09092268">
+  <meta name="google-adsense-account" content="ca-pub-3313505766731703">
+  <meta name="description" data-i18n-content="ecommerce.description" content="Explore the original Korean online directory. Confirm available payment methods at checkout.">
+  <title data-i18n="ecommerce.title">Online Apple Pay directory | PayKR</title>
+  <link rel="manifest" href="./manifest.webmanifest">
+  <link rel="apple-touch-icon" href="./icons/apple-touch-icon.png">
+  <link rel="icon" href="./favicon.svg" type="image/svg+xml">
+  <link rel="canonical" href="https://diligencefrozen.github.io/PayKR/online.html?lang=en">
+  <link rel="alternate" hreflang="en" href="https://diligencefrozen.github.io/PayKR/online.html?lang=en">
+  <link rel="alternate" hreflang="ko" href="https://diligencefrozen.github.io/PayKR/online.html?lang=ko">
+  <link rel="alternate" hreflang="ja" href="https://diligencefrozen.github.io/PayKR/online.html?lang=ja">
+  <link rel="alternate" hreflang="zh-Hans" href="https://diligencefrozen.github.io/PayKR/online.html?lang=zh-Hans">
+  <link rel="alternate" hreflang="zh-Hant" href="https://diligencefrozen.github.io/PayKR/online.html?lang=zh-Hant">
+  <link rel="alternate" hreflang="x-default" href="https://diligencefrozen.github.io/PayKR/online.html">
+  <link rel="stylesheet" href="./shared.css">
+  <link rel="stylesheet" href="./online.css">
+  <script src="./theme.js"></script>
+  <script type="module" src="./src/app/bootstrap.js"></script>
+  <!-- Official account-issued CMP and ad-blocking recovery tags belong here after operator verification. -->
+  <link rel="stylesheet" href="./extensions.css">
+</head>
+<body data-page-type="online" class="explorer">
+  <header data-header></header>
+  <main id="main-content">
+    <section class="directory-toolbar" role="search" data-i18n-aria-label="ecommerce.search">
+      <div class="explore-search">
+        <span class="search-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="7.5"/><path d="m16 16 5 5"/></svg></span>
+        <input id="searchInput" type="search" data-i18n-aria-label="ecommerce.search" aria-label="브랜드 검색" data-i18n-placeholder="ecommerce.placeholder" placeholder="브랜드명 검색 (예: 무신사, Costco)">
+        <button type="button" id="directory-filter-toggle" class="filter-toggle" aria-expanded="false" aria-controls="directory-filters" data-i18n-aria-label="map.openFilter" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/><circle cx="8" cy="6" r="2"/><circle cx="16" cy="12" r="2"/><circle cx="8" cy="18" r="2"/></svg></button>
+      </div>
+      <div class="nav-control-categories" id="directory-filters"></div>
+    </section>
+    <section class="directory-panel" aria-labelledby="directory-title">
+    <div class="directory-heading">
+      <h1 id="directory-title" data-i18n="ecommerce.heading">온라인 애플페이 사용처</h1>
+      <p id="totalCount" role="status"></p>
+      <p class="directory-intro" data-i18n="ecommerce.description"></p>
+    </div>
+    <aside class="ad-space" data-slot="directory-top" hidden data-i18n-aria-label="advertisement.label"><span data-i18n="advertisement.preview"></span></aside>
+    <div class="directory" id="directory">
+<div id="first-cards"></div>
+<aside data-slot="directory-middle" class="ad-space" hidden></aside>
+<div id="other-cards"></div>
+</div>
+    <div class="empty" id="empty" hidden>
+      <p data-i18n="ecommerce.empty">검색 결과가 없습니다</p>
+      <button data-i18n="ecommerce.reset" class="reset" id="reset" type="button">검색 및 필터 초기화</button>
+    </div>
+    <aside class="ad-space" data-slot="directory-bottom" hidden data-i18n-aria-label="advertisement.label" aria-label="광고"><span data-i18n="advertisement.preview">광고 배치 미리보기</span></aside>
+    </section>
+  </main>
+  <footer class="wrap">
+    <details>
+      <summary data-i18n="ecommerce.faq">온라인에서 Apple Pay 지원 여부를 어떻게 확인하나요?</summary>
+      <p data-i18n="ecommerce.answer">브랜드를 검색한 뒤 해당 쇼핑몰의 결제 화면에서 Apple Pay 옵션을 확인하세요.</p>
+    </details>
+    <p data-i18n="ecommerce.note">결제 지원 여부는 변경될 수 있습니다. 구매 전 가맹점에서 확인해 주세요.</p>
+    <a data-i18n="ecommerce.map" href="./" data-page="./">오프라인 매장 지도 보기</a>
+  </footer><footer data-footer></footer>
+</body>
+</html>

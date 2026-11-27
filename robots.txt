@@ -1,5 +1,4 @@
-# Allow all bots to crawl every page
 User-agent: *
 Allow: /
 
-Sitemap: https://diligencefrozen.github.io/applepay-southkorea-map/sitemap.xml
+Sitemap: https://diligencefrozen.github.io/PayKR/sitemap.xml

@@ -1,0 +1,13 @@
+name: Translation correction
+description: Translation correction for PayKR
+title: "[Translation correction] "
+body:
+  - type: markdown
+    attributes:
+      value: "Reports are public. Omit personal information."
+  - type: textarea
+    id: details
+    attributes:
+      label: Page, language, current text and suggested wording
+    validations:
+      required: true

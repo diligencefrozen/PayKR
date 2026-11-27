@@ -1,0 +1,13 @@
+name: Feature suggestion
+description: Feature suggestion for PayKR
+title: "[Feature suggestion] "
+body:
+  - type: markdown
+    attributes:
+      value: "Reports are public. Omit personal information."
+  - type: textarea
+    id: details
+    attributes:
+      label: What would you like to do?
+    validations:
+      required: true

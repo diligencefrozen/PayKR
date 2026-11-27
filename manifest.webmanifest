@@ -1,0 +1,17 @@
+{
+  "id": "./",
+  "name": "PayKR · Find places to pay in Korea",
+  "short_name": "PayKR",
+  "description": "Explore places, look up payment evidence, and show Korean payment questions while travelling.",
+  "lang": "en",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f7f9fc",
+  "theme_color": "#145bd6",
+  "icons": [
+    { "src": "./icons/paykr-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "./icons/paykr-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "./icons/paykr-maskable.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}

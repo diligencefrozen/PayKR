@@ -1,110 +1,48 @@
-<img width="1920" height="914" alt="image" src="https://github.com/user-attachments/assets/0b7be13b-cc53-4f71-a2d0-f227bf2d204b" /><br/>
-<img width="1920" height="914" alt="image" src="https://github.com/diligencefrozen/PayKR/blob/main/ss/2.1.png?raw=true" />
+# PayKR
 
-## Purpose
-- **Convenience**: No need to install a separate app to find stores that support Apple Pay.
-- **Accessibility**: Quickly locate Apple Pay supported stores from anywhere, at any time.
-- **Accurate Information**: Store information is regularly updated to ensure it's always current.
-  
-## Why Use ASM(Apple Pay South Korea Map)?
-1. Convenience: No extra app needed. Quickly find Apple Pay–supported shops.
-2. Accessibility: Locate participating stores anytime, anywhere.
-3. Accuracy: Store details are frequently updated so you get the most current info.
+한국에서 Apple Pay 사용처를 찾고 결제 근거를 확인하는 지도와 온라인 브랜드 목록입니다. 도시를 고르거나 기존 검색창과 가로 카테고리로 지점을 찾은 다음, PC 왼쪽 패널이나 모바일 하단 시트에서 결제 근거와 한국어 주소를 확인합니다. 지도·온라인 사용처·여행 가이드는 PC 상단 메뉴와 모바일 하단 탭에서 열 수 있습니다. 온라인 페이지에서는 기존 로고 카드의 상태 표시를 펼쳐 근거를 확인합니다.
 
-## How to Use the Map
-1. Open the site in your browser.
-2. Pick a category (convenience stores, cafes, etc.) from the map.
-3. Click a marker to see store details.
-   
-## Feedback & Suggestions
-- Want to add or update a store, or share other ideas?
-- Head over to My [GitHub Issues](https://github.com/diligencefrozen/PayKR/issues) page and let me know!
+## 로컬 실행
 
-## Screnshots
-### PC 
-<img src="https://github.com/diligencefrozen/PayKR/blob/main/ss/ss1.PNG?raw=true">
-<br/>
+Node.js 24로 저장소 루트에서 실행합니다. 별도 서버 계정이나 빌드 패키지 설치 없이 생성된 페이지를 열 수 있습니다.
 
-<img src="https://github.com/diligencefrozen/PayKR/blob/main/ss/ss2.PNG?raw=true">
-<br/>
+```sh
+node scripts/preview.mjs
+```
 
-<img src="https://github.com/diligencefrozen/PayKR/blob/main/ss/ss3.PNG?raw=true">
-<br/>
+브라우저에서 [로컬 지도](http://127.0.0.1:8766/PayKR/)를 엽니다. Kakao SDK는 허용된 origin이 필요합니다. 연결 실패 화면에서 **브랜드 목록**을 열면 자체 카탈로그를 조회할 수 있습니다. 위치는 사용자가 위치 버튼을 눌렀을 때 요청합니다.
 
-<img src="https://github.com/diligencefrozen/PayKR/blob/main/ss/ss4.PNG?raw=true">
-<br/>
+## 페이지와 데이터 관리
 
-<img src="https://github.com/diligencefrozen/PayKR/blob/main/ss/ss5.PNG?raw=true">
-<br/>
+- 지도, 온라인, 가이드의 HTML 원본은 `templates/`에 있습니다. 지도·온라인·공통 기본 CSS는 기존 파일을 유지합니다. 추가 기능 스타일은 `extensions.css`에 있습니다.
+- `src/data/stores.json`은 오프라인 브랜드 160개와 카테고리 연결 163개를, `online.json`은 온라인 항목 36개를 담습니다. 원래의 브랜드명·별칭·로고를 유지합니다. 과거 목록 등재는 지점별 결제 확인과 구분합니다.
+- ‘의견 남기기 → 매장 정보 제보’에서 제출한 글은 GitHub Issues에 저장됩니다. 운영자가 지점·결제 경로·확인 날짜를 검토하고 `src/data/evidence.js`에 출처와 함께 반영한 버전을 배포해야 지도에 표시됩니다. 현재 확인된 지점 레코드는 0개입니다. Discord 채팅 내용도 지도에 자동 등록되지 않습니다.
+- `src/i18n/`에는 언어 등록부와 한국어·영어·일본어·중국어 간체·번체 사전이 있습니다. 명시적 URL 언어, 저장된 선택, 브라우저 선호 언어 순서로 결정합니다. 지원 언어가 없으면 영어를 사용합니다.
+- `?lang=`, `?adpreview=1`, `?chat=open`, `online.html`, `forum/`을 지원합니다. 지도 검색 딥링크는 `?q=Myeongdong` 형식입니다. 현재 좌표를 URL에 기록하지 않습니다.
 
-<img src="https://github.com/diligencefrozen/PayKR/blob/main/ss/ss6.PNG?raw=true">
-<br/>
+원본이나 사전을 수정하면 아래 순서로 정적 페이지와 오프라인 자산 해시를 갱신합니다. 생성물도 함께 버전 관리합니다.
 
-<img src="https://github.com/diligencefrozen/PayKR/blob/main/ss/ss7.PNG?raw=true">
-<br/>
+```sh
+node scripts/pages.mjs
+node scripts/pwa-assets.mjs
+node scripts/check.mjs
+```
 
-### Mobile
+`scripts/check.mjs`는 HTML·사이트맵·오프라인 자산 일치 검사와 Node 회귀 테스트를 실행합니다. 브라우저 테스트는 Playwright와 Chromium을 사용할 수 있는 환경에서 실행합니다. 필요한 경우 `PAYKR_PLAYWRIGHT`에 로컬 Playwright 패키지 경로, `PAYKR_CHROME`에 브라우저 실행 파일 경로를 지정합니다.
 
-<img src="https://github.com/diligencefrozen/PayKR/blob/main/ss/ss8.PNG?raw=true" alt="Apple Pay South Korea Map" width="300" />
-<br/>
+```sh
+node scripts/check.mjs --browser --screenshots
+node tests/performance.mjs
+node tests/browser-perf.mjs
+```
 
-## Mobile map UI and Discord chat
+## 운영
 
-The map uses the existing Kakao merchant searches with a horizontal category bar,
-keyboard-submit search, and a draggable/clickable place sheet. The sheet contains
-search results on mobile and place details, phone, reviews and directions when a
-place is selected. Chat opens independently without resetting map or place state.
-The old `/forum/` entry redirects to `index.html?chat=open`; legacy forum source
-and external user data are retained, but the map no longer links to that UI.
+기존 GitHub Pages의 프로젝트 경로는 `/PayKR/`입니다. 운영자가 검증 후 기존 배포 브랜치에 소스와 생성 파일을 함께 반영합니다. 릴리스 롤백 시에는 이전 HTML, 모듈, 서비스 워커, 자산 해시를 같은 버전으로 복원합니다. 사용자에게 업데이트가 준비되면 직접 새로고침하도록 안내합니다.
 
-Discord uses [official WidgetBot Crate](https://docs.widgetbot.io/embed/crate/tutorial)
-with server `1574706452671504474` and channel `1574706454353412239`.
-Position updates use the documented `location`/`setOptions` APIs. No paid embed
-CSS or guest authentication is configured. On narrow phones, the official widget
-opens full screen, so its appearance differs from the supplied design mockup.
-If the CDN fails, a direct Discord channel link is shown.
+AdSense 게시자 설정은 `src/config/advertising.js`에 있습니다. 발급된 광고 단위, 인증 CMP 동의 연결, 계정의 공식 복구 태그 및 게시 메시지는 운영자 설정 항목입니다. 일반 개발 검증에는 비대화형 광고 미리보기를 사용합니다.
 
-For local preview, run `python3 -m http.server 8765 --bind 127.0.0.1` and open
-`http://localhost:8765/?lang=ko`. The Kakao app must allow that web origin.
-On 2026-11-24 the existing key returned HTTP 401 `domain mismatched` for this
-origin; live map/search/location regression checks therefore require an allowed
-origin. Do not replace the production key just for preview.
-
-Run the dependency-free behavioral checks with `node tests/map-ui.test.mjs`.
-These use mocked Kakao services and cover duplicate initialization, stale category
-responses, marker selection/deselection, sheet gestures, mobile search results,
-plain-text place rendering and Crate initialization/state preservation.
-Browser checks covered 390px mobile and 1280px desktop layouts, filter and sheet
-controls, and loading the actual `Lab` / `general` Discord channel. Sending a chat
-message and authenticated Discord access have not been tested.
-
-## Language, directory and ad previews
-
-Both pages use the same KO / EN selector. A valid `?lang=ko` or `?lang=en`
-takes precedence over the saved choice and browser language. Store names and
-addresses supplied by Kakao retain their original spelling. When the map opens,
-it requests the browser's location and searches the confirmed viewport for
-convenience stores, cafés, supermarkets, bakeries and dessert shops, and restaurants.
-Users can retry with the location button or explore manually. A failed request
-leaves the map and any previously confirmed location marker in place.
-
-Appearance defaults to the device setting. Choose Light, Dark or System in the
-map's category panel or next to the online directory heading. Both pages share
-the saved choice. The map hides the Discord control while the category panel is open.
-
-Open `/online.html` to search the 36 original entries using their Korean names,
-English names or aliases. Search and category filters apply together.
-
-Add `?adpreview=1` to either page to inspect non-interactive placement outlines.
-The map has a desktop sidebar placement and a mobile placement after the
-selected place's details. The directory has placements above, within and below
-the list. Short result lists suppress the middle and lower placements.
-Ordinary visits collapse these spaces. Each page loads the supplied AdSense
-site connection script once. Manual ad units require IDs issued by AdSense.
-Review automatic formats and page exclusions in the publisher account before
-enabling them on the map.
-
-Run `node tests/map-ui.test.mjs` and `node tests/directory.test.mjs` for the
-offline regression checks. The screenshots in `ss/paykr-*.png` show the local
-Chrome preview. The map screenshots show controls without Kakao tiles, and the
-mobile place panel uses test data.
+- [아키텍처, 데이터 이관, 전후 실측 및 검증 기록](docs/implementation.md)
+- [외부 정책 근거와 운영자 검증 절차](docs/policy-review.md)
+- [기존 업데이트 기록](docs/release-history.txt)
+- [공개 GitHub Issues](https://github.com/diligencefrozen/PayKR/issues)

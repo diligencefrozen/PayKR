@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#145bd6">
+  <meta name="google-site-verification" content="c4eTxK6D1wFIOq01h8LLX02-f44HSO5gXqCsqGhr8AE">
+  <meta name="naver-site-verification" content="2bb536a9ff4fcb6758452235767f20b05574b028">
+  <meta name="msvalidate.01" content="4922F3F89BC9061D5E31D97E09092268">
+  <meta name="google-adsense-account" content="ca-pub-3313505766731703">
+  <meta name="description" data-i18n-content="map.description" content="Explore Korean brands and places, check the evidence for Apple Pay and show a Korean address.">
+  <title data-i18n="map.title">Find places to pay in Korea | PayKR</title>
+  <link rel="manifest" href="./manifest.webmanifest">
+  <link rel="apple-touch-icon" href="./icons/apple-touch-icon.png">
+  <link rel="icon" href="./favicon.svg" type="image/svg+xml">
+  <link rel="canonical" href="https://diligencefrozen.github.io/PayKR/?lang=en">
+  <link rel="alternate" hreflang="en" href="https://diligencefrozen.github.io/PayKR/?lang=en">
+  <link rel="alternate" hreflang="ko" href="https://diligencefrozen.github.io/PayKR/?lang=ko">
+  <link rel="alternate" hreflang="ja" href="https://diligencefrozen.github.io/PayKR/?lang=ja">
+  <link rel="alternate" hreflang="zh-Hans" href="https://diligencefrozen.github.io/PayKR/?lang=zh-Hans">
+  <link rel="alternate" hreflang="zh-Hant" href="https://diligencefrozen.github.io/PayKR/?lang=zh-Hant">
+  <link rel="alternate" hreflang="x-default" href="https://diligencefrozen.github.io/PayKR/">
+  <link rel="stylesheet" href="./shared.css">
+  <link rel="stylesheet" href="./main.css">
+  <script src="./theme.js"></script>
+  <script type="module" src="./src/app/bootstrap.js"></script>
+  <!-- Official account-issued CMP and ad-blocking recovery tags belong here after operator verification. -->
+  <link rel="stylesheet" href="./extensions.css">
+</head>
+<body data-page-type="map" class="explorer"><header data-header></header><main id="main-content">
+
+  <div id="map"></div>
+
+
+  <div id="sidebar">
+    <div id="sidebar-header">
+      <form id="search-box" class="explore-search" role="search">
+        <span class="search-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="7.5"/><path d="m16 16 5 5"/></svg></span>
+        <input type="search" id="search-input" data-i18n-aria-label="search.input" aria-label="장소, 주소 검색" enterkeyhint="search" autocomplete="off" data-i18n-placeholder="search.placeholder" placeholder="장소, 주소 검색...">
+        <button class="filter-toggle" type="button" data-i18n-aria-label="map.openFilter" aria-label="카테고리 필터 열기" aria-expanded="false" aria-controls="filter-panel"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/><circle cx="8" cy="6" r="2"/><circle cx="16" cy="12" r="2"/><circle cx="8" cy="18" r="2"/></svg></button>
+      </form>
+    </div>
+
+    <div id="sidebar-content">
+
+      <div id="search-results">
+        <div id="search-results-header" hidden>
+          <h3 id="search-results-title"></h3>
+          <p id="search-results-count"></p>
+        </div>
+        <div id="search-results-list"><div id="results-host" hidden>
+          <div class="list-controls"><button type="button" id="source-switch" class="secondary" hidden></button>
+          <label class="evidence-filter"><span data-i18n="place.evidence"></span><select id="evidence-filter" class="theme-choice"></select></label></div>
+          <div id="results"></div><button class="secondary" id="more-results" hidden data-i18n="search.more"></button><button class="secondary" id="retry-search" hidden data-i18n="search.retry"></button></div></div>
+      </div>
+
+
+      <div id="sidebar-welcome">
+        <div id="apple-pay-notice" style="position: relative; right: auto; bottom: auto; margin-top: 20px;">
+          <img src="logo/applepay.png" alt="Apple Pay" width="30" height="15"><span data-i18n="map.sticker">스티커를 꼭 확인하세요!</span>
+        </div>
+        <div style="margin-top: 30px; padding: 0 10px; color: var(--subtext, #666); font-size: 14px; line-height: 1.6;">
+          <ul style="padding-left: 20px; margin-top: 10px;">
+            <li data-i18n="map.searchStep">검색창에 매장명을 입력하세요</li>
+            <li data-i18n="map.categoryStep">카테고리 버튼을 클릭하세요</li>
+            <li data-i18n="map.zoomStep">마우스 휠로 지도를 확대/축소하세요</li>
+          </ul>
+        </div>
+
+      </div>
+      <aside data-slot="map" class="ad-space" id="sidebar-ad" hidden></aside>
+      <div class="sidebar-guides" id="sidebar-guides">
+        <div class="guide-buttons">
+          <button id="notice-button" type="button" aria-expanded="false" aria-controls="notice-panel" data-i18n="map.notice">필독사항</button>
+          <button id="release-button" type="button" aria-expanded="false" aria-controls="release-panel" data-i18n="map.releases">패치노트</button>
+        </div>
+        <section id="notice-panel" aria-labelledby="notice-button" hidden>
+          <ul>
+            <li data-i18n="notice.location">지도를 열 때 위치 접근을 허용하면 주변 편의점, 카페, 마트·슈퍼, 제과·디저트 매장과 음식점을 표시합니다. 현재 위치 버튼으로 다시 시도하거나 매장명·주소로 검색할 수 있습니다.</li>
+            <li data-i18n="notice.building">같은 건물에 있는 여러 매장이 지도에서 한곳에 표시될 수 있습니다.</li>
+            <li data-i18n="notice.marker">지도 마커를 클릭하면 매장 주소와 상세 정보를 볼 수 있습니다.</li>
+            <li data-i18n="notice.source">업종 분류는 현대카드의 Apple Pay 안내를 참고했습니다.</li>
+          </ul>
+        </section>
+        <section id="release-panel" aria-labelledby="release-button" hidden>
+<ol id="release-list" class="release-list"></ol>
+</section>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="desktop-category-wrapper">
+    <div class="nav-control-categories" id="desktop-categories">
+
+    </div>
+  </div>
+
+
+  <form id="search-box-mobile" class="explore-search" role="search">
+    <span class="search-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="7.5"/><path d="m16 16 5 5"/></svg></span>
+    <input type="search" id="search-input-mobile" data-i18n-aria-label="search.input" aria-label="장소, 주소 검색" enterkeyhint="search" autocomplete="off" data-i18n-placeholder="search.placeholder" placeholder="장소, 주소 검색...">
+        <button class="filter-toggle" type="button" data-i18n-aria-label="map.openFilter" aria-label="카테고리 필터 열기" aria-expanded="false" aria-controls="filter-panel"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/><circle cx="8" cy="6" r="2"/><circle cx="16" cy="12" r="2"/><circle cx="8" cy="18" r="2"/></svg></button>
+  </form>
+
+
+  <div class="nav-control-categories" id="mobile-categories">
+
+  </div>
+
+  <section id="filter-panel" data-i18n-aria-label="map.filter" aria-label="카테고리 필터" hidden>
+    <div class="panel-heading"><h2 data-i18n="map.filter">카테고리</h2><button id="filter-close" class="icon-button" data-i18n-aria-label="map.closeFilter" aria-label="필터 닫기">×</button></div>
+    <div id="filter-categories"></div>
+    <label class="theme-setting">
+      <span data-i18n="theme.label">화면 테마</span>
+      <select class="theme-choice" data-theme-choice>
+        <option value="system" data-i18n="theme.system">기기 설정</option>
+        <option value="light" data-i18n="theme.light">라이트</option>
+        <option value="dark" data-i18n="theme.dark">다크</option>
+      </select>
+    </label>
+  </section>
+  <button id="area" hidden data-i18n="map.area"></button>
+  <div id="map-zoom" hidden><button id="zoom-in" data-i18n-aria-label="map.zoomIn">+</button><button id="zoom-out" data-i18n-aria-label="map.zoomOut">−</button></div>
+  <button id="location-button" class="icon-button" data-i18n-aria-label="location.button" aria-label="현재 위치로 이동" data-i18n-title="location.button" title="현재 위치로 이동">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="7"/><circle cx="12" cy="12" r="3"/><path d="M12 1v4m0 14v4M1 12h4m14 0h4"/></svg>
+  </button>
+  <section id="place-sheet" data-i18n-aria-label="place.info" aria-label="장소 정보">
+    <button id="sheet-toggle" data-i18n-aria-label="place.expand" aria-label="장소 패널 펼치기" aria-expanded="false" aria-controls="sheet-content"><span></span><b id="sheet-mode"></b></button>
+    <div class="sheet-summary">
+      <svg class="pin-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22S3 14 3 9a9 9 0 1 1 18 0c0 5-9 13-9 13Z"/><circle cx="12" cy="9" r="3"/></svg>
+      <div aria-live="polite"><h1 id="place-title" data-i18n="place.emptyTitle">이 지역의 장소 찾기</h1><p id="place-subtitle" data-i18n="place.emptyHint">지도에서 장소를 선택하면 상세 정보가 표시됩니다.</p></div>
+      <button id="place-clear" class="icon-button" data-i18n-aria-label="place.clear" aria-label="장소 선택 해제" hidden>×</button>
+    </div>
+    <div id="sheet-content" hidden>
+      <div id="detail"></div>
+      <div id="mobile-results" data-i18n-aria-label="search.results" aria-label="장소 검색 결과"></div>
+      <aside class="ad-space" id="place-ad" data-slot="map-mobile" hidden></aside>
+    </div>
+  </section>
+  <p id="map-status" role="status" hidden></p>
+  <div class="map-load-error" id="map-failure" hidden><p data-i18n="map.unavailable"></p>
+    <div class="fallback-links"><button id="retry-map" data-i18n="common.retry"></button>
+    <a id="city-map" target="_blank" rel="noopener noreferrer" data-i18n="place.details"></a>
+    <button id="browse-brands" data-i18n="map.browse"></button></div></div>
+
+</main><footer data-footer></footer></body></html>

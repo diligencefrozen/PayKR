@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#145bd6">
+  <title data-i18n="guide.meta">Traveler’s guide to Apple Pay in Korea · PayKR</title>
+  <meta name="description" data-i18n-content="guide.description" content="Check your card, ask a cashier in Korean and plan for transit or cash.">
+  <link rel="canonical" href="https://diligencefrozen.github.io/PayKR/guide.html?lang=en">
+  <link rel="alternate" hreflang="en" href="https://diligencefrozen.github.io/PayKR/guide.html?lang=en">
+  <link rel="alternate" hreflang="ko" href="https://diligencefrozen.github.io/PayKR/guide.html?lang=ko">
+  <link rel="alternate" hreflang="ja" href="https://diligencefrozen.github.io/PayKR/guide.html?lang=ja">
+  <link rel="alternate" hreflang="zh-Hans" href="https://diligencefrozen.github.io/PayKR/guide.html?lang=zh-Hans">
+  <link rel="alternate" hreflang="zh-Hant" href="https://diligencefrozen.github.io/PayKR/guide.html?lang=zh-Hant">
+  <link rel="alternate" hreflang="x-default" href="https://diligencefrozen.github.io/PayKR/guide.html">
+  <link rel="icon" href="./favicon.svg" type="image/svg+xml">
+  <link rel="manifest" href="./manifest.webmanifest">
+  <link rel="apple-touch-icon" href="./icons/apple-touch-icon.png">
+  <link rel="stylesheet" href="./shared.css">
+  <script src="./theme.js"></script>
+  <script type="module" src="./src/app/bootstrap.js"></script>
+  <style>
+    .travel-guide { max-width: 56rem; margin-inline: auto; padding: clamp(1rem, 4vw, 2.5rem); padding-bottom: 9rem; line-height: 1.6; }
+    .travel-guide h1 { font-size: clamp(1.65rem, 4vw, 2.65rem); line-height: 1.15; margin-block: 1rem .5rem; }
+    .travel-guide h2 { font-size: 1.2rem; line-height: 1.35; margin-block: 0 .45rem; }
+    .travel-guide p { margin-block: 0 .75rem; }
+    .travel-guide a { text-underline-offset: .18em; }
+    .guide-section { padding-block: 1.3rem; border-bottom: 1px solid var(--line,#ccd6e3); scroll-margin-top: 6rem; }
+    .guide-card { padding: 1rem 1.15rem; border: 1px solid var(--line,#ccd6e3); border-inline-start: .25rem solid #3975dd; border-radius: .65rem; margin: .6rem 0; }
+    .guide-card strong { display: block; font-size: 1.22rem; }
+    .guide-card span { display: block; margin-top: .15rem; }
+    html:lang(ko) .guide-card span { display: none; }
+  </style>
+  <link rel="stylesheet" href="./online.css"><link rel="stylesheet" href="./extensions.css">
+</head>
+<body data-page-type="guide">
+  <header data-header><a href="./index.html">PayKR</a></header>
+  <main class="travel-guide" id="main-content">
+    <h1 data-i18n="guide.title">Using Apple Pay in Korea</h1>
+    <p data-i18n="guide.description">Check your card, ask a cashier in Korean and plan for transit or cash.</p>
+    <section class="guide-section" id="phrases" aria-labelledby="phrases-title">
+      <h2 id="phrases-title" data-i18n="guide.staff">Ask the cashier</h2>
+      <p data-i18n="guide.staffHint">Show either question to the cashier before paying.</p>
+      <div class="guide-card"><strong lang="ko">애플페이로 결제할 수 있나요?</strong><span data-i18n="guide.askApple">Can I pay with Apple Pay?</span></div>
+      <div class="guide-card"><strong lang="ko">해외에서 발급받은 카드인데 결제할 수 있나요?</strong><span data-i18n="guide.askCard">Can I pay with a card issued outside Korea?</span></div>
+    </section>
+    <section class="guide-section" id="store" aria-labelledby="store-title">
+      <h2 id="store-title" data-i18n="guide.store">Before you tap</h2>
+      <p data-i18n="guide.storeBody">Ask whether the terminal accepts contactless payments and your card network. A contactless sign can remain visible even when the reader is disabled.</p>
+      <a href="https://support.apple.com/ko-kr/120364" data-i18n="guide.networkSource">Apple · Where you can use Apple Pay</a>
+    </section>
+    <section class="guide-section" id="declined" aria-labelledby="declined-title">
+      <h2 id="declined-title" data-i18n="guide.declined">If a payment is declined</h2>
+      <p data-i18n="guide.declinedBody">Ask the cashier to check the payment method. For a foreign-issued card, contact the issuer about overseas purchases or a declined transaction.</p>
+      <a href="https://support.apple.com/en-us/120002" data-i18n="guide.declinedSource">Apple · What to do when a payment is declined</a>
+    </section>
+    <section class="guide-section" id="transit" aria-labelledby="transit-title">
+      <h2 id="transit-title" data-i18n="guide.transit">Public transit</h2>
+      <p data-i18n="guide.transitBody">Check the transit card required for your journey and its top-up options before boarding. Apple lists the transit systems and cards supported in Wallet.</p>
+      <a href="https://support.apple.com/ko-kr/118625" data-i18n="guide.transitSource">Apple · Transit systems and cards</a>
+    </section>
+    <section class="guide-section" id="cash" aria-labelledby="cash-title">
+      <h2 id="cash-title" data-i18n="guide.cash">Cash and ATMs</h2>
+      <p data-i18n="guide.cashBody">For a cash withdrawal, check the ATM’s accepted networks and displayed fee, then confirm overseas withdrawal charges with your card issuer.</p>
+      <a href="https://english.visitkorea.or.kr/svc/contents/infoHtmlView.do?menuSn=374&amp;vcontsId=140040" data-i18n="guide.cashSource">Visit Korea · Currency and exchange</a>
+      · <a href="https://www.visa.co.uk/travel-with-visa/travel.html" data-i18n="guide.visaSource">Visa · Using ATMs abroad</a>
+    </section>
+    <section class="guide-section" id="online" aria-labelledby="online-title">
+      <h2 id="online-title" data-i18n="guide.online">Websites and apps</h2>
+      <p data-i18n="guide.onlineBody">At checkout, look for Apple Pay among the payment options for that order.</p>
+      <a href="https://support.apple.com/en-us/102626" data-i18n="guide.paymentSource">Apple · Paying in stores, apps and online</a>
+    </section>
+    <p><span data-i18n="guide.reviewed">Sources checked</span> · <time data-local-date datetime="2026-11-26">November 26, 2026</time></p>
+    <aside data-slot="guide" data-i18n-aria-label="advertisement.label" aria-label="Advertisement" hidden></aside>
+    <section class="guide-section" id="privacy" aria-labelledby="privacy-title">
+      <h2 id="privacy-title" data-i18n="common.privacy">Privacy</h2>
+      <p data-i18n="privacy.location">When you choose Near me, your browser requests your location. Kakao receives map and search requests, including the viewed area. PayKR does not save your precise location or search history.</p>
+      <p data-i18n="privacy.storage">This device can store the app, guide, brand directory, language, appearance and install preferences for later visits.</p>
+      <p data-i18n="privacy.external">Opening a GitHub issue or Discord chat connects you to that service. Public reports can be read by others. When enabled, Google advertising and consent services may use cookies and device identifiers according to your settings.</p>
+    </section>
+  </main>
+  <footer data-footer><a href="./online.html" data-page="./online.html" data-i18n="nav.online">Online stores</a></footer>
+</body>
+</html>

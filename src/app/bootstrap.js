@@ -60,6 +60,8 @@ if (type === 'map') {
     ads,
     report,
   });
+  // Explicit console-only diagnostic; no telemetry, no coordinates or search terms.
+  Object.defineProperty(window.PayKR,'cacheStats',{value:()=>merchantCache.snapshot(),enumerable:false});
 } else if (type === 'online') {
   const { directory } = await import('../controllers/directory.js');
   directory(catalog, ads);

@@ -66,3 +66,5 @@ assert(startup.includes('else await run('));
 assert(locateFn.includes('if (initial) void run({ area: true, fullArea: true, interaction: false });'));
 assert(locateFn.indexOf('if (initial) void run') > locateFn.indexOf('catch (key)'));
 console.log('PASS: GPS-first startup and fallback-only merchant search source regression');
+const earlier=new MerchantCache(storage,{clock:()=>now});await earlier.get('old-version',load,{persist:true});
+const later=new MerchantCache(storage,{clock:()=>now});assert.equal(await later.previous('old-version'),null);assert.equal((await later.previous('old-version',{persist:true})).stale,true);assert.equal(later.snapshot().stale,1);

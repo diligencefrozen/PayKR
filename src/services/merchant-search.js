@@ -27,7 +27,12 @@ export class MerchantSearch {
     try{
       const version=await this.version.get();if(epoch!==this.epoch)return null;
       const persist=!input&&!privateViewport&&Boolean(bounds);
-      const query=(p,kind)=>this.cache.get(JSON.stringify(['merchant-v3',VERSION,version,this.config.url,kind,p]),()=>this.rpc('paykr_search_merchants',p),{persist});
+      const previous=this.version.previous;
+      const key=(v,p,kind)=>JSON.stringify(['merchant-v3',VERSION,v,this.config.url,kind,p]);
+      const query=async(p,kind)=>{
+        try{return await this.cache.get(key(version,p,kind),()=>this.rpc('paykr_search_merchants',p),{persist});}
+        catch(error){if(previous&&epoch===this.epoch){const fallback=await this.cache.previous(key(previous,p,kind),{persist});if(fallback)return fallback;}throw error;}
+      };
       let result=null;
       // Small, unfiltered map views only. Reuse all-category cells for category filters.
       // GPS-derived cells can use memory, but never durable storage.

@@ -98,7 +98,7 @@ await setLocale('zh-HK');
 assert.equal((await changed).detail.locale, 'zh-Hant');
 assert.equal(url.hash, '#phrases');
 assert.equal(url.searchParams.get('lang'), 'zh-Hant');
-assert.equal(pageLink('./online.html'), 'https://example.org/PayKR/online.zh-Hant.html?lang=zh-Hant&adpreview=1');
+assert.equal(pageLink('./online.html'), 'https://example.org/PayKR/online.zh-Hant.html?adpreview=1');
 assert.throws(() => pageLink('https://untrusted.example'));
 await Promise.all([setLocale('ko'), setLocale('en')]);
 assert.equal(getLocale(), 'en');

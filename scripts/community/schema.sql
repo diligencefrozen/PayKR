@@ -1,0 +1,8 @@
+CREATE TABLE IF NOT EXISTS community_meta (key TEXT PRIMARY KEY, value TEXT NOT NULL);
+CREATE TABLE IF NOT EXISTS payment_reports (id TEXT PRIMARY KEY, merchant_id TEXT NOT NULL, actor_id TEXT NOT NULL, outcome TEXT NOT NULL CHECK(outcome IN ('success','failure')), observed_at TEXT NOT NULL, created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP, status TEXT NOT NULL DEFAULT 'pending' CHECK(status IN ('pending','published','hidden')), UNIQUE(merchant_id,actor_id));
+CREATE INDEX IF NOT EXISTS payment_reports_merchant ON payment_reports(merchant_id,status,observed_at DESC);
+CREATE TABLE IF NOT EXISTS comments (id TEXT PRIMARY KEY, merchant_id TEXT NOT NULL, actor_id TEXT NOT NULL, nickname TEXT NOT NULL CHECK(length(nickname) BETWEEN 1 AND 40), body TEXT NOT NULL CHECK(length(body) BETWEEN 1 AND 1000), created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP, status TEXT NOT NULL DEFAULT 'pending' CHECK(status IN ('pending','published','hidden')));
+CREATE INDEX IF NOT EXISTS comments_merchant ON comments(merchant_id,status,created_at DESC,id);
+CREATE TABLE IF NOT EXISTS merchant_reports (id TEXT PRIMARY KEY, merchant_id TEXT NOT NULL, actor_id TEXT NOT NULL, kind TEXT NOT NULL CHECK(kind IN ('closed','moved','incorrect','other')), body TEXT NOT NULL CHECK(length(body) BETWEEN 1 AND 1000), created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP, status TEXT NOT NULL DEFAULT 'pending' CHECK(status IN ('pending','accepted','rejected')));
+CREATE INDEX IF NOT EXISTS merchant_reports_status ON merchant_reports(status,created_at DESC);
+INSERT INTO community_meta(key,value) VALUES('schema_version','1') ON CONFLICT(key) DO NOTHING;

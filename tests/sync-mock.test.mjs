@@ -21,12 +21,12 @@ globalThis.fetch=async(url,o={})=>{
  }
  throw Error('Unexpected request');
 };
-process.argv[2]='initial';await import('../scripts/merchants/sync.mjs?run=1');
+process.argv[2]='auto';await import('../scripts/merchants/sync.mjs?run=1');
 assert.equal(state.get('initial').region,2);assert.equal(merchants.size,1);assert.equal(publicCalls,2);
 process.env.PAYKR_MAX_PAGES='30';await import('../scripts/merchants/sync.mjs?run=2');
 assert.equal(state.get('initial').complete,true);assert.equal(publicCalls,17);assert.equal(merchants.size,1);
 // Move cursor to yesterday to simulate a scheduled daily run.
 const yesterday=new Date(Date.now()+9*3600000-86400000).toISOString().slice(0,10);
-state.set('delta',{day:yesterday,page:1});process.argv[2]='delta';await import('../scripts/merchants/sync.mjs?run=3');
+state.set('delta',{day:yesterday,page:1});process.argv[2]='auto';await import('../scripts/merchants/sync.mjs?run=3');
 assert.equal(merchants.get('MA0001').address,'서울 테스트로 2');assert.equal(merchants.get('MA0001').active,true);
 console.log('PASS: initial pagination checkpoints, resumed baseline, delta upsert, unknown deletion safety');

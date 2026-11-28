@@ -3,16 +3,17 @@ on:
   workflow_dispatch:
     inputs:
       mode:
-        description: 'initial (resume baseline) or delta (daily updates)'
+        description: 'auto (choose mode), initial (resume baseline), or delta'
         type: choice
-        options: [initial, delta]
-        default: delta
+        options: [auto, initial, delta]
+        default: auto
       max_pages:
         description: 'Maximum API pages per execution'
         default: '500'
         type: string
   schedule:
-    - cron: '17 18 * * *' # 03:17 KST next day
+    - cron: '17 18 * * *' # daily 03:17 KST
+    - cron: '17 0,6,12 * * *' # resume only: 09:17 / 15:17 / 21:17 KST
 permissions:
   contents: read
 concurrency:
@@ -35,4 +36,4 @@ jobs:
       - name: Sync
         run: node scripts/merchants/sync.mjs "$MODE"
         env:
-          MODE: ${{ inputs.mode || 'delta' }}
+          MODE: ${{ inputs.mode || (github.event.schedule == '17 0,6,12 * * *' && 'resume' || 'auto') }}

@@ -25,7 +25,7 @@ const {MerchantSearch}=await import('../src/services/merchant-search.js');
 const brands=[{id:'store-1',names:{ko:'CU'},aliases:[],icon:'logo/a.png'},{id:'store-2',names:{ko:'카페'},aliases:[],icon:'logo/b.png'}];
 const results=Array.from({length:125},(_,i)=>({id:String(i),brand_id:brands[i%2].id,name:'매장 '+i,lat:37,lng:127,category:i%2?'카페':'편의점',address:'서울'}));
 const offsets=[];let kakao=0;
-const search=new MerchantSearch({url:'https://example.supabase.co',publishableKey:'sb_publishable_test'},{query:async()=>brands},{search:async()=>{kakao++;return {rows:[]};}},[],async(_,o)=>{const p=JSON.parse(o.body);assert.equal(p.p_brand_ids,null);offsets.push(p.p_offset);return new Response(JSON.stringify(results.slice(p.p_offset,p.p_offset+p.p_limit)));});
+const search=new MerchantSearch({url:'https://example.supabase.co',publishableKey:'sb_publishable_test'},{query:async()=>brands},{search:async()=>{kakao++;return {rows:[]};}},[],async(url,o)=>{if(url.endsWith('/rpc/paykr_merchant_version'))return new Response(JSON.stringify('1'));const p=JSON.parse(o.body);assert.equal(p.p_brand_ids,null);offsets.push(p.p_offset);return new Response(JSON.stringify(results.slice(p.p_offset,p.p_offset+p.p_limit)));});
 const args={category:'all',bounds:[36,126,38,128]};
 const first=await search.search({...args,offset:0});const second=await search.search({...args,offset:12});const third=await search.search({...args,offset:24});
 assert(first.more&&second.more&&!third.more);assert.equal(new Set([...first.items,...second.items,...third.items].map(x=>x.id)).size,125);assert.deepEqual(offsets,[0,60,120]);await search.search(args);assert.deepEqual(offsets,[0,60,120]);assert.equal(kakao,0);

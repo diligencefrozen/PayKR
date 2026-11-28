@@ -1,3 +1,4 @@
+import { renderCommunityPanel } from './community.js';
 import { el, button, badge, link } from './dom.js';
 import { metersBetween } from '../models/payment.js';
 import { t, formatDate, formatNumber, pageLink } from '../i18n/registry.js';
@@ -93,7 +94,7 @@ export function detailContent(record, { brand, format, position, back, find, ver
     } else actions.append(link(t('place.directions'), 'https://map.kakao.com/link/to/' + id), link(t('place.details'), 'https://place.map.kakao.com/' + id));
     if (/^[+0-9() -]+$/.test(record.phone))
       actions.append(link(t('place.call'), 'tel:' + record.phone.replace(/[^+0-9]/g, '')));
-    panel.append(actions);
+    panel.append(actions, renderCommunityPanel(record));
   }
   const staff = el('a', t('place.showStaff'));
   staff.href = pageLink('guide.html#phrases');

@@ -440,3 +440,17 @@ body[data-page-type='online'] > footer.wrap {
 /* Visible, accessible links to text-based resources; no hidden SEO content. */
 .seo-resources { padding: .75rem 1rem; font-size: .85rem; line-height: 1.65; overflow-wrap: anywhere; }
 .seo-resources a { color: var(--accent, #164d89); text-decoration: underline; text-underline-offset: .15em; }
+
+/* Community: independent of the map layout, uses inherited light/dark colors. */
+.paykr-community{margin-block:1rem;padding-block:1rem;border-top:1px solid currentColor;overflow-wrap:anywhere}
+.paykr-community h3{margin:.75rem 0 .4rem;font-size:1rem}
+.paykr-community p{margin:.45rem 0}
+.paykr-community-actions{display:flex;gap:.5rem;flex-wrap:wrap}
+.paykr-community-actions button{flex:1;min-width:8rem}
+.paykr-community form{display:grid;gap:.5rem;margin:.5rem 0}
+.paykr-community input,.paykr-community textarea,.paykr-community select{font:inherit;color:inherit;background:transparent;border:1px solid currentColor;border-radius:.4rem;padding:.5rem;min-width:0;width:100%;box-sizing:border-box}
+.paykr-community textarea{min-height:5rem;resize:vertical}
+.paykr-community button{min-height:2.5rem;white-space:normal}
+.paykr-community-list article{padding:.7rem 0;border-bottom:1px solid currentColor}
+.paykr-community-list small{display:block;opacity:.8}
+.paykr-community-list p{white-space:pre-wrap}

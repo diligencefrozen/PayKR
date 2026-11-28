@@ -1,0 +1,35 @@
+39 localized app entries, 2 brand directories, terms and sitemap verified
+160 offline assets, revision ef3e0ee4ac42e79a
+PASS: 168 category memberships, alias normalization, place formatting, bounded concurrent searches, pagination, coalescing, stale results, evidence conflicts and location states
+PASS: 37 assets and entities, original aliases, combined categories, reset, language precedence, ad thresholds and report forms
+PASS: identity map, LRU, TTL boundary, query index, shared source reads, revisits, version invalidation, corrupt data, quota, clear and stale-write protection
+PASS: mock CMP unknown/denied/granted, offline, slot singleton, no-fill, SDK failure, official recovery hook, private page and preview exclusions
+PASS: all registered dictionaries, placeholders, guide bindings, locale negotiation, restricted storage, latest selection, page state and formatting
+PASS: Localized crawlable entries, reciprocal alternates, translation bindings, local paths and view boundaries
+PASS: 42 canonical URLs, reciprocal language links, JSON-LD, social metadata, 165 owned brands and no unsupported branch schema
+PASS: manifest and real PNGs, scoped atomic shell and integrity, offline navigation, third-party exclusions, update approval and cross-tab reload, early/dismissed/accepted install events, iOS help, restricted storage, standalone and network status
+PASS: public API parsing, encoding, strict category/brand matching, DB-first query, stale response protection, optional live comparison and readonly request
+Province progress: 1 / 17 next page 1
+Province progress: 2 / 17 next page 1
+{"pages":2,"seen":1,"matchedUpserts":1,"ignored":0,"unknownChange":0}
+Province progress: 3 / 17 next page 1
+Province progress: 4 / 17 next page 1
+Province progress: 5 / 17 next page 1
+Province progress: 6 / 17 next page 1
+Province progress: 7 / 17 next page 1
+Province progress: 8 / 17 next page 1
+Province progress: 9 / 17 next page 1
+Province progress: 10 / 17 next page 1
+Province progress: 11 / 17 next page 1
+Province progress: 12 / 17 next page 1
+Province progress: 13 / 17 next page 1
+Province progress: 14 / 17 next page 1
+Province progress: 15 / 17 next page 1
+Province progress: 16 / 17 next page 1
+Province progress: 17 / 17 next page 1
+Initial scan complete. Run delta catch-up before enabling DB mode.
+{"pages":15,"seen":0,"matchedUpserts":0,"ignored":0,"unknownChange":0}
+Delta cursor: 2026-11-29 page 1
+{"pages":2,"seen":4,"matchedUpserts":2,"ignored":0,"unknownChange":2}
+Unknown change codes skipped; review authoritative deletion semantics before changing inactive status.
+PASS: initial pagination checkpoints, resumed baseline, delta upsert, unknown deletion safety

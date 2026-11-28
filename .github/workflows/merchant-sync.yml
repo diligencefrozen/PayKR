@@ -1,0 +1,38 @@
+name: PayKR merchant sync
+on:
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: 'initial (resume baseline) or delta (daily updates)'
+        type: choice
+        options: [initial, delta]
+        default: delta
+      max_pages:
+        description: 'Maximum API pages per execution'
+        default: '500'
+        type: string
+  schedule:
+    - cron: '17 18 * * *' # 03:17 KST next day
+permissions:
+  contents: read
+concurrency:
+  group: paykr-merchant-sync
+  cancel-in-progress: false
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    env:
+      SUPABASE_URL: ${{ vars.SUPABASE_URL }}
+      SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+      PUBLIC_DATA_API_KEY: ${{ secrets.PUBLIC_DATA_API_KEY }}
+      PAYKR_MAX_PAGES: ${{ inputs.max_pages || '500' }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Sync
+        run: node scripts/merchants/sync.mjs "$MODE"
+        env:
+          MODE: ${{ inputs.mode || 'delta' }}

@@ -1,0 +1,20 @@
+name: PayKR Supabase read
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '23 0,12 * * *' # 09:23/21:23 KST
+permissions:
+  contents: read
+jobs:
+  query:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    env:
+      SUPABASE_URL: ${{ vars.SUPABASE_URL }}
+      SUPABASE_PUBLISHABLE_KEY: ${{ vars.SUPABASE_PUBLISHABLE_KEY }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: node scripts/merchants/keepalive.mjs

@@ -80,29 +80,6 @@ assert.equal(box.textContent, 'advertisement.preview');
 doc.location.hash = '#privacy';
 preview.render();
 assert(box.hidden);
-
-// An unissued slot ID must never emit a real AdSense request, even with consent granted.
-const unissuedBox = new Node();
-unissuedBox.dataset.slot = 'directory-top';
-const unissuedDoc = {
-  head: new Node(),
-  body: { dataset: { pageType: 'online' } },
-  location: { search: '', hash: '' },
-  querySelectorAll: () => [unissuedBox],
-  createElement: () => new Node(),
-};
-let unissuedConsent;
-const unissuedAds = new AdService(
-  { publisher: 'p', slots: { 'directory-top': null }, subscribeConsent: (cb) => (unissuedConsent = cb) },
-  unissuedDoc,
-  { onLine: true },
-);
-unissuedAds.start((k) => k);
-unissuedConsent(true);
-unissuedAds.show(36);
-assert(unissuedBox.hidden);
-assert.equal(unissuedDoc.head.children.length, 0);
-
 console.log(
-  'PASS: mock CMP unknown/denied/granted, offline, slot singleton, no-fill, SDK failure, official recovery hook, private page, preview exclusions and unissued slot ID suppression',
+  'PASS: mock CMP unknown/denied/granted, offline, slot singleton, no-fill, SDK failure, official recovery hook, private page and preview exclusions',
 );

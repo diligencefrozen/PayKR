@@ -1,7 +1,8 @@
 <img width="1920" height="914" alt="image" src="https://github.com/user-attachments/assets/0b7be13b-cc53-4f71-a2d0-f227bf2d204b" /><br/>
 <img width="1920" height="914" alt="image" src="https://github.com/diligencefrozen/PayKR/blob/main/ss/2.1.png?raw=true" />
 <img width="2551" height="899" alt="image" src="https://github.com/diligencefrozen/PayKR/blob/main/ss/Screenshot%202026-11-25%2000140249489484.png?raw=true" />
-" />
+<img width="2551" height="899" alt="image" src="https://github.com/diligencefrozen/PayKR/blob/main/ss/Screenshot%202026-11-28%20162741.png?raw=true" />
+
 ## Purpose
 - **Convenience**: No need to install a separate app to find stores that support Apple Pay.
 - **Accessibility**: Quickly locate Apple Pay supported stores from anywhere, at any time.
@@ -109,3 +110,7 @@ Run `node tests/map-ui.test.mjs` and `node tests/directory.test.mjs` for the
 offline regression checks. The screenshots in `ss/paykr-*.png` show the local
 Chrome preview. The map screenshots show controls without Kakao tiles, and the
 mobile place panel uses test data.
+
+## DB-first merchant search (v0.1)
+
+This package includes a staged Supabase integration for public-data store records. It keeps the existing Kakao map and enables the new search only after database migration, initial import, and explicit public configuration. See [DB deployment guide (한국어)](docs/SUPABASE-DEPLOY-KO.md). Live place comparison is optional and does not establish Apple Pay acceptance.

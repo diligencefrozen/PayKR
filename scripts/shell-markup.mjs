@@ -14,7 +14,6 @@ export function shellMarkup(type) {
     <nav class="top-nav" data-i18n-aria-label="common.navigation">${links}${more}</nav>
     <div class="header-actions"><select data-locale data-compact class="language" data-i18n-aria-label="common.language"></select>
     <select class="header-theme theme-choice" data-theme-choice data-i18n-aria-label="theme.label"><option value="system" data-i18n="theme.system"></option><option value="light" data-i18n="theme.light"></option><option value="dark" data-i18n="theme.dark"></option></select>
-    <button class="account-button" id="account-button" data-i18n="account.signIn" hidden></button>
     <button class="header-install" data-install data-i18n="install.action" hidden></button></div></div></div>`;
   const footer = `<div class="app-dock"><div data-pwa-panel></div><nav class="bottom-nav" data-i18n-aria-label="common.navigation">${links}${more}</nav></div>
     <button class="feedback-trigger" id="feedback-open"><span data-i18n="feedback.open"></span></button>
@@ -37,12 +36,6 @@ export function shellMarkup(type) {
         `<a href="${issueLink(type)}" target="_blank" rel="noopener noreferrer" data-i18n="feedback.${type}"></a>`).join('')}</div></section>
       <button id="open-discord" class="chat-action" data-i18n="feedback.discord"></button>
       <p id="chat-error" class="feedback-note" role="status" data-i18n="feedback.unavailable" hidden></p>
-      <a class="chat-action" id="discord-fallback" href="https://discord.com/channels/1574706452671504474/1574706454353412239" target="_blank" rel="noopener noreferrer" data-i18n="common.chatFallback" hidden></a></dialog>
-    <dialog id="auth-dialog" aria-labelledby="auth-title">
-      <div class="feedback-heading"><h2 id="auth-title" data-i18n="review.loginRequired"></h2>
-      <form method="dialog"><button class="feedback-close" data-i18n-aria-label="common.close">×</button></form></div>
-      <p class="feedback-note" data-i18n="review.loginNotice"></p>
-      <button id="auth-continue" class="chat-action" data-i18n="review.continueDiscord"></button>
-      <button id="auth-later" class="secondary" data-i18n="review.later"></button></dialog>`;
+      <a class="chat-action" id="discord-fallback" href="https://discord.com/channels/1574706452671504474/1574706454353412239" target="_blank" rel="noopener noreferrer" data-i18n="common.chatFallback" hidden></a></dialog>`;
   return { header, footer };
 }

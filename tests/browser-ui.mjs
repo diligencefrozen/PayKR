@@ -160,7 +160,7 @@ await withBrowser(async (browser, base) => {
   const page = await context.newPage(),
     errors = [];
   page.on('pageerror', (e) => errors.push(e.message));
-  await page.goto(base + '?lang=en&renderer=kakao');
+  await page.goto(base + '?lang=en');
   await page.waitForFunction(()=>fixture.maps===1);
   assert.equal(await page.evaluate(() => fixture.maps), 1);
   await page.waitForFunction(() => fixture.gps.length === 1);

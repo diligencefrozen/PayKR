@@ -52,7 +52,6 @@
     <nav class="top-nav" data-i18n-aria-label="common.navigation" aria-label="القائمة الرئيسية"><a href="./index.ar.html" data-page="./" aria-current="page" data-i18n="nav.explore">الخريطة</a><a href="./online.ar.html" data-page="./online.html"  data-i18n="nav.online">متاجر إلكترونية</a><a href="./guide.ar.html" data-page="./guide.html"  data-i18n="nav.guide">دليل السفر</a><button type="button" data-more aria-haspopup="dialog" data-i18n="nav.more">المزيد</button></nav>
     <div class="header-actions"><select data-locale data-compact class="language" data-i18n-aria-label="common.language" aria-label="اللغة"><option value="en">EN</option><option value="ko">KO</option><option value="ja">JP</option><option value="zh-Hans">简中</option><option value="zh-Hant">繁中</option><option value="th">TH</option><option value="vi">VI</option><option value="id">ID</option><option value="ms">MS</option><option value="ar" selected>AR</option><option value="hi">HI</option><option value="mn">MN</option><option value="ru">RU</option></select>
     <select class="header-theme theme-choice" data-theme-choice data-i18n-aria-label="theme.label" aria-label="المظهر"><option value="system" data-i18n="theme.system">حسب الجهاز</option><option value="light" data-i18n="theme.light">فاتح</option><option value="dark" data-i18n="theme.dark">داكن</option></select>
-    <button class="account-button" id="account-button" data-i18n="account.signIn" hidden>تسجيل الدخول</button>
     <button class="header-install" data-install data-i18n="install.action" hidden>تثبيت التطبيق</button></div></div></div></header><main id="main-content">
 
   <div id="map"></div>
@@ -133,7 +132,6 @@
     <div class="mobile-notes-links"><button data-notes="notice" data-i18n="map.notice">إرشادات الخريطة</button><button data-notes="releases" data-i18n="map.releases">سجل التحديثات</button></div>
     <div id="sheet-content" hidden>
       <div id="detail"></div>
-      <div id="community"></div>
       <div id="mobile-results" data-i18n-aria-label="search.results" aria-label="نتائج البحث"></div>
       <aside class="ad-space" id="place-ad" data-slot="map-mobile" hidden></aside>
     </div>
@@ -171,10 +169,4 @@
       <div id="issue-links"><a href="https://github.com/diligencefrozen/PayKR/issues/new?template=merchant.yml" target="_blank" rel="noopener noreferrer" data-i18n="feedback.report">إرسال معلومات عن متجر</a><a href="https://github.com/diligencefrozen/PayKR/issues/new?template=bug.yml" target="_blank" rel="noopener noreferrer" data-i18n="feedback.bug">الإبلاغ عن خلل</a><a href="https://github.com/diligencefrozen/PayKR/issues/new?template=feature.yml" target="_blank" rel="noopener noreferrer" data-i18n="feedback.feature">اقتراح ميزة</a><a href="https://github.com/diligencefrozen/PayKR/issues/new?template=translation.yml" target="_blank" rel="noopener noreferrer" data-i18n="feedback.translation">اقتراح تصحيح للترجمة</a></div></section>
       <button id="open-discord" class="chat-action" data-i18n="feedback.discord">محادثة Discord</button>
       <p id="chat-error" class="feedback-note" role="status" data-i18n="feedback.unavailable" hidden>تعذّر فتح المحادثة. يمكنك فتح القناة في Discord.</p>
-      <a class="chat-action" id="discord-fallback" href="https://discord.com/channels/1574706452671504474/1574706454353412239" target="_blank" rel="noopener noreferrer" data-i18n="common.chatFallback" hidden>افتح قناة Discord</a></dialog>
-    <dialog id="auth-dialog" aria-labelledby="auth-title">
-      <div class="feedback-heading"><h2 id="auth-title" data-i18n="review.loginRequired">تسجيل الدخول عبر Discord مطلوب</h2>
-      <form method="dialog"><button class="feedback-close" data-i18n-aria-label="common.close" aria-label="إغلاق">×</button></form></div>
-      <p class="feedback-note" data-i18n="review.loginNotice">سجّل الدخول عبر Discord لنشر البلاغات والمراجعات. سيُنشر اسمك ورسالتك في القناة المرتبطة.</p>
-      <button id="auth-continue" class="chat-action" data-i18n="review.continueDiscord">المتابعة عبر Discord</button>
-      <button id="auth-later" class="secondary" data-i18n="review.later">لاحقًا</button></dialog></footer></body></html>
+      <a class="chat-action" id="discord-fallback" href="https://discord.com/channels/1574706452671504474/1574706454353412239" target="_blank" rel="noopener noreferrer" data-i18n="common.chatFallback" hidden>افتح قناة Discord</a></dialog></footer></body></html>

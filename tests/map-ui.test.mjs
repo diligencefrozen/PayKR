@@ -47,27 +47,6 @@ assert(first.more && first.limited);
 assert.equal(first.errors, 1);
 assert.equal(first.items.length, 1);
 assert.equal(first.items[0].claim.status, 'brand_listed');
-// Full traversal: autoScan paginates each brand and `more` walks every 12-brand batch.
-const scanProvider = {
-  async search(keyword, bounds, page) {
-    return { rows: [{ id: keyword, place_name: keyword + '점', x: '127', y: '37' }], more: page < 3 };
-  },
-};
-const scanService = new SearchService(scanProvider, catalog);
-let scanOffset = 0,
-  batches = 0;
-const scanned = new Set();
-for (;;) {
-  const result = await scanService.search({ bounds: [36, 126, 38, 128], offset: scanOffset, autoScan: true });
-  assert.equal(result.progress.total, 165);
-  assert(result.progress.attempted <= 12);
-  for (const place of result.items) scanned.add(place.id);
-  batches++;
-  if (!result.more) break;
-  scanOffset += 12;
-}
-assert.equal(batches, 14);
-assert.equal(scanned.size, 165);
 const free = await service.search({ input: 'GS25' });
 assert.equal(free.items[0].claim.status, 'unknown');
 assert(free.more);

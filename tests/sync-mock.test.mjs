@@ -30,3 +30,12 @@ const yesterday=new Date(Date.now()+9*3600000-86400000).toISOString().slice(0,10
 state.set('delta',{day:yesterday,page:1});process.argv[2]='auto';await import('../scripts/merchants/sync.mjs?run=3');
 assert.equal(merchants.get('MA0001').address,'서울 테스트로 2');assert.equal(merchants.get('MA0001').active,true);
 console.log('PASS: initial pagination checkpoints, resumed baseline, delta upsert, unknown deletion safety');
+const oldInitial=JSON.stringify(state.get('initial'));
+process.argv[2]='quality';process.env.PAYKR_MAX_PAGES='2';await import('../scripts/merchants/sync.mjs?run=4');
+assert.equal(state.get('quality_v2').region,2);assert.equal(JSON.stringify(state.get('initial')),oldInitial);
+process.argv[2]='auto';process.env.PAYKR_MAX_PAGES='30';await import('../scripts/merchants/sync.mjs?run=5');
+assert.equal(state.get('quality_v2').complete,true);assert.equal(JSON.stringify(state.get('initial')),oldInitial);assert.equal(merchants.get('MA0001').active,true);
+console.log('PASS: opt-in quality rescan has independent cursor, auto resumes, retains existing rows');
+// A v2 delta must use the improved matcher; original state must not move backwards.
+state.set('delta',{day:yesterday,page:1});process.argv[2]='delta';await import('../scripts/merchants/sync.mjs?run=6');
+assert.equal(merchants.get('MA0001').active,true);assert.equal(state.get('quality_v2').complete,true);

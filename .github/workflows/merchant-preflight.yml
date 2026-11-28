@@ -1,0 +1,31 @@
+name: PayKR merchant preflight (read only)
+on:
+  workflow_dispatch:
+    inputs:
+      require_ready:
+        description: 'Fail if initial/replay/delta readiness gate is incomplete'
+        type: boolean
+        default: false
+permissions:
+  contents: read
+jobs:
+  preflight:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    env:
+      SUPABASE_URL: ${{ vars.SUPABASE_URL }}
+      SUPABASE_PUBLISHABLE_KEY: ${{ vars.SUPABASE_PUBLISHABLE_KEY }}
+      SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+      REQUIRE_READY: ${{ inputs.require_ready }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Read-only Supabase preflight
+        run: |
+          if [ "$REQUIRE_READY" = true ]; then
+            node scripts/merchants/preflight.mjs --require-ready
+          else
+            node scripts/merchants/preflight.mjs
+          fi

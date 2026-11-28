@@ -1,0 +1,31 @@
+name: PayKR Turso community setup
+on:
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: 'init creates tables; check reads schema only'
+        type: choice
+        options: [init, check]
+        default: check
+  schedule:
+    - cron: '41 3 * * *' # 12:41 KST, read only
+permissions:
+  contents: read
+concurrency:
+  group: paykr-community-turso
+  cancel-in-progress: false
+jobs:
+  turso:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Initialize or check Turso
+        env:
+          TURSO_DATABASE_URL: ${{ vars.TURSO_DATABASE_URL }}
+          TURSO_AUTH_TOKEN: ${{ secrets.TURSO_AUTH_TOKEN }}
+          MODE: ${{ inputs.mode || 'check' }}
+        run: node scripts/community/setup.mjs "$MODE"

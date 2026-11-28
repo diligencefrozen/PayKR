@@ -1,12 +1,14 @@
 import { normalize, paymentFor } from '../models/payment.js';
 import { keywordFor } from './search.js';
 import { compareLive } from '../models/merchant-match.js';
+import { MerchantCache } from '../infrastructure/cache/merchant-cache.js';
+import { VERSION } from '../data/catalog-version.js';
 export class MerchantSearch {
   dbMode=true;
-  constructor(config,catalog,provider,claims=[],fetcher=fetch){Object.assign(this,{config,catalog,provider,claims,fetcher});this.epoch=0;this.verifiedCount=0;this.pending=new Map();}
-  cancel(){this.epoch++;this.controller?.abort();}
-  async search({input='',brand=null,category='all',bounds=null,offset=0,page=1}){
-    this.cancel();const epoch=this.epoch;const controller=new AbortController();this.controller=controller;
+  constructor(config,catalog,provider,claims=[],fetcher=fetch,cache=new MerchantCache()){Object.assign(this,{config,catalog,provider,claims,fetcher,cache});this.epoch=0;this.verifiedCount=0;this.pending=new Map();}
+  cancel(){this.epoch++;} // Shared requests finish under their own timeout; obsolete results never render.
+  async search({input='',brand=null,category='all',bounds=null,offset=0,page=1,nearby=false,privateViewport=false}){
+    this.cancel();const epoch=this.epoch;
     const all=await this.catalog.query('stores',category);if(epoch!==this.epoch)return null;
     const exact=brand||all.find(b=>[...Object.values(b.names),...b.aliases].some(n=>normalize(n)===normalize(input)&&input));
     const q=exact?'':normalize(keywordFor(input,all));
@@ -14,12 +16,14 @@ export class MerchantSearch {
     if(skip>10000)return {items:[],errors:0,more:false,limited:true};
     const params={p_brand_ids:exact?[exact.id]:category==='all'?null:all.map(b=>b.id),p_query:q,p_offset:skip,p_limit:61};
     if(bounds){[params.p_south,params.p_west,params.p_north,params.p_east]=bounds;}
-    const timer=setTimeout(()=>controller.abort(),10000);
+    const cacheKey=JSON.stringify(['merchant-v2',VERSION,this.config.url,params]);
     try{
-      const key=this.config.publishableKey;
-      const response=await this.fetcher(this.config.url.replace(/\/$/,'')+'/rest/v1/rpc/paykr_search_merchants',{method:'POST',headers:{apikey:key,'Content-Type':'application/json',...(key.startsWith('eyJ')?{Authorization:'Bearer '+key}:{})},body:JSON.stringify(params),signal:controller.signal});
-      if(!response.ok)throw Error('DB search unavailable');
-      const rows=await response.json();if(!Array.isArray(rows))throw Error('Invalid DB result');
+      const {rows,stale}=await this.cache.get(cacheKey,async()=>{
+        const key=this.config.publishableKey;
+        const response=await this.fetcher(this.config.url.replace(/\/$/,'')+'/rest/v1/rpc/paykr_search_merchants',{method:'POST',headers:{apikey:key,'Content-Type':'application/json',...(key.startsWith('eyJ')?{Authorization:'Bearer '+key}:{})},body:JSON.stringify(params),signal:AbortSignal.timeout(10000)});
+        if(!response.ok)throw Error('DB search unavailable');
+        return response.json();
+      },{persist:!input&&!nearby&&!privateViewport&&Boolean(bounds)});
       if(epoch!==this.epoch)return null;
       const brands=new Map(all.map(b=>[b.id,b]));
       const items=rows.slice(0,60).flatMap(row=>{
@@ -28,8 +32,8 @@ export class MerchantSearch {
         const id='public:'+row.id;
         return [{id,source:'public',name:row.name,address:row.address||'',category:row.category||'',lat,lng,phone:'',icon:b.icon,claim:paymentFor(id,b,this.claims)}];
       });
-      return {items,errors:0,failed:false,limited:skip>=9960&&rows.length>60,more:skip<9960&&rows.length>60};
-    }catch(e){if(epoch!==this.epoch)return null;throw e;}finally{clearTimeout(timer);}
+      return {items,errors:stale?1:0,stale,failed:false,limited:skip>=9960&&rows.length>60,more:skip<9960&&rows.length>60};
+    }catch(e){if(epoch!==this.epoch)return null;throw e;}
   }
   // Explicit detail-only live comparison; no durable cache and no payment claim upgrade.
   verify(place){

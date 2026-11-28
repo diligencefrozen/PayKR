@@ -4,6 +4,8 @@ import { initLocale, t } from '../i18n/registry.js';
 import { shell } from '../views/shell.js';
 import { CatalogService } from '../services/catalog.js';
 import { CatalogRepository } from '../repositories/catalog.js';
+import { MerchantCache } from '../infrastructure/cache/merchant-cache.js';
+import { MerchantStore } from '../infrastructure/cache/merchant-store.js';
 import { CatalogStore, invalidations } from '../infrastructure/cache/catalog-store.js';
 import { fetchCatalog } from '../infrastructure/providers/owned.js';
 import { AdService } from '../infrastructure/ads/service.js';
@@ -17,19 +19,23 @@ shell(type);
 document.dispatchEvent(new Event('paykr:shell'));
 await initLocale();
 const scope = new URL('../../', import.meta.url).pathname;
-let storage;
+let storage, merchantStorage;
 try {
   storage = new CatalogStore(window.indexedDB, scope);
+  merchantStorage = new MerchantStore(window.indexedDB, scope);
 } catch {
   /* Memory-only mode. */
 }
 const repository = new CatalogRepository(fetchCatalog, storage);
 const catalog = new CatalogService(repository);
-repository.notify = invalidations(scope, () => repository.invalidate());
+const merchantCache = new MerchantCache(merchantStorage);
+repository.notify = invalidations(scope, () => { repository.invalidate(); merchantCache.invalidate(); });
 document.getElementById('clear-cache').onclick = async () => {
   const status = document.getElementById('cache-status');
   try {
+    const results = await Promise.allSettled([merchantCache.clear()]);
     await repository.clear();
+    if (results[0].status === 'rejected') throw results[0].reason;
     status.textContent = t('common.cleared');
   } catch {
     status.textContent = t('common.cacheFailed');
@@ -49,7 +55,7 @@ if (type === 'map') {
   const provider = new KakaoProvider(markerOverlay);
   window.PayKR = mapController({
     provider,
-    search: merchants.enabled ? new MerchantSearch(merchants, catalog, provider, branchClaims) : new SearchService(provider, catalog, branchClaims),
+    search: merchants.enabled ? new MerchantSearch(merchants, catalog, provider, branchClaims, fetch, merchantCache) : new SearchService(provider, catalog, branchClaims),
     catalog,
     ads,
     report,

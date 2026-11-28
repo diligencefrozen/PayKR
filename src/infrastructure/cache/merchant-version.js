@@ -2,7 +2,7 @@
 export class MerchantVersion {
   constructor(url,load,{clock=Date.now,storage}={}){
     this.load=load;this.clock=clock;this.key='paykr:merchant-version:'+url;this.checked=-Infinity;
-    try{this.storage=storage??globalThis.localStorage;const stored=this.storage?.getItem(this.key);this.version=typeof stored==='string'&&/^\d{1,30}$/.test(stored)?stored:'legacy';}catch{this.version='legacy';}
+    try{this.storage=storage??globalThis.localStorage;const stored=this.storage?.getItem(this.key);this.version=typeof stored==='string'&&/^\d{1,30}$/.test(stored)?stored:'legacy';const previous=this.storage?.getItem(this.key+':previous');this.previous=typeof previous==='string'&&/^(?:legacy|\d{1,30})$/.test(previous)&&previous!==this.version?previous:null;}catch{this.version='legacy';}
   }
   async get(){
     if(this.pending)return this.pending;
@@ -11,7 +11,9 @@ export class MerchantVersion {
       try{
         const version=await this.load();
         if(typeof version!=='string'||!/^\d{1,30}$/.test(version))throw Error('Invalid merchant version');
-        this.version=version;
+        if(version!==this.version){this.previous=this.version;this.version=version;
+          try{this.storage?.setItem(this.key+':previous',this.previous);}catch{}
+        }
         try{this.storage?.setItem(this.key,version);}catch{/* Private browsing. */}
       }catch{/* Missing migration or DB offline: preserve last known cache namespace. */}
       finally{this.checked=this.clock();}

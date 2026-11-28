@@ -37,3 +37,9 @@ assert.equal(networkCalls,6); // one dense cell, then three exact pages
 const v=new MerchantVersion('test',async()=>{throw Error('not installed');},{clock:()=>now});assert.equal(await v.get(),'legacy');
 let checks=0;const coalesced=new MerchantVersion('other',async()=>{checks++;return '42';},{clock:()=>now});assert.deepEqual(await Promise.all([coalesced.get(),coalesced.get()]),['42','42']);assert.equal(checks,1);
 console.log('PASS: spatial reuse across viewport/category, boundary dedup, large/dense fallback, private GPS memory-only, version invalidation/coalescing and offline fallback');
+// New version detected, but search RPC fails: old version is stale, never a fresh hit.
+let failSearch=false,ver='10',ticks=0;
+const oldCache=new MerchantCache(undefined,{clock:()=>ticks});
+const svc=new MerchantSearch(service.config,catalog,{},[],async(url,o)=>{if(url.endsWith('paykr_merchant_version'))return new Response(JSON.stringify(ver));if(failSearch)throw Error('offline');return new Response(JSON.stringify(rows));},oldCache);
+svc.version=new MerchantVersion('previous-test',()=>svc.rpc('paykr_merchant_version',{}),{clock:()=>ticks,storage:{getItem:()=>null,setItem:()=>{}}});
+assert.equal((await svc.search({bounds})).stale,false);ver='11';ticks=300001;failSearch=true;assert.equal((await svc.search({bounds})).stale,true);assert.equal(oldCache.snapshot().stale,1);

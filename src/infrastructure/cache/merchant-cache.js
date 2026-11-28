@@ -17,6 +17,14 @@ export class MerchantCache {
     const job=this.load(key,load,persist,hit,generation);this.pending.set(key,job);
     try{return await job;}finally{if(this.pending.get(key)===job)this.pending.delete(key);}
   }
+  // Previous data version is never a fresh hit. Only use on network failure.
+  async previous(key,{persist=false}={}){
+    const generation=this.generation;let record=this.memory.get(key);
+    if(persist)try{const saved=(await this.storage?.readSnapshot(key))?.record;if(this.valid(saved)&&(!this.valid(record)||saved.savedAt>record.savedAt))record=saved;}catch{}
+    if(generation===this.generation&&this.valid(record)&&record.rows.length){this.metrics.stale++;return {rows:record.rows,stale:true};}
+    return null;
+  }
+  snapshot(){const m={...this.metrics};const total=m.l1+m.l2+m.source;return {...m,hitRate:total?(m.l1+m.l2)/total:0,memoryPages:this.memory.size};}
   async load(key,load,persist,hit,generation){
     let fallback=this.valid(hit)&&hit.rows.length?hit:null,epoch;
     if(persist)try{

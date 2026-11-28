@@ -3,7 +3,7 @@ on:
   workflow_dispatch:
     inputs:
       mode:
-        description: 'auto, initial (baseline), quality (opt-in v2 rescan), or delta'
+        description: 'auto, initial (v2), quality (targeted replay), or delta'
         type: choice
         options: [auto, initial, quality, delta]
         default: auto

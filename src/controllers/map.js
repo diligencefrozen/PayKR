@@ -31,7 +31,7 @@ export function mapController({ provider, search, catalog, ads, report }) {
     expanded = false;
   let arrival = true, gpsIntent = 0, nearbyMode = false, locationError = '';
   let categories = [];
-  let autoLoading = false, gpsViewport = false;
+  let autoLoading = false, gpsViewport = false, fullAreaMode = false;
   let browsing = true,
     statusTimer,
     lastStatus;
@@ -210,9 +210,11 @@ export function mapController({ provider, search, catalog, ads, report }) {
       }
     }
   }
-  async function run({ append = false, area = areaOnly, interaction = true, nearby = false } = {}) {
+  async function run({ append = false, area = areaOnly, interaction = true, nearby = false, fullArea = false } = {}) {
     browsing = true;
     nearbyMode = nearby;
+    fullAreaMode = fullArea;
+    const sweep = nearby || fullArea;
     if (!live || directoryMode) {
       await brands(inputTerm);
       if (interaction) explored();
@@ -242,7 +244,7 @@ export function mapController({ provider, search, catalog, ads, report }) {
           bounds: scope,
           page,
           offset,
-          nearby,
+          nearby: sweep,
           privateViewport: gpsViewport,
         });
         if (current !== revision || !result) return;
@@ -265,9 +267,9 @@ export function mapController({ provider, search, catalog, ads, report }) {
         state = {
           kind: 'places',
           rows,
-          status: rows.length ? null : nearby && !search.dbMode && result.more ? 'search.loading' : partial ? 'search.error' : 'search.none',
+          status: rows.length ? null : sweep && !search.dbMode && result.more ? 'search.loading' : partial ? 'search.error' : 'search.none',
           partial, limited, stale,
-          more: (!nearby || search.dbMode) && result.more,
+          more: (!sweep || search.dbMode) && result.more,
         };
         provider.addMarkers(added, chooseMarker);
         if (inputTerm && !scope && !append && rows.length) provider.center(rows[0]);
@@ -277,7 +279,7 @@ export function mapController({ provider, search, catalog, ads, report }) {
           state.more = true;
         }
         if (!selected) render();
-        if (!shouldContinue({dbMode:search.dbMode,nearby,all:category==='all',area:Boolean(scope),input:inputTerm,more:result.more,failed:result.failed,pages})) break;
+        if (!shouldContinue({dbMode:search.dbMode,nearby:sweep,all:category==='all',area:Boolean(scope),input:inputTerm,more:result.more,failed:result.failed,pages})) break;
         offset += 12;
       } while (current === revision);
       if (interaction) explored();
@@ -301,11 +303,7 @@ export function mapController({ provider, search, catalog, ads, report }) {
   }
   function selectCategory(value) {
     supersedeLocation();
-    if (value === 'all') {
-      directoryMode = false;
-      // Keep legacy behavior until DB search is activated. DB mode retains the viewport.
-      if (live && !search.dbMode) provider.resetView(wonjuTerminal);
-    }
+    if (value === 'all') directoryMode = false; // Preserve the current viewport in both modes.
     brandContext = null;
     category = value;
     inputTerm = '';
@@ -313,7 +311,7 @@ export function mapController({ provider, search, catalog, ads, report }) {
     areaOnly = true;
     chrome.setFilter(false);
     sheet(true);
-    run();
+    run({ fullArea: value === 'all' });
     explored();
   }
   function controls() {
@@ -323,7 +321,7 @@ export function mapController({ provider, search, catalog, ads, report }) {
     $('city-map').href = 'https://map.kakao.com/link/map/원주종합버스터미널,' + wonjuTerminal.lat + ',' + wonjuTerminal.lng;
     render();
   }
-  async function locate() {
+  async function locate({ initial = false } = {}) {
     if (!live) {
       state.status = 'map.unavailable';
       render();
@@ -355,6 +353,8 @@ export function mapController({ provider, search, catalog, ads, report }) {
         locationError = key;
         state.status = key;
         render();
+        // The map was initialized at the fallback center. Search it only if initial GPS failed.
+        if (initial) void run({ area: true, fullArea: true, interaction: false });
       }
     } finally {
       if (intent === gpsIntent) {
@@ -382,16 +382,15 @@ export function mapController({ provider, search, catalog, ads, report }) {
       live = true;
       $('map').style.visibility = '';
 
-      provider.resetView(wonjuTerminal);
-
       $('map-failure').hidden = true;
 
       if (selected || directoryMode) render();
       else {
-        const initial = run({ area: !inputTerm || areaOnly, interaction: false });
-        if (arrival && !inputTerm) void locate();
+        const autoLocate = arrival && !inputTerm;
         arrival = false;
-        await initial;
+        // Do not query the fallback viewport while GPS is pending.
+        if (autoLocate) await locate({ initial: true });
+        else await run({ area: !inputTerm || areaOnly, interaction: false, fullArea: category === 'all' && !inputTerm });
       }
     } catch {
       $('map-failure').hidden = false;
@@ -434,9 +433,9 @@ export function mapController({ provider, search, catalog, ads, report }) {
     explored();
   };
   $('place-clear').onclick = closeDetail;
-  $('area').onclick = () => { supersedeLocation(); directoryMode = false; sheet(true); run({ area: true }); };
+  $('area').onclick = () => { supersedeLocation(); directoryMode = false; sheet(true); run({ area: true, fullArea: category === 'all' && !inputTerm }); };
   $('retry-map').onclick = start;
-  $('retry-search').onclick = () => run({ nearby: nearbyMode });
+  $('retry-search').onclick = () => run({ nearby: nearbyMode, fullArea: fullAreaMode });
 
   $('more-results').onclick = () => {
     if (autoLoading || state.status === 'search.loading') return;
@@ -446,7 +445,7 @@ export function mapController({ provider, search, catalog, ads, report }) {
     } else {
       if (inputTerm) page++;
       else offset += 12;
-      run({ append: true, nearby: nearbyMode });
+      run({ append: true, nearby: nearbyMode, fullArea: fullAreaMode });
     }
   };
   $('sheet-toggle').onclick = () => { sheet(!expanded); render(); };

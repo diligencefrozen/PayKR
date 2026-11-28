@@ -485,5 +485,22 @@
     ],
     "label": "brandCategory.패션",
     "icon": "logo_online/logo36.png"
+  },
+  {
+    "id": "online-37",
+    "names": {
+      "ko": "이랜드몰",
+      "en": "Eland Mall"
+    },
+    "aliases": [
+      "elandmall",
+      "E·LAND MALL",
+      "이랜드 몰"
+    ],
+    "categories": [
+      "shopping"
+    ],
+    "label": "brandCategory.이커머스",
+    "icon": "logo_online/logo37.png"
   }
 ]

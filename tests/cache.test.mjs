@@ -61,7 +61,7 @@ const denied = {
   },
 };
 const restricted = new CatalogRepository(async () => data, denied);
-assert.equal((await restricted.query('online')).length, 36);
+assert.equal((await restricted.query('online')).length, 37);
 await assert.rejects(restricted.clear());
 await assert.rejects(repo.query('kakao'));
 assert.throws(() => new CatalogStore(null, '/PayKR/').write('provider', {}));

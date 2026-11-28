@@ -1819,5 +1819,76 @@
       "레저/여행"
     ],
     "icon": "logo/leisure.png"
+  },
+  {
+    "id": "store-161",
+    "names": {
+      "ko": "신세계면세점",
+      "en": "Shinsegae Duty Free"
+    },
+    "aliases": [
+      "신세계 면세점"
+    ],
+    "categories": [
+      "백화점/쇼핑"
+    ],
+    "icon": "logo/departmentstore.png"
+  },
+  {
+    "id": "store-162",
+    "names": {
+      "ko": "컴포즈커피",
+      "en": "Compose Coffee"
+    },
+    "aliases": [
+      "컴포즈",
+      "COMPOSE COFFEE"
+    ],
+    "categories": [
+      "편의점&카페"
+    ],
+    "icon": "logo/cafe.png"
+  },
+  {
+    "id": "store-163",
+    "names": {
+      "ko": "복호두",
+      "en": "Bokhodu"
+    },
+    "aliases": [],
+    "categories": [
+      "제과/디저트"
+    ],
+    "icon": "logo/bakery.png"
+  },
+  {
+    "id": "store-164",
+    "names": {
+      "ko": "한국철도공사(코레일)",
+      "en": "Korail"
+    },
+    "aliases": [
+      "코레일",
+      "KORAIL",
+      "한국철도공사"
+    ],
+    "categories": [
+      "레저/여행"
+    ],
+    "icon": "logo/leisure.png"
+  },
+  {
+    "id": "store-165",
+    "names": {
+      "ko": "아이스토어",
+      "en": "iStore"
+    },
+    "aliases": [
+      "아이 스토어"
+    ],
+    "categories": [
+      "생활/가전"
+    ],
+    "icon": "logo/homeappliances.png"
   }
 ]

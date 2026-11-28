@@ -41,7 +41,7 @@ await withBrowser(async (browser, base) => {
   assert.equal(await first.evaluate(() => store.read('stores')), undefined);
   await other.evaluate(() => repo.query('stores', 'all', 'private customer text'));
   const record = await first.evaluate(() => store.read('stores'));
-  assert.equal(record.rows.length, 160);
+  assert.equal(record.rows.length, 165);
   assert(!JSON.stringify(record).includes('private customer text'));
   const fallback = await browser.newContext({ serviceWorkers: 'block' });
   await fallback.addInitScript(() => {
@@ -54,7 +54,7 @@ await withBrowser(async (browser, base) => {
   const limited = await fallback.newPage();
   await limited.goto(base + 'online.html?lang=ja');
   await limited.locator('#directory[data-ready]').waitFor();
-  assert.equal(await limited.locator('.brand').count(), 36);
+  assert.equal(await limited.locator('.brand').count(), 37);
   await fallback.close();
   await context.close();
   console.log(

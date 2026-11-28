@@ -1,5 +1,10 @@
 [
   {
+    "date": "2026-11-28",
+    "ko": "전체·이 지역 검색이 등록 브랜드를 모두 순회하도록 개선하고, 현대카드 공식 이용처(신세계면세점·컴포즈커피·복호두·코레일·아이스토어·이랜드몰)를 추가했습니다. 매장별 애플페이 제보와 방문자 리뷰, Discord 로그인을 준비하고 지도 렌더러를 분리해 실험용 MapLibre 모드를 추가했습니다.",
+    "en": "All and area searches now scan every registered brand. Added Hyundai Card merchants (Shinsegae Duty Free, Compose Coffee, Bokhodu, Korail, iStore, E-Land Mall), store-level Apple Pay reports and visitor reviews with Discord sign-in, and split the map renderer to add an experimental MapLibre mode."
+  },
+  {
     "date": "2026-11-25",
     "ko": "주변 매장에 카페를 추가했습니다. 화면 테마를 선택할 수 있으며, 카테고리를 여는 동안 Discord 버튼을 숨깁니다.",
     "en": "Nearby searches now include cafés. You can choose a display theme, and the Discord button is hidden while categories are open."

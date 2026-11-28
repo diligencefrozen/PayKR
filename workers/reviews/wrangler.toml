@@ -1,0 +1,16 @@
+name = "paykr-reviews"
+main = "src/index.js"
+compatibility_date = "2026-11-28"
+
+[vars]
+# Public, non-secret settings. Set real values before deploy.
+DISCORD_CLIENT_ID = ""
+DISCORD_REVIEW_CHANNEL_ID = ""
+DISCORD_REVIEW_BOT_ID = ""
+DISCORD_REPORT_CHANNEL_ID = ""
+ALLOWED_ORIGINS = "https://diligencefrozen.github.io"
+REDIRECT_URIS = "https://diligencefrozen.github.io/PayKR/auth/discord-callback.html"
+
+# Secrets are configured with `wrangler secret put NAME` — never committed:
+#   DISCORD_CLIENT_SECRET, DISCORD_BOT_TOKEN, SESSION_SIGNING_SECRET,
+#   OAUTH_STATE_SECRET, AUTHOR_KEY_SECRET

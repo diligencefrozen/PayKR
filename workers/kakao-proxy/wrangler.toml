@@ -1,0 +1,9 @@
+name = "paykr-kakao-proxy"
+main = "src/index.js"
+compatibility_date = "2026-11-28"
+
+[vars]
+ALLOWED_ORIGINS = "https://diligencefrozen.github.io"
+MAX_DAILY_REQUESTS = "100000"
+
+# Secret is configured with `wrangler secret put KAKAO_REST_KEY` — never committed.

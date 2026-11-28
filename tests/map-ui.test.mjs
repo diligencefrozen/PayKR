@@ -8,10 +8,10 @@ import { CatalogRepository } from '../src/repositories/catalog.js';
 
 const rows = JSON.parse(await readFile(new URL('../src/data/stores.json', import.meta.url)));
 const catalog = new CatalogRepository(async () => rows);
-assert.equal(rows.length, 160);
+assert.equal(rows.length, 165);
 assert.equal(
   rows.reduce((n, r) => n + r.categories.length, 0),
-  163,
+  168,
 );
 assert.equal(new Set(rows.flatMap((r) => r.categories)).size, 11);
 for (const [input, want] of [
@@ -47,6 +47,27 @@ assert(first.more && first.limited);
 assert.equal(first.errors, 1);
 assert.equal(first.items.length, 1);
 assert.equal(first.items[0].claim.status, 'brand_listed');
+// Full traversal: autoScan paginates each brand and `more` walks every 12-brand batch.
+const scanProvider = {
+  async search(keyword, bounds, page) {
+    return { rows: [{ id: keyword, place_name: keyword + '점', x: '127', y: '37' }], more: page < 3 };
+  },
+};
+const scanService = new SearchService(scanProvider, catalog);
+let scanOffset = 0,
+  batches = 0;
+const scanned = new Set();
+for (;;) {
+  const result = await scanService.search({ bounds: [36, 126, 38, 128], offset: scanOffset, autoScan: true });
+  assert.equal(result.progress.total, 165);
+  assert(result.progress.attempted <= 12);
+  for (const place of result.items) scanned.add(place.id);
+  batches++;
+  if (!result.more) break;
+  scanOffset += 12;
+}
+assert.equal(batches, 14);
+assert.equal(scanned.size, 165);
 const free = await service.search({ input: 'GS25' });
 assert.equal(free.items[0].claim.status, 'unknown');
 assert(free.more);
@@ -102,5 +123,5 @@ assert.match(
   /index.html\?chat=open/,
 );
 console.log(
-  'PASS: 163 category memberships, alias normalization, place formatting, bounded concurrent searches, pagination, coalescing, stale results, evidence conflicts and location states',
+  'PASS: 168 category memberships, alias normalization, place formatting, bounded concurrent searches, pagination, coalescing, stale results, evidence conflicts and location states',
 );

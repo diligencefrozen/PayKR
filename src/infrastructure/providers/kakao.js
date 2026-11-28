@@ -1,7 +1,7 @@
 const sdkUrl =
   'https://dapi.kakao.com/v2/maps/sdk.js?appkey=5a3cbf225c0d060b226dc5f1a8662069&libraries=services,clusterer&autoload=false';
 let loading;
-function loadMaps() {
+export function loadMaps() {
   if (loading) return loading;
   loading = new Promise((resolve, reject) => {
     const script = document.createElement('script');
@@ -34,7 +34,35 @@ function loadMaps() {
   return loading;
 }
 
-export class KakaoProvider {
+// PlaceSearchProvider contract: search(keyword, bounds, page) -> { rows, more }.
+export class KakaoSearchProvider {
+  async search(keyword, bounds, page) {
+    const sdk = await loadMaps();
+    const options = { page, size: 15 };
+    if (bounds)
+      options.bounds = new sdk.LatLngBounds(
+        new sdk.LatLng(bounds[0], bounds[1]),
+        new sdk.LatLng(bounds[2], bounds[3]),
+      );
+    return new Promise((resolve, reject) => {
+      const timeout = setTimeout(() => reject(new Error('Search timeout')), 9000);
+      new sdk.services.Places().keywordSearch(
+        keyword,
+        (rows, status, pagination) => {
+          clearTimeout(timeout);
+          if (status === sdk.services.Status.ZERO_RESULT) return resolve({ rows: [], more: false });
+          if (status !== sdk.services.Status.OK) return reject(new Error('Search unavailable'));
+          resolve({ rows, more: Boolean(pagination?.hasNextPage) });
+        },
+        options,
+      );
+    });
+  }
+}
+
+// MapRenderer contract: start, bounds, resetView, center, locate, zoom, render,
+// addMarkers, select, deselect, destroy.
+export class KakaoMapRenderer {
   constructor(overlayView) {
     this.overlayView = overlayView;
   }
@@ -44,13 +72,17 @@ export class KakaoProvider {
     const sdk = this.sdk;
     this.map = new sdk.Map(container, { center: new sdk.LatLng(center.lat, center.lng), level: 3 });
     this.map.setCopyrightPosition(sdk.CopyrightPosition.BOTTOMRIGHT, true);
-    this.places = new sdk.services.Places(this.map);
     this.markers = new Map();
     if (sdk.MarkerClusterer)
       this.cluster = new sdk.MarkerClusterer({ map: this.map, averageCenter: true, minLevel: 6 });
-    sdk.event.addListener(this.map, 'click', onDeselect);
-    sdk.event.addListener(this.map, 'dragstart', onExplore);
-    sdk.event.addListener(this.map, 'zoom_start', onExplore);
+    this.onExplore = onExplore;
+    this.onDeselect = onDeselect;
+    this.clickHandler = () => onDeselect();
+    this.dragHandler = () => onExplore();
+    this.zoomHandler = () => onExplore();
+    sdk.event.addListener(this.map, 'click', this.clickHandler);
+    sdk.event.addListener(this.map, 'dragstart', this.dragHandler);
+    sdk.event.addListener(this.map, 'zoom_start', this.zoomHandler);
     this.resize = new ResizeObserver(() => this.map.relayout());
     this.resize.observe(container);
   }
@@ -79,28 +111,6 @@ export class KakaoProvider {
   }
   zoom(delta) {
     this.map.setLevel(Math.max(1, Math.min(14, this.map.getLevel() + delta)));
-  }
-  search(keyword, bounds, page) {
-    const sdk = this.sdk;
-    const options = { page, size: 15 };
-    if (bounds)
-      options.bounds = new sdk.LatLngBounds(
-        new sdk.LatLng(bounds[0], bounds[1]),
-        new sdk.LatLng(bounds[2], bounds[3]),
-      );
-    return new Promise((resolve, reject) => {
-      const timeout = setTimeout(() => reject(new Error('Search timeout')), 9000);
-      this.places.keywordSearch(
-        keyword,
-        (rows, status, pagination) => {
-          clearTimeout(timeout);
-          if (status === sdk.services.Status.ZERO_RESULT) return resolve({ rows: [], more: false });
-          if (status !== sdk.services.Status.OK) return reject(new Error('Search unavailable'));
-          resolve({ rows, more: Boolean(pagination?.hasNextPage) });
-        },
-        options,
-      );
-    });
   }
   render(places, select) {
     this.cluster?.clear();
@@ -154,5 +164,16 @@ export class KakaoProvider {
   }
   deselect() {
     this.overlay?.setMap(null);
+  }
+  destroy() {
+    this.resize?.disconnect();
+    this.cluster?.clear();
+    for (const marker of this.markers.values()) marker.setMap(null);
+    this.markers.clear();
+    if (this.sdk?.event?.removeListener && this.map) {
+      this.sdk.event.removeListener(this.map, 'click', this.clickHandler);
+      this.sdk.event.removeListener(this.map, 'dragstart', this.dragHandler);
+      this.sdk.event.removeListener(this.map, 'zoom_start', this.zoomHandler);
+    }
   }
 }

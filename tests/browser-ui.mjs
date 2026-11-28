@@ -160,7 +160,7 @@ await withBrowser(async (browser, base) => {
   const page = await context.newPage(),
     errors = [];
   page.on('pageerror', (e) => errors.push(e.message));
-  await page.goto(base + '?lang=en');
+  await page.goto(base + '?lang=en&renderer=kakao');
   await page.waitForFunction(()=>fixture.maps===1);
   assert.equal(await page.evaluate(() => fixture.maps), 1);
   await page.waitForFunction(() => fixture.gps.length === 1);
@@ -258,7 +258,7 @@ await withBrowser(async (browser, base) => {
   await page.waitForFunction(() => document.querySelector('#map-status').textContent.includes('다시'));
   await page.goto(base + 'online.html?lang=en&adpreview=1');
   await page.locator('#directory[data-ready]').waitFor();
-  assert.equal(await page.locator('.brand').count(), 36);
+  assert.equal(await page.locator('.brand').count(), 37);
   assert.equal(
     await page
       .locator('[data-slot="directory-middle"]')
@@ -272,7 +272,7 @@ await withBrowser(async (browser, base) => {
   await page.locator('[data-category="travel"]').click();
   await page.locator('#empty').waitFor();
   await page.locator('#reset').click();
-  await page.waitForFunction(() => document.querySelectorAll('.brand').length === 36);
+  await page.waitForFunction(() => document.querySelectorAll('.brand').length === 37);
   assert.deepEqual(errors, []);
   await context.close();
   const fallback = await browser.newContext({ serviceWorkers: 'block' });
@@ -382,11 +382,11 @@ await withBrowser(async (browser, base) => {
       await view.locator('#directory-filter-toggle').click();
       assert.equal(await view.locator('#directory-filter-toggle').getAttribute('aria-expanded'), 'true');
       await view.locator('#directory-filters [data-category="convenience"]').click();
-      await view.waitForFunction(() => document.querySelectorAll('.brand').length < 36);
+      await view.waitForFunction(() => document.querySelectorAll('.brand').length < 37);
       assert.equal(await view.locator('#directory-filter-toggle').getAttribute('aria-expanded'), 'false');
       await view.locator('#directory-filter-toggle').click();
       await view.locator('#directory-filters [data-category="all"]').click();
-      await view.waitForFunction(() => document.querySelectorAll('.brand').length === 36);
+      await view.waitForFunction(() => document.querySelectorAll('.brand').length === 37);
       await view.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
       await view.locator('#searchInput').fill('Costco');
       await view.waitForFunction(() => document.querySelectorAll('.brand').length === 1 && window.scrollY === 0);

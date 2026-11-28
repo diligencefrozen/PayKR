@@ -2,11 +2,12 @@ import { mapChrome } from '../views/map-chrome.js';
 import { brandName } from '../views/brand-name.js';
 import { $ } from '../views/dom.js';
 import { placeRow, brandRow, detailContent } from '../views/places.js';
+import { renderCommunity } from '../views/reviews.js';
 import { wonjuTerminal, acquirePosition } from '../services/search.js';
 import { normalize, placeRecord, paymentFor, metersBetween } from '../models/payment.js';
 import { t, getLocale } from '../i18n/registry.js';
 
-export function mapController({ provider, search, catalog, ads, report }) {
+export function mapController({ provider, search, catalog, ads, report, reviews = null, auth = null }) {
   const list = $('results'),
     panel = $('detail');
   let directoryMode = false,
@@ -33,6 +34,9 @@ export function mapController({ provider, search, catalog, ads, report }) {
   let browsing = true,
     statusTimer,
     lastStatus;
+  let reviewSummaries = new Map(),
+    reviewSeq = 0,
+    communityId = null;
   const chrome = mapChrome({ category: selectCategory, locate, report, submit, render, edit: supersedeLocation });
   const explored = () => document.dispatchEvent(new Event('paykr:explored'));
   function cancel() {
@@ -97,11 +101,25 @@ export function mapController({ provider, search, catalog, ads, report }) {
     explored();
   }
   function statusText() {
-    if (state.status) return t(state.status);
+    if (state.status) {
+      if (state.status === 'search.loading' && state.scan?.total > 0)
+        return t('search.progress', {
+          done: state.scan.attempted,
+          total: state.scan.total,
+          count: state.rows.length,
+        });
+      return t(state.status);
+    }
     const count = t(state.kind === 'places' ? 'search.count' : 'ecommerce.count', {
       count: state.rows.length,
     });
-    return [count, locationError && t(locationError), state.partial && t('search.partial'), state.limited && t('search.limit')]
+    return [
+      count,
+      locationError && t(locationError),
+      state.partial && t('search.partial'),
+      state.scan?.failed && t('search.failedBrands', { count: state.scan.failed }),
+      state.limited && t('search.limit'),
+    ]
       .filter(Boolean)
       .join(' · ');
   }
@@ -167,8 +185,9 @@ export function mapController({ provider, search, catalog, ads, report }) {
     );
     for (const row of list.children) row.classList.toggle('active', row.dataset.id === selected?.id);
     panel.hidden = !selected;
+    $('community').hidden = !selected;
     list.hidden = chrome.mobile() && Boolean(selected);
-    if (selected)
+    if (selected) {
       panel.replaceChildren(
         detailContent(selected, {
           brand: isBrand,
@@ -178,6 +197,11 @@ export function mapController({ provider, search, catalog, ads, report }) {
           find: live ? findBrand : null,
         }),
       );
+      if (selected.id !== communityId) renderCommunityBlock();
+    } else {
+      $('community').replaceChildren();
+      communityId = null;
+    }
     $('more-results').hidden = Boolean(selected) || !(isBrand ? rows.length < filtered.length : state.more);
     $('retry-search').hidden = !(state.status === 'search.error' || state.partial);
     $('area').hidden = !live;
@@ -188,6 +212,41 @@ export function mapController({ provider, search, catalog, ads, report }) {
     ads.show(!browsing || isBrand || selected ? 0 : filtered.length);
     for (const b of document.querySelectorAll('[data-category]'))
       b.setAttribute('aria-pressed', String(b.dataset.category === category));
+  }
+  async function loadSummaries() {
+    if (!reviews) return;
+    const seq = ++reviewSeq;
+    const ids = state.rows.map((row) => row.id);
+    if (!ids.length) {
+      reviewSummaries = new Map();
+      return;
+    }
+    try {
+      const summaries = await reviews.summaries(ids);
+      if (seq !== reviewSeq) return;
+      reviewSummaries = new Map(Object.entries(summaries));
+      if (selected && state.kind === 'places') renderCommunityBlock();
+    } catch {
+      /* Public review lookup must never block map exploration. */
+    }
+  }
+  function renderCommunityBlock() {
+    const host = $('community');
+    if (!reviews || !selected || state.kind === 'brands') {
+      host.replaceChildren();
+      communityId = null;
+      return;
+    }
+    communityId = selected.id;
+    renderCommunity(host, selected, {
+      summary: reviewSummaries.get(selected.id),
+      reviewsService: reviews,
+      requireAuth: (action) => (auth ? auth.requireAuth(action) : action()),
+      onChanged: async () => {
+        await loadSummaries();
+        renderCommunityBlock();
+      },
+    });
   }
   async function brands(term = '', message) {
     cancel();
@@ -206,7 +265,13 @@ export function mapController({ provider, search, catalog, ads, report }) {
       }
     }
   }
-  async function run({ append = false, area = areaOnly, interaction = true, nearby = false } = {}) {
+  async function run({
+    append = false,
+    area = areaOnly,
+    interaction = true,
+    nearby = false,
+    autoScan = false,
+  } = {}) {
     browsing = true;
     nearbyMode = nearby;
     if (!live || directoryMode) {
@@ -222,13 +287,23 @@ export function mapController({ provider, search, catalog, ads, report }) {
       offset = 0;
       selected = null;
       scope = area || !inputTerm ? provider.bounds() : null;
-      state = { kind: 'places', rows: [], status: 'search.loading' };
+      state = {
+        kind: 'places',
+        rows: [],
+        status: 'search.loading',
+        scan: { total: 0, attempted: 0, done: 0, partial: 0, failed: 0, limited: false },
+        scanFailedBrands: [],
+      };
       provider.render([], choose);
     } else state.status = 'search.loading';
     render();
     try {
       let partial = Boolean(append && state.partial), limited = Boolean(append && state.limited);
-      const found = new Map((append ? state.rows : []).map(row => [row.id, row]));
+      const found = new Map((append ? state.rows : []).map((row) => [row.id, row]));
+      const scan = append && state.scan
+        ? { ...state.scan }
+        : { total: 0, attempted: 0, done: 0, partial: 0, failed: 0, limited: false };
+      const failedBrands = [...(state.scanFailedBrands || [])];
       do {
         const result = await search.search({
           input: inputTerm,
@@ -238,8 +313,18 @@ export function mapController({ provider, search, catalog, ads, report }) {
           page,
           offset,
           nearby,
+          autoScan,
         });
         if (current !== revision || !result) return;
+        if (!inputTerm) {
+          scan.total = result.progress.total;
+          scan.attempted += result.progress.attempted;
+          scan.done += result.progress.succeeded;
+          scan.partial += result.progress.partial;
+          scan.failed += result.progress.failed;
+          if (result.limited) scan.limited = true;
+          for (const failed of result.failedBrands) if (failed) failedBrands.push(failed);
+        }
         const added = [];
         for (const place of result.items) {
           const earlier = found.get(place.id);
@@ -257,9 +342,18 @@ export function mapController({ provider, search, catalog, ads, report }) {
         state = {
           kind: 'places',
           rows,
-          status: rows.length ? null : nearby && result.more ? 'search.loading' : partial ? 'search.error' : 'search.none',
-          partial, limited,
-          more: !nearby && result.more,
+          status: rows.length
+            ? null
+            : (nearby || autoScan) && result.more
+              ? 'search.loading'
+              : partial
+                ? 'search.error'
+                : 'search.none',
+          partial,
+          limited,
+          scan,
+          scanFailedBrands: failedBrands,
+          more: Boolean(inputTerm && result.more),
         };
         provider.addMarkers(added, chooseMarker);
         if (inputTerm && !scope && !append && rows.length) provider.center(rows[0]);
@@ -269,10 +363,80 @@ export function mapController({ provider, search, catalog, ads, report }) {
           state.more = true;
         }
         if (!selected) render();
-        if (!nearby || !result.more) break;
+        if (!(nearby || autoScan) || !result.more) break;
         offset += 12;
       } while (current === revision);
+      void loadSummaries();
       if (interaction) explored();
+    } catch {
+      if (current === revision) {
+        state.status = 'search.error';
+        render();
+      }
+    }
+  }
+
+  async function retryFailed(brands) {
+    if (!live || directoryMode || !brands.length) return;
+    supersedeLocation();
+    cancel();
+    const current = revision;
+    state.status = 'search.loading';
+    render();
+    // One bounded retry for transient failures: exponential backoff with jitter.
+    await new Promise((r) => setTimeout(r, 300 + Math.random() * 500));
+    if (current !== revision) return;
+    try {
+      const found = new Map(state.rows.map((row) => [row.id, row]));
+      const remaining = new Set();
+      let offset = 0,
+        partial = false,
+        limited = false,
+        done = 0,
+        attempted = 0;
+      do {
+        const result = await search.search({
+          input: '',
+          category: 'all',
+          bounds: scope,
+          page: 1,
+          offset,
+          autoScan: true,
+          brands,
+        });
+        if (current !== revision || !result) return;
+        attempted += result.progress.attempted;
+        done += result.progress.succeeded + result.progress.partial;
+        partial ||= result.errors > 0;
+        limited ||= result.limited;
+        for (const failed of result.failedBrands) if (failed) remaining.add(failed.id);
+        const added = [];
+        for (const place of result.items) {
+          const earlier = found.get(place.id);
+          if (!earlier) {
+            found.set(place.id, place);
+            added.push(place);
+          } else if (earlier.claim.status === 'unknown' && place.claim.status !== 'unknown') {
+            Object.assign(earlier, place);
+          }
+        }
+        provider.addMarkers(added, chooseMarker);
+        if (!result.more) break;
+        offset += 12;
+      } while (current === revision);
+      const rows = [...found.values()];
+      state = {
+        ...state,
+        rows,
+        status: partial ? 'search.error' : rows.length ? null : 'search.none',
+        partial,
+        limited,
+        scan: { total: brands.length, attempted, done, partial: partial ? attempted - done - remaining.size : 0, failed: remaining.size, limited },
+        scanFailedBrands: brands.filter((b) => remaining.has(b.id)),
+        more: false,
+      };
+      render();
+      explored();
     } catch {
       if (current === revision) {
         state.status = 'search.error';
@@ -300,7 +464,7 @@ export function mapController({ provider, search, catalog, ads, report }) {
     areaOnly = true;
     chrome.setFilter(false);
     sheet(true);
-    run();
+    run({ autoScan: true });
     explored();
   }
   function controls() {
@@ -374,7 +538,7 @@ export function mapController({ provider, search, catalog, ads, report }) {
 
       if (selected || directoryMode) render();
       else {
-        const initial = run({ area: !inputTerm || areaOnly, interaction: false });
+        const initial = run({ area: !inputTerm || areaOnly, interaction: false, autoScan: !inputTerm });
         if (arrival && !inputTerm) void locate();
         arrival = false;
         await initial;
@@ -406,7 +570,7 @@ export function mapController({ provider, search, catalog, ads, report }) {
     supersedeLocation();
     if (directoryMode) provider.render([], choose);
     sheet(true);
-    run({ area: !inputTerm });
+    run({ area: !inputTerm, autoScan: !inputTerm });
   };
   $('zoom-in').onclick = () => provider.zoom(-1);
   $('zoom-out').onclick = () => provider.zoom(1);
@@ -420,9 +584,22 @@ export function mapController({ provider, search, catalog, ads, report }) {
     explored();
   };
   $('place-clear').onclick = closeDetail;
-  $('area').onclick = () => { supersedeLocation(); directoryMode = false; sheet(true); run({ area: true }); };
+  $('area').onclick = () => {
+    supersedeLocation();
+    directoryMode = false;
+    category = 'all';
+    inputTerm = '';
+    brandContext = null;
+    chrome.sync('');
+    sheet(true);
+    run({ area: true, autoScan: true });
+  };
   $('retry-map').onclick = start;
-  $('retry-search').onclick = () => run({ nearby: nearbyMode });
+  $('retry-search').onclick = () => {
+    const failed = state.scanFailedBrands;
+    if (failed?.length && !inputTerm) retryFailed(failed);
+    else run({ nearby: nearbyMode, autoScan: !inputTerm });
+  };
 
   $('more-results').onclick = () => {
     if (state.status === 'search.loading') return;

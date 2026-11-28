@@ -30,3 +30,39 @@ const args={category:'all',bounds:[36,126,38,128]};
 const first=await search.search({...args,offset:0});const second=await search.search({...args,offset:12});const third=await search.search({...args,offset:24});
 assert(first.more&&second.more&&!third.more);assert.equal(new Set([...first.items,...second.items,...third.items].map(x=>x.id)).size,125);assert.deepEqual(offsets,[0,60,120]);await search.search(args);assert.deepEqual(offsets,[0,60,120]);assert.equal(kakao,0);
 console.log('PASS: actual MerchantSearch pages, all brands, no Kakao calls and repeated query cache hit');
+
+// Regression: explicit All uses the same sweep as GPS without resetting the viewport.
+const {readFile}=await import('node:fs/promises');
+const controller=await readFile(new URL('../src/controllers/map.js',import.meta.url),'utf8');
+const select=controller.split('function selectCategory(value) {')[1].split('function controls()')[0];
+assert(!select.includes('resetView'));
+assert(select.includes("run({ fullArea: value === 'all' })"));
+assert(controller.includes('const sweep = nearby || fullArea;'));
+assert(controller.includes('nearby: sweep,'));
+assert(controller.includes('nearby:sweep,'));
+// Execute the legacy search service through all batches with the same sweep flag.
+const {SearchService}=await import('../src/services/search.js');
+const {CatalogRepository}=await import('../src/repositories/catalog.js');
+const allBrands=JSON.parse(await readFile(new URL('../src/data/stores.json',import.meta.url),'utf8'));
+const queried=[];
+const legacy=new SearchService({search:async(keyword,bounds,page)=>{queried.push(keyword);return {rows:[],more:false};}},new CatalogRepository(async()=>allBrands));
+let batchOffset=0,batchCount=0;
+do {
+ const result=await legacy.search({category:'all',bounds:[36,126,38,128],offset:batchOffset,nearby:true});
+ batchCount++;
+ if(!shouldContinue({dbMode:false,nearby:true,more:result.more}))break;
+ batchOffset+=12;
+}while(batchCount<20);
+assert.equal(queried.length,165);assert.equal(batchCount,14);
+console.log('PASS: All viewport regression and legacy 165-brand sweep (14 batches)');
+
+// Startup checks: the GPS attempt precedes any merchant query; fallback is only on failure.
+const startup=controller.split('async function start() {')[1].split('function submit(input)')[0];
+const locateFn=controller.split('async function locate(')[1].split('function moved()')[0];
+assert(startup.includes("provider.start($('map'), wonjuTerminal, moved"));
+assert(!startup.includes('resetView'));
+assert(startup.includes('if (autoLocate) await locate({ initial: true });'));
+assert(startup.includes('else await run('));
+assert(locateFn.includes('if (initial) void run({ area: true, fullArea: true, interaction: false });'));
+assert(locateFn.indexOf('if (initial) void run') > locateFn.indexOf('catch (key)'));
+console.log('PASS: GPS-first startup and fallback-only merchant search source regression');

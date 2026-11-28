@@ -165,7 +165,7 @@ await withBrowser(async (browser, base) => {
   assert.equal(await page.evaluate(() => fixture.maps), 1);
   await page.waitForFunction(() => fixture.gps.length === 1);
   assert.equal(await page.evaluate(() => fixture.map.center.lat), 37.34487430629196);
-  await page.locator('#mobile-results .search-result-item').first().waitFor();
+  assert.equal(await page.evaluate(() => fixture.calls.length), 0);
   assert(await page.locator('#area').isVisible());
   assert.equal(await page.locator('#city, #evidence-filter').count(), 0);
   await page.evaluate(() => fixture.gps[0].ok({coords: {latitude: 37.5665, longitude: 126.978}}));
@@ -174,8 +174,8 @@ await withBrowser(async (browser, base) => {
   await page.waitForFunction(names => names.every(name => fixture.calls.some(call => call.keyword === name && call.page === 2)), expected);
   await page.evaluate(() => fixture.map.setLevel(6));
   await page.locator('#mobile-categories [data-category="all"]').click();
-  assert.equal(await page.evaluate(() => fixture.map.level), 3);
-  await page.waitForFunction(() => fixture.map.center.lat === 37.34487430629196);
+  assert.equal(await page.evaluate(() => fixture.map.level), 6);
+  await page.waitForFunction(() => fixture.map.center.lat === 37.5665);
   await page.locator('#results .search-result-item').first().waitFor();
   await page.evaluate(() => fixture.markers.findLast(marker => marker.map && marker.events?.click).events.click());
   await page.locator('#marker-dialog[open] h2').waitFor();
@@ -192,7 +192,7 @@ await withBrowser(async (browser, base) => {
   await page.waitForFunction(() => fixture.gps.length === 2);
   await page.evaluate(() => fixture.gps[1].fail({code: 1}));
   await page.waitForFunction(() => !document.querySelector('#location-button').disabled);
-  assert.equal(await page.evaluate(() => fixture.map.center.lat), 37.34487430629196);
+  assert.equal(await page.evaluate(() => fixture.map.center.lat), 37.5665);
   await page.locator('#location-button').click();
   await page.waitForFunction(() => fixture.gps.length === 3);
   await page.locator('#search-input-mobile').fill('Starbucks');
@@ -221,7 +221,7 @@ await withBrowser(async (browser, base) => {
   await page.locator('#sidebar #detail .badge').waitFor();
   assert.equal(await page.locator('#detail .evidence').count(), 0);
   await page.locator('#zoom-in').click();
-  assert.equal(await page.evaluate(() => fixture.map.level), 2);
+  assert.equal(await page.evaluate(() => fixture.map.level), 5);
   await page.setViewportSize({width:390,height:844});
   await page.locator('#feedback-open').click();
   await page.locator('#open-discord').click();

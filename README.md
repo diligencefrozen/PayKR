@@ -1,6 +1,7 @@
 <img width="1920" height="914" alt="image" src="https://github.com/user-attachments/assets/0b7be13b-cc53-4f71-a2d0-f227bf2d204b" /><br/>
 <img width="1920" height="914" alt="image" src="https://github.com/diligencefrozen/PayKR/blob/main/ss/2.1.png?raw=true" />
 <img width="2551" height="899" alt="image" src="https://github.com/diligencefrozen/PayKR/blob/main/ss/Screenshot%202026-11-25%2000140249489484.png?raw=true" />
+<img width="2551" height="899" alt="image" src="https://github.com/diligencefrozen/PayKR/blob/main/ss/Screenshot%202026-11-28%20162741.png?raw=true" />
 " />
 ## Purpose
 - **Convenience**: No need to install a separate app to find stores that support Apple Pay.

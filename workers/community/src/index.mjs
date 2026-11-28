@@ -12,7 +12,7 @@ async function actorId(secret, token) {
 async function exists(env,id,fetcher) {
   const url = new URL('/rest/v1/paykr_merchants',env.SUPABASE_URL);
   url.search = new URLSearchParams({select:'id',id:'eq.'+id,active:'eq.true',limit:'1'});
-  const res = await fetcher(url,{headers:{apikey:env.SUPABASE_SERVICE_ROLE_KEY,Authorization:'Bearer '+env.SUPABASE_SERVICE_ROLE_KEY},signal:AbortSignal.timeout(8000),redirect:'error'});
+  const res = await fetcher(url,{headers:{apikey:env.SUPABASE_SERVICE_ROLE_KEY,Authorization:'Bearer '+env.SUPABASE_SERVICE_ROLE_KEY},signal:AbortSignal.timeout(8000),redirect:'manual'});
   if (!res.ok) throw Error('merchant validation failed');
   return (await res.json()).some(row=>row.id===id);
 }
@@ -23,7 +23,7 @@ async function bodyOf(req) {
   const bytes=new Uint8Array(size); let pos=0; for(const p of parts){bytes.set(p,pos);pos+=p.length;}
   return JSON.parse(new TextDecoder().decode(bytes));
 }
-export function handler(fetcher=fetch) {return async (req,env)=>{
+export function handler(fetcher=(...args)=>fetch(...args)) {return async (req,env)=>{
   const origin=req.headers.get('Origin');
   const headers={'Content-Type':'application/json; charset=utf-8','Cache-Control':'no-store','Vary':'Origin'};
   if(origin===env.ALLOWED_ORIGIN && origin)Object.assign(headers,{'Access-Control-Allow-Origin':origin,'Access-Control-Allow-Headers':'Content-Type, Authorization','Access-Control-Allow-Methods':'GET, POST, OPTIONS'});
@@ -69,6 +69,6 @@ export function handler(fetcher=fetch) {return async (req,env)=>{
       await sql('INSERT INTO merchant_reports(id,merchant_id,actor_id,kind,body) VALUES(?,?,?,?,?)',[crypto.randomUUID(),id,actor,b.kind,text]);
     }else return json({code:'INVALID_BODY'},400);
     return json({status:'pending'},201);
-  }catch{return json({code:'UNAVAILABLE'},503);}
+  }catch(e){console.error(e.name, String(e.stack).split(String.fromCharCode(10)).slice(1,5).join(String.fromCharCode(10)));const m=String(e.message);console.error('Community error:', /^(Turso HTTP [0-9]+|Turso SQL execution failed|Invalid Turso database URL|missing settings|Set TURSO_DATABASE_URL and TURSO_AUTH_TOKEN)$/.test(m)?m:/illegal invocation/i.test(m)?'Illegal invocation':e.name);return json({code:'UNAVAILABLE'},503);}
 };}
 export default {fetch:handler()};

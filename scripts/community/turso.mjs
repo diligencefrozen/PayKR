@@ -5,7 +5,7 @@ export function createTurso({url,token,fetcher=fetch}) {
   if (endpoint.protocol !== 'https:' || !endpoint.hostname.endsWith('.turso.io') || endpoint.username || endpoint.password || endpoint.port || endpoint.search || endpoint.hash || endpoint.pathname !== '/') throw new Error('Invalid Turso database URL');
   endpoint.pathname='/v2/pipeline';
   return async (sql,args=[])=>{
-    const response=await fetcher(endpoint.href,{method:'POST',redirect:'error',signal:AbortSignal.timeout(15000),headers:{Authorization:`Bearer ${token}`,'Content-Type':'application/json'},body:JSON.stringify({requests:[{type:'execute',stmt:{sql,args:args.map(value=>({type:'text',value:String(value)}))}},{type:'close'}]})});
+    const response=await fetcher(endpoint.href,{method:'POST',redirect:'manual',signal:AbortSignal.timeout(15000),headers:{Authorization:`Bearer ${token}`,'Content-Type':'application/json'},body:JSON.stringify({requests:[{type:'execute',stmt:{sql,args:args.map(value=>({type:'text',value:String(value)}))}},{type:'close'}]})});
     if(!response.ok)throw new Error(`Turso HTTP ${response.status}`);
     const result=await response.json();
     const [run,close]=result?.results??[];

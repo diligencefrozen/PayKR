@@ -110,3 +110,7 @@ Run `node tests/map-ui.test.mjs` and `node tests/directory.test.mjs` for the
 offline regression checks. The screenshots in `ss/paykr-*.png` show the local
 Chrome preview. The map screenshots show controls without Kakao tiles, and the
 mobile place panel uses test data.
+
+## DB-first merchant search (v0.1)
+
+This package includes a staged Supabase integration for public-data store records. It keeps the existing Kakao map and enables the new search only after database migration, initial import, and explicit public configuration. See [DB deployment guide (한국어)](docs/SUPABASE-DEPLOY-KO.md). Live place comparison is optional and does not establish Apple Pay acceptance.

@@ -84,7 +84,7 @@ export function mapController({ provider, search, catalog, ads, report }) {
     const dialog = $('marker-dialog');
     const content = $('marker-detail');
     const populate = () => content.replaceChildren(detailContent(row, {
-      brand: false, format: getLocale() === 'ko' ? null : formatter, position,
+      brand: false, format: getLocale() === 'ko' ? null : formatter, position, verify: search.dbMode ? (p) => search.verify(p) : null,
     }));
     populate();
     window.addEventListener('localechange', populate);
@@ -176,6 +176,7 @@ export function mapController({ provider, search, catalog, ads, report }) {
           position,
           back: closeDetail,
           find: live ? findBrand : null,
+          verify: search.dbMode ? (p) => search.verify(p) : null,
         }),
       );
     $('more-results').hidden = Boolean(selected) || !(isBrand ? rows.length < filtered.length : state.more);
@@ -257,9 +258,9 @@ export function mapController({ provider, search, catalog, ads, report }) {
         state = {
           kind: 'places',
           rows,
-          status: rows.length ? null : nearby && result.more ? 'search.loading' : partial ? 'search.error' : 'search.none',
+          status: rows.length ? null : nearby && !search.dbMode && result.more ? 'search.loading' : partial ? 'search.error' : 'search.none',
           partial, limited,
-          more: !nearby && result.more,
+          more: (!nearby || search.dbMode) && result.more,
         };
         provider.addMarkers(added, chooseMarker);
         if (inputTerm && !scope && !append && rows.length) provider.center(rows[0]);
@@ -269,7 +270,7 @@ export function mapController({ provider, search, catalog, ads, report }) {
           state.more = true;
         }
         if (!selected) render();
-        if (!nearby || !result.more) break;
+        if (search.dbMode || !nearby || !result.more) break;
         offset += 12;
       } while (current === revision);
       if (interaction) explored();

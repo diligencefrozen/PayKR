@@ -40,7 +40,7 @@ export function placeRow(place, choose, position, format, index) {
   row.append(icon, text);
   return row;
 }
-export function detailContent(record, { brand, format, position, back, find }) {
+export function detailContent(record, { brand, format, position, back, find, verify }) {
   const panel = el('div', undefined, 'detail-card');
   if (back) panel.append(button(t('place.back'), back, 'back-link'));
   const claim = record.claim;
@@ -86,10 +86,11 @@ export function detailContent(record, { brand, format, position, back, find }) {
     panel.append(status);
     const actions = el('div', undefined, 'detail-actions');
     const id = encodeURIComponent(record.id);
-    actions.append(
-      link(t('place.directions'), 'https://map.kakao.com/link/to/' + id),
-      link(t('place.details'), 'https://place.map.kakao.com/' + id),
-    );
+    if (record.source === 'public') {
+      actions.append(link(t('place.directions'), 'https://map.kakao.com/link/to/' + encodeURIComponent(record.name) + ',' + record.lat + ',' + record.lng), link(t('place.details'), 'https://map.kakao.com/link/search/' + encodeURIComponent(record.name + ' ' + record.address)));
+      panel.append(el('small', t('merchant.source')));
+      if (verify) { const result = el('p'); result.setAttribute('role','status'); const action = button(t('merchant.verify'), async () => { action.disabled=true; result.textContent=t('search.loading'); try { result.textContent=t('merchant.'+await verify(record)); } finally { action.disabled=false; } }); panel.append(action,result); }
+    } else actions.append(link(t('place.directions'), 'https://map.kakao.com/link/to/' + id), link(t('place.details'), 'https://place.map.kakao.com/' + id));
     if (/^[+0-9() -]+$/.test(record.phone))
       actions.append(link(t('place.call'), 'tel:' + record.phone.replace(/[^+0-9]/g, '')));
     panel.append(actions);
@@ -108,10 +109,8 @@ export function markerOverlay(place) {
     badge(place.claim, t),
   );
   const actions = el('div', undefined, 'info-actions');
-  actions.append(
-    link(t('place.details'), 'https://place.map.kakao.com/' + encodeURIComponent(place.id)),
-    link(t('place.directions'), 'https://map.kakao.com/link/to/' + encodeURIComponent(place.id)),
-  );
+  if (place.source === 'public') actions.append(link(t('place.details'), 'https://map.kakao.com/link/search/' + encodeURIComponent(place.name + ' ' + place.address)), link(t('place.directions'), 'https://map.kakao.com/link/to/' + encodeURIComponent(place.name) + ',' + place.lat + ',' + place.lng));
+  else actions.append(link(t('place.details'), 'https://place.map.kakao.com/' + encodeURIComponent(place.id)), link(t('place.directions'), 'https://map.kakao.com/link/to/' + encodeURIComponent(place.id)));
   box.append(actions);
   return box;
 }

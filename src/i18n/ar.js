@@ -228,5 +228,11 @@ export default {
   "place.emptyTitle": "ابحث عن مكان قريب",
   "place.emptyHint": "اختر مكاناً على الخريطة للاطلاع على تفاصيله.",
   "guide.tmoneySource": "Tmoney · استخدام بطاقة Tmoney مع Apple Pay",
-  "common.terms": "شروط الاستخدام"
+  "common.terms": "شروط الاستخدام",
+  "merchant.source": "Public store data · brand listed, branch payment not verified.",
+  "merchant.verify": "Compare with Kakao place data",
+  "merchant.matched": "Place information matches. Apple Pay acceptance is not verified.",
+  "merchant.uncertain": "No unique matching place found. This does not mean the store is closed.",
+  "merchant.error": "Live comparison unavailable. Public data is unchanged.",
+  "merchant.limit": "Live comparison limit reached for this page session.",
 };

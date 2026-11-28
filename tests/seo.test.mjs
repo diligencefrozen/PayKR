@@ -26,4 +26,4 @@ for(const url of urls){
   assert(html.includes('data-entry-locale='));assert(html.includes('brands.'));
  }
 }
-console.log('PASS: 42 canonical URLs, reciprocal language links, JSON-LD, social metadata, 160 owned brands and no unsupported branch schema');
+console.log('PASS: 42 canonical URLs, reciprocal language links, JSON-LD, social metadata, 165 owned brands and no unsupported branch schema');

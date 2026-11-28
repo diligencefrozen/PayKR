@@ -229,4 +229,10 @@ export default {
   "notice.source": "목록에 있는 브랜드라도 결제 가능 여부는 지점마다 다를 수 있습니다.",
   "place.emptyTitle": "주변 매장",
   "place.emptyHint": "지도에서 매장을 눌러 주소와 결제 정보를 확인하세요.",
+  "merchant.source": "공공 상가정보 · 지원 브랜드 후보이며 지점별 결제는 미확인입니다.",
+  "merchant.verify": "카카오 장소 정보와 대조",
+  "merchant.matched": "장소 정보가 일치합니다. 애플페이 결제 가능 여부는 미확인입니다.",
+  "merchant.uncertain": "일치하는 장소를 확정하지 못했습니다. 폐업을 의미하지 않습니다.",
+  "merchant.error": "실시간 대조를 완료하지 못했습니다. 공공데이터는 그대로 유지됩니다.",
+  "merchant.limit": "현재 페이지의 실시간 대조 횟수 제한에 도달했습니다.",
 };

@@ -8,10 +8,10 @@ import { CatalogRepository } from '../src/repositories/catalog.js';
 
 const rows = JSON.parse(await readFile(new URL('../src/data/stores.json', import.meta.url)));
 const catalog = new CatalogRepository(async () => rows);
-assert.equal(rows.length, 160);
+assert.equal(rows.length, 165);
 assert.equal(
   rows.reduce((n, r) => n + r.categories.length, 0),
-  163,
+  168,
 );
 assert.equal(new Set(rows.flatMap((r) => r.categories)).size, 11);
 for (const [input, want] of [
@@ -102,5 +102,5 @@ assert.match(
   /index.html\?chat=open/,
 );
 console.log(
-  'PASS: 163 category memberships, alias normalization, place formatting, bounded concurrent searches, pagination, coalescing, stale results, evidence conflicts and location states',
+  'PASS: 168 category memberships, alias normalization, place formatting, bounded concurrent searches, pagination, coalescing, stale results, evidence conflicts and location states',
 );

@@ -1,3 +1,5 @@
+import { merchants } from '../config/merchants.js';
+import { MerchantSearch } from '../services/merchant-search.js';
 import { initLocale, t } from '../i18n/registry.js';
 import { shell } from '../views/shell.js';
 import { CatalogService } from '../services/catalog.js';
@@ -47,7 +49,7 @@ if (type === 'map') {
   const provider = new KakaoProvider(markerOverlay);
   window.PayKR = mapController({
     provider,
-    search: new SearchService(provider, catalog, branchClaims),
+    search: merchants.enabled ? new MerchantSearch(merchants, catalog, provider, branchClaims) : new SearchService(provider, catalog, branchClaims),
     catalog,
     ads,
     report,

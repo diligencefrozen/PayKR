@@ -228,5 +228,11 @@ export default {
   "place.emptyTitle": "Cari kedai berdekatan",
   "place.emptyHint": "Pilih kedai pada peta untuk melihat butirannya.",
   "guide.tmoneySource": "Tmoney · Cara menggunakan Tmoney dengan Apple Pay (bahasa Korea)",
-  "common.terms": "Terma perkhidmatan"
+  "common.terms": "Terma perkhidmatan",
+  "merchant.source": "Public store data · brand listed, branch payment not verified.",
+  "merchant.verify": "Compare with Kakao place data",
+  "merchant.matched": "Place information matches. Apple Pay acceptance is not verified.",
+  "merchant.uncertain": "No unique matching place found. This does not mean the store is closed.",
+  "merchant.error": "Live comparison unavailable. Public data is unchanged.",
+  "merchant.limit": "Live comparison limit reached for this page session.",
 };

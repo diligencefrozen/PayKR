@@ -25,19 +25,27 @@
   <link rel="alternate" hreflang="ja" href="https://diligencefrozen.github.io/PayKR/index.ja.html">
   <link rel="alternate" hreflang="zh-Hans" href="https://diligencefrozen.github.io/PayKR/index.zh-Hans.html">
   <link rel="alternate" hreflang="zh-Hant" href="https://diligencefrozen.github.io/PayKR/index.zh-Hant.html">
+  <link rel="alternate" hreflang="th" href="https://diligencefrozen.github.io/PayKR/index.th.html">
+  <link rel="alternate" hreflang="vi" href="https://diligencefrozen.github.io/PayKR/index.vi.html">
+  <link rel="alternate" hreflang="id" href="https://diligencefrozen.github.io/PayKR/index.id.html">
+  <link rel="alternate" hreflang="ms" href="https://diligencefrozen.github.io/PayKR/index.ms.html">
+  <link rel="alternate" hreflang="ar" href="https://diligencefrozen.github.io/PayKR/index.ar.html">
+  <link rel="alternate" hreflang="hi" href="https://diligencefrozen.github.io/PayKR/index.hi.html">
+  <link rel="alternate" hreflang="mn" href="https://diligencefrozen.github.io/PayKR/index.mn.html">
+  <link rel="alternate" hreflang="ru" href="https://diligencefrozen.github.io/PayKR/index.ru.html">
   <link rel="alternate" hreflang="x-default" href="https://diligencefrozen.github.io/PayKR/">
   <script type="application/ld+json">{
   "@context":"https://schema.org",
   "@type":"WebSite",
   "name":"PayKR",
   "url":"https://diligencefrozen.github.io/PayKR/",
-  "inLanguage":["en","ko","ja","zh-Hans","zh-Hant"],
+  "inLanguage":["en","ko","ja","zh-Hans","zh-Hant","th","vi","id","ms","ar","hi","mn","ru"],
   "description":"Explore locations and check the available evidence for Apple Pay in Korea."
 }</script>
 </head>
 <body data-page-type="map" class="explorer"><header data-header><a class="skip" href="#main-content" data-i18n="common.skip">跳至正文</a><div class="masthead"><div class="wrap"><a class="wordmark" href="./index.zh-Hans.html" data-page="./">Pay<span>KR</span></a>
     <nav class="top-nav" data-i18n-aria-label="common.navigation" aria-label="主导航"><a href="./index.zh-Hans.html" data-page="./" aria-current="page" data-i18n="nav.explore">探索地图</a><a href="./online.zh-Hans.html" data-page="./online.html"  data-i18n="nav.online">线上商店</a><a href="./guide.zh-Hans.html" data-page="./guide.html"  data-i18n="nav.guide">旅行指南</a><button type="button" data-more aria-haspopup="dialog" data-i18n="nav.more">更多</button></nav>
-    <div class="header-actions"><select id="city" class="language" data-i18n-aria-label="map.city" aria-label="选择城市"><option value="seoul" data-i18n="city.seoul">首尔</option><option value="busan" data-i18n="city.busan">釜山</option><option value="incheon" data-i18n="city.incheon">仁川</option><option value="jeju" data-i18n="city.jeju">济州</option></select><select data-locale data-compact class="language" data-i18n-aria-label="common.language" aria-label="语言"><option value="en">EN</option><option value="ko">KO</option><option value="ja">JA</option><option value="zh-Hans" selected>简中</option><option value="zh-Hant">繁中</option></select>
+    <div class="header-actions"><select data-locale data-compact class="language" data-i18n-aria-label="common.language" aria-label="语言"><option value="en">EN</option><option value="ko">KO</option><option value="ja">JP</option><option value="zh-Hans" selected>简中</option><option value="zh-Hant">繁中</option><option value="th">TH</option><option value="vi">VI</option><option value="id">ID</option><option value="ms">MS</option><option value="ar">AR</option><option value="hi">HI</option><option value="mn">MN</option><option value="ru">RU</option></select>
     <select class="header-theme theme-choice" data-theme-choice data-i18n-aria-label="theme.label" aria-label="外观"><option value="system" data-i18n="theme.system">跟随系统</option><option value="light" data-i18n="theme.light">浅色</option><option value="dark" data-i18n="theme.dark">深色</option></select>
     <button class="header-install" data-install data-i18n="install.action" hidden>安装应用</button></div></div></div></header><main id="main-content">
 
@@ -53,6 +61,7 @@
       </form>
     </div>
 
+    <div class="map-notes-links"><button data-notes="notice" data-i18n="map.notice">使用须知</button><button data-notes="releases" data-i18n="map.releases">更新记录</button></div>
     <div id="sidebar-content">
 
       <div id="search-results">
@@ -62,42 +71,12 @@
         </div>
         <div id="search-results-list"><div id="results-host" hidden>
           <div class="list-controls"><button type="button" id="source-switch" class="secondary" hidden></button>
-          <label class="evidence-filter"><span data-i18n="place.evidence">支付支持依据</span><select id="evidence-filter" class="theme-choice"></select></label></div>
+          </div>
           <div id="results"></div><button class="secondary" id="more-results" hidden data-i18n="search.more">更多结果</button><button class="secondary" id="retry-search" hidden data-i18n="search.retry">重新搜索</button></div></div>
       </div>
 
 
-      <div id="sidebar-welcome">
-        <div id="apple-pay-notice" style="position: relative; right: auto; bottom: auto; margin-top: 20px;">
-          <img src="logo/applepay.png" alt="Apple Pay" width="30" height="15"><span data-i18n="map.sticker">付款前请查看标识</span>
-        </div>
-        <div style="margin-top: 30px; padding: 0 10px; color: var(--subtext, #666); font-size: 14px; line-height: 1.6;">
-          <ul style="padding-left: 20px; margin-top: 10px;">
-            <li data-i18n="map.searchStep">输入店名或地址</li>
-            <li data-i18n="map.categoryStep">选择分类</li>
-            <li data-i18n="map.zoomStep">缩放地图</li>
-          </ul>
-        </div>
-
-      </div>
       <aside data-slot="map" class="ad-space" id="sidebar-ad" hidden></aside>
-      <div class="sidebar-guides" id="sidebar-guides">
-        <div class="guide-buttons">
-          <button id="notice-button" type="button" aria-expanded="false" aria-controls="notice-panel" data-i18n="map.notice">使用须知</button>
-          <button id="release-button" type="button" aria-expanded="false" aria-controls="release-panel" data-i18n="map.releases">更新记录</button>
-        </div>
-        <section id="notice-panel" aria-labelledby="notice-button" hidden>
-          <ul>
-            <li data-i18n="notice.location">点按定位按钮搜索附近地点。</li>
-            <li data-i18n="notice.building">同一建筑内的多个商家可能重叠显示。</li>
-            <li data-i18n="notice.marker">选择标记可查看地址和详情。</li>
-            <li data-i18n="notice.source">品牌目录信息请向分店确认。</li>
-          </ul>
-        </section>
-        <section id="release-panel" aria-labelledby="release-button" hidden>
-<ol id="release-list" class="release-list"></ol>
-</section>
-      </div>
     </div>
   </div>
 
@@ -144,27 +123,38 @@
       <div aria-live="polite"><h1 id="place-title" data-i18n="place.emptyTitle">查找此区域的地点</h1><p id="place-subtitle" data-i18n="place.emptyHint">选择地图上的地点查看详情。</p></div>
       <button id="place-clear" class="icon-button" data-i18n-aria-label="place.clear" aria-label="清除选择" hidden>×</button>
     </div>
+    <div class="mobile-notes-links"><button data-notes="notice" data-i18n="map.notice">使用须知</button><button data-notes="releases" data-i18n="map.releases">更新记录</button></div>
     <div id="sheet-content" hidden>
       <div id="detail"></div>
       <div id="mobile-results" data-i18n-aria-label="search.results" aria-label="地点搜索结果"></div>
       <aside class="ad-space" id="place-ad" data-slot="map-mobile" hidden></aside>
     </div>
   </section>
+  <dialog id="marker-dialog" data-i18n-aria-label="place.info" aria-label="地点详情">
+    <form method="dialog"><button autofocus data-i18n="common.close">关闭</button></form>
+    <div id="marker-detail"></div>
+  </dialog>
   <p id="map-status" role="status" hidden></p>
   <div class="map-load-error" id="map-failure" hidden><p data-i18n="map.unavailable">实时地图加载失败。</p>
     <div class="fallback-links"><button id="retry-map" data-i18n="common.retry">重试</button>
-    <a id="city-map" target="_blank" rel="noopener noreferrer" data-i18n="place.details">在 Kakao 地图上查看</a>
+    <a id="city-map" target="_blank" rel="noopener noreferrer" data-i18n="common.map">门店地图</a>
     <button id="browse-brands" data-i18n="map.browse">浏览品牌</button></div></div>
 
 </main><footer data-footer><div class="app-dock"><div data-pwa-panel></div><nav class="bottom-nav" data-i18n-aria-label="common.navigation" aria-label="主导航"><a href="./index.zh-Hans.html" data-page="./" aria-current="page" data-i18n="nav.explore">探索地图</a><a href="./online.zh-Hans.html" data-page="./online.html"  data-i18n="nav.online">线上商店</a><a href="./guide.zh-Hans.html" data-page="./guide.html"  data-i18n="nav.guide">旅行指南</a><button type="button" data-more aria-haspopup="dialog" data-i18n="nav.more">更多</button></nav></div>
     <button class="feedback-trigger" id="feedback-open"><span data-i18n="feedback.open">意见反馈</span></button>
-    <dialog id="settings" aria-labelledby="settings-title"><h2 id="settings-title" data-i18n="nav.more">更多</h2>
+    <dialog id="settings" aria-labelledby="settings-title"><div class="feedback-heading"><h2 id="settings-title" data-i18n="nav.more">更多</h2>
+    <form method="dialog"><button class="feedback-close" data-i18n-aria-label="common.close" aria-label="关闭">×</button></form></div><div class="settings-group">
       <label class="setting-row"><span data-i18n="theme.label">外观</span><select data-theme-choice>
       <option value="system" data-i18n="theme.system">跟随系统</option><option value="light" data-i18n="theme.light">浅色</option><option value="dark" data-i18n="theme.dark">深色</option></select></label>
-      <a href="guide.zh-Hans.html#privacy" data-page="guide.html#privacy" data-i18n="common.privacy">隐私说明</a>
-      <a href="./docs/release-history.txt" data-i18n="common.history">更新记录（韩语和英语）</a><button data-install data-i18n="install.action" hidden>安装应用</button><button id="clear-cache" data-i18n="common.clearCache">清除已保存的名录</button><p id="cache-status" role="status"></p>
-      <button data-install-help data-i18n="install.iosGuide" hidden>如何添加到主屏幕</button>
-      <form method="dialog"><button data-i18n="common.close">关闭</button></form></dialog>
+      <button data-install data-i18n="install.action" hidden>安装应用</button><button data-install-help data-i18n="install.iosGuide" hidden>如何添加到主屏幕</button></div>
+      <div class="settings-group"><button type="button" data-notes="notice" aria-haspopup="dialog" data-i18n="map.notice">使用须知</button><button type="button" data-notes="releases" aria-haspopup="dialog" data-i18n="map.releases">更新记录</button><a href="./terms.html" hreflang="ko" data-i18n="common.terms">PayKR 服务条款</a></div>
+      <div class="settings-group"><button id="clear-cache" data-i18n="common.clearCache">清除已保存的名录</button><p id="cache-status" role="status"></p></div>
+    </dialog>
+    <dialog id="notice-dialog" aria-labelledby="notice-title"><div class="feedback-heading"><h2 id="notice-title" data-i18n="map.notice">使用须知</h2>
+    <form method="dialog"><button class="feedback-close" data-i18n-aria-label="common.close" aria-label="关闭">×</button></form></div>
+      <ul class="notice-list"><li data-i18n="notice.location">打开地图时允许定位，即可查找附近各类商家。选择“全部”可返回原州综合客运站。</li><li data-i18n="notice.building">同一建筑内的多个商家可能重叠显示。</li><li data-i18n="notice.marker">选择标记可查看地址和详情。</li><li data-i18n="map.sticker">付款前请查看标识</li><li data-i18n="notice.source">品牌目录信息请向分店确认。</li></ul></dialog>
+    <dialog id="releases-dialog" aria-labelledby="releases-title"><div class="feedback-heading"><h2 id="releases-title" data-i18n="map.releases">更新记录</h2>
+    <form method="dialog"><button class="feedback-close" data-i18n-aria-label="common.close" aria-label="关闭">×</button></form></div><div class="archive-years" id="release-archive"></div></dialog>
     <dialog id="feedback-dialog" aria-labelledby="feedback-title">
       <div class="feedback-heading"><h2 id="feedback-title" data-i18n="feedback.title">提交反馈</h2>
       <form method="dialog"><button class="feedback-close" data-i18n-aria-label="common.close" aria-label="关闭">×</button></form></div>

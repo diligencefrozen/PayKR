@@ -1,17 +1,15 @@
 import { mapChrome } from '../views/map-chrome.js';
 import { brandName } from '../views/brand-name.js';
-import { $, button, el } from '../views/dom.js';
+import { $ } from '../views/dom.js';
 import { placeRow, brandRow, detailContent } from '../views/places.js';
-import { cities, acquirePosition } from '../services/search.js';
-import { normalize, placeRecord, paymentFor } from '../models/payment.js';
+import { wonjuTerminal, acquirePosition } from '../services/search.js';
+import { normalize, placeRecord, paymentFor, metersBetween } from '../models/payment.js';
 import { t, getLocale } from '../i18n/registry.js';
 
 export function mapController({ provider, search, catalog, ads, report }) {
   const list = $('results'),
     panel = $('detail');
-  let city = 'seoul',
-    atPreset = true,
-    directoryMode = false,
+  let directoryMode = false,
     category = 'all',
     live = false,
     starting = false,
@@ -29,13 +27,13 @@ export function mapController({ provider, search, catalog, ads, report }) {
     page = 1,
     scope = null,
     brandLimit = 12,
-    expanded = false,
-    evidence = 'all';
+    expanded = false;
+  let arrival = true, gpsIntent = 0, nearbyMode = false, locationError = '';
   let categories = [];
   let browsing = true,
     statusTimer,
     lastStatus;
-  const chrome = mapChrome({ category: selectCategory, locate, report, submit, render, edit:()=>{if(locating)cancel();} });
+  const chrome = mapChrome({ category: selectCategory, locate, report, submit, render, edit: supersedeLocation });
   const explored = () => document.dispatchEvent(new Event('paykr:explored'));
   function cancel() {
     revision++;
@@ -58,33 +56,54 @@ export function mapController({ provider, search, catalog, ads, report }) {
     render();
     if (previous) Array.from(list.children).find(row => row.dataset.id === previous.id)?.focus({ preventScroll: true });
   }
+  function supersedeLocation() {
+    arrival = false;
+    locationError = '';
+    gpsIntent++;
+    locating = false;
+    $('location-button').disabled = false;
+  }
   function choose(row) {
+    supersedeLocation();
     if (selected?.id === row.id) {
       closeDetail();
       return;
     }
     selected = row;
-    if (state.kind === 'places' && live) {
-      leavePreset();
-      provider.select(row);
-    }
+    if (state.kind === 'places' && live) provider.select(row);
     sheet(true);
     render();
     panel.scrollIntoView({ block: 'nearest' });
     $('place-clear').focus({ preventScroll: true });
     explored();
   }
+  function chooseMarker(row) {
+    if (!chrome.mobile()) return choose(row);
+    supersedeLocation();
+    provider.deselect();
+    const dialog = $('marker-dialog');
+    const content = $('marker-detail');
+    const populate = () => content.replaceChildren(detailContent(row, {
+      brand: false, format: getLocale() === 'ko' ? null : formatter, position,
+    }));
+    populate();
+    window.addEventListener('localechange', populate);
+    dialog.addEventListener('close', () => {
+      window.removeEventListener('localechange', populate);
+      content.replaceChildren();
+    }, { once: true });
+    dialog.showModal();
+    dialog.scrollTop = 0;
+    explored();
+  }
   function statusText() {
     if (state.status) return t(state.status);
     const count = t(state.kind === 'places' ? 'search.count' : 'ecommerce.count', {
-      count: visibleRows().length,
+      count: state.rows.length,
     });
-    return [count, state.partial && t('search.partial'), state.limited && t('search.limit')]
+    return [count, locationError && t(locationError), state.partial && t('search.partial'), state.limited && t('search.limit')]
       .filter(Boolean)
       .join(' · ');
-  }
-  function visibleRows() {
-    return evidence === 'all' ? state.rows : state.rows.filter(row => row.claim?.status === evidence);
   }
   function render() {
     if (
@@ -141,13 +160,12 @@ export function mapController({ provider, search, catalog, ads, report }) {
     }
     if (!state.status || state.status === 'map.areaHint') $('map-status').hidden = true;
     lastStatus = state.status;
-    const filtered = visibleRows();
+    const filtered = state.rows;
     const rows = isBrand ? filtered.slice(0, brandLimit) : filtered;
     list.replaceChildren(
       ...rows.map((r, i) => (isBrand ? brandRow(r, choose) : placeRow(r, choose, position, format, i))),
     );
     for (const row of list.children) row.classList.toggle('active', row.dataset.id === selected?.id);
-    if (state.rows.length && !rows.length) list.append(el('p', t('search.none'), 'empty-filter'));
     panel.hidden = !selected;
     list.hidden = chrome.mobile() && Boolean(selected);
     if (selected)
@@ -188,8 +206,9 @@ export function mapController({ provider, search, catalog, ads, report }) {
       }
     }
   }
-  async function run({ append = false, area = areaOnly, interaction = true } = {}) {
+  async function run({ append = false, area = areaOnly, interaction = true, nearby = false } = {}) {
     browsing = true;
+    nearbyMode = nearby;
     if (!live || directoryMode) {
       await brands(inputTerm);
       if (interaction) explored();
@@ -208,36 +227,51 @@ export function mapController({ provider, search, catalog, ads, report }) {
     } else state.status = 'search.loading';
     render();
     try {
-      const result = await search.search({
-        input: inputTerm,
-        brand: brandContext,
-        category: inputTerm ? 'all' : category,
-        bounds: scope,
-        page,
-        offset,
-      });
-      if (current !== revision || !result) return;
-      const previous = append ? state.rows : [];
-      const rows = [...new Map([...previous, ...result.items].map((r) => [r.id, r])).values()];
-      state = {
-        kind: 'places',
-        rows,
-        status: result.failed ? 'search.error' : !rows.length && !result.errors ? 'search.none' : null,
-        partial: result.errors > 0,
-        limited: result.limited,
-        more: result.more,
-      };
-      provider.render(visibleRows(), choose);
-      if (inputTerm && !scope && !append && rows.length) {
-        leavePreset();
-        provider.center(rows[0]);
-      }
-      if (result.failed && append) {
-        if (inputTerm) page--;
-        else offset -= 12;
-        state.more = true;
-      }
-      render();
+      let partial = Boolean(append && state.partial), limited = Boolean(append && state.limited);
+      const found = new Map((append ? state.rows : []).map(row => [row.id, row]));
+      do {
+        const result = await search.search({
+          input: inputTerm,
+          brand: brandContext,
+          category: inputTerm ? 'all' : category,
+          bounds: scope,
+          page,
+          offset,
+          nearby,
+        });
+        if (current !== revision || !result) return;
+        const added = [];
+        for (const place of result.items) {
+          const earlier = found.get(place.id);
+          if (!earlier) {
+            found.set(place.id, place);
+            added.push(place);
+          } else if (earlier.claim.status === 'unknown' && place.claim.status !== 'unknown') {
+            Object.assign(earlier, place);
+          }
+        }
+        const rows = [...found.values()];
+        if (nearby && position) rows.sort((a, b) => metersBetween(position, a) - metersBetween(position, b));
+        partial ||= result.errors > 0;
+        limited ||= result.limited;
+        state = {
+          kind: 'places',
+          rows,
+          status: rows.length ? null : nearby && result.more ? 'search.loading' : partial ? 'search.error' : 'search.none',
+          partial, limited,
+          more: !nearby && result.more,
+        };
+        provider.addMarkers(added, chooseMarker);
+        if (inputTerm && !scope && !append && rows.length) provider.center(rows[0]);
+        if (result.failed && append) {
+          if (inputTerm) page--;
+          else offset -= 12;
+          state.more = true;
+        }
+        if (!selected) render();
+        if (!nearby || !result.more) break;
+        offset += 12;
+      } while (current === revision);
       if (interaction) explored();
     } catch {
       if (current === revision) {
@@ -254,6 +288,11 @@ export function mapController({ provider, search, catalog, ads, report }) {
     run({ area: true });
   }
   function selectCategory(value) {
+    supersedeLocation();
+    if (value === 'all') {
+      directoryMode = false;
+      if (live) provider.resetView(wonjuTerminal);
+    }
     brandContext = null;
     category = value;
     inputTerm = '';
@@ -268,47 +307,8 @@ export function mapController({ provider, search, catalog, ads, report }) {
     chrome.controls(categories);
     $('location-button').disabled = locating;
     $('location-button').setAttribute('aria-description', t('location.purpose'));
-    const placeholder = el('option', t('map.city'));
-    placeholder.value = '';
-    placeholder.disabled = true;
-    $('city').replaceChildren(placeholder,
-      ...Object.keys(cities).map((key) => {
-        const opt = el('option', t('city.' + key));
-        opt.value = key;
-        return opt;
-      }),
-    );
-    $('city').value = atPreset ? city : '';
-    const center = cities[city];
-    $('city-map').href = 'https://map.kakao.com/link/map/' + encodeURIComponent(t('city.' + city)) + ',' + center.lat + ',' + center.lng;
-    $('evidence-filter').replaceChildren(...['all', 'verified', 'brand_listed', 'community_reported', 'unknown', 'not_supported', 'conflict'].map(key => {
-      const opt = el('option', t(key === 'all' ? 'filter.all' : 'status.' + key));
-      opt.value = key;
-      return opt;
-    }));
-    $('evidence-filter').value = evidence;
+    $('city-map').href = 'https://map.kakao.com/link/map/원주종합버스터미널,' + wonjuTerminal.lat + ',' + wonjuTerminal.lng;
     render();
-  }
-  function selectCity(key) {
-    brandContext = null;
-    cancel();
-    city = key;
-    atPreset = true;
-    directoryMode = false;
-    inputTerm = '';
-    chrome.sync('');
-    selected = null;
-    category = 'all';
-    areaOnly = true;
-    controls();
-    explored();
-    if (live) {
-      provider.center(cities[key]);
-      run();
-    } else {
-      brands('');
-      start();
-    }
   }
   async function locate() {
     if (!live) {
@@ -317,64 +317,68 @@ export function mapController({ provider, search, catalog, ads, report }) {
       return;
     }
     if (locating) return;
-    cancel();
-    const current = revision;
+    locationError = '';
+    const intent = ++gpsIntent;
     locating = true;
     controls();
     state.status = 'location.loading';
     render();
     try {
       const p = await acquirePosition(navigator.geolocation);
-      if (current !== revision) return;
+      if (intent !== gpsIntent || !live) return;
       position = p;
-      leavePreset();
+
       directoryMode = false;
+      category = 'all';
       provider.locate(p);
       inputTerm = '';
       chrome.sync('');
       brandContext = null;
       areaOnly = true;
-      await run();
+      void run({ nearby: true });
     } catch (key) {
-      if (current === revision) {
+      if (intent === gpsIntent && live) {
+        locationError = key;
         state.status = key;
         render();
       }
     } finally {
-      locating = false;
-      controls();
+      if (intent === gpsIntent) {
+        locating = false;
+        controls();
+      }
     }
   }
   function moved() {
-    leavePreset();
+    supersedeLocation();
     cancel();
     state.more = false;
     state.status = 'map.areaHint';
     render();
-  }
-  function leavePreset() {
-    atPreset = false;
-    $('city').value = '';
   }
   async function start() {
     if (starting || live) return;
     starting = true;
     try {
       if (!navigator.onLine) throw new Error();
-      await provider.start($('map'), cities[city], moved, () => {
+      await provider.start($('map'), wonjuTerminal, moved, () => {
         if (selected) closeDetail();
       });
       if (!navigator.onLine) throw new Error('Offline');
       live = true;
       $('map').style.visibility = '';
-      atPreset = true;
-      $('city').value = city;
-      provider.center(cities[city]);
+
+      provider.resetView(wonjuTerminal);
 
       $('map-failure').hidden = true;
 
       if (selected || directoryMode) render();
-      else await run({ area: !inputTerm || areaOnly, interaction: false });
+      else {
+        const initial = run({ area: !inputTerm || areaOnly, interaction: false });
+        if (arrival && !inputTerm) void locate();
+        arrival = false;
+        await initial;
+      }
     } catch {
       $('map-failure').hidden = false;
       render();
@@ -383,6 +387,7 @@ export function mapController({ provider, search, catalog, ads, report }) {
     }
   }
   function submit(input) {
+    supersedeLocation();
     if (!normalize(input.value)) {
       state.status = 'search.required';
       render();
@@ -396,17 +401,9 @@ export function mapController({ provider, search, catalog, ads, report }) {
     run({ area: false });
     explored();
   }
-  $('evidence-filter').onchange = (event) => {
-    evidence = event.target.value;
-    selected = null;
-    brandLimit = 12;
-    if (live && state.kind === 'places') provider.render(visibleRows(), choose);
-    render();
-  };
   $('source-switch').onclick = () => {
     directoryMode = state.kind === 'places';
-    evidence = 'all';
-    $('evidence-filter').value = evidence;
+    supersedeLocation();
     if (directoryMode) provider.render([], choose);
     sheet(true);
     run({ area: !inputTerm });
@@ -415,16 +412,17 @@ export function mapController({ provider, search, catalog, ads, report }) {
   $('zoom-out').onclick = () => provider.zoom(1);
   $('location-button').onclick = locate;
   $('browse-brands').onclick = () => {
+    supersedeLocation();
+    directoryMode = true;
     browsing = true;
     sheet(true);
     brands(inputTerm);
     explored();
   };
   $('place-clear').onclick = closeDetail;
-  $('area').onclick = () => { directoryMode = false; sheet(true); run({ area: true }); };
-  $('city').onchange = (e) => selectCity(e.target.value);
+  $('area').onclick = () => { supersedeLocation(); directoryMode = false; sheet(true); run({ area: true }); };
   $('retry-map').onclick = start;
-  $('retry-search').onclick = () => run();
+  $('retry-search').onclick = () => run({ nearby: nearbyMode });
 
   $('more-results').onclick = () => {
     if (state.status === 'search.loading') return;
@@ -467,12 +465,12 @@ export function mapController({ provider, search, catalog, ads, report }) {
   );
   window.addEventListener('localechange', controls);
   window.addEventListener('offline', () => {
+    supersedeLocation();
     cancel();
     if (live) provider.render([], choose);
     $('map').style.visibility = 'hidden';
     live = false;
-    atPreset = true;
-    $('city').value = city;
+
     $('map-failure').hidden = false;
     brands(inputTerm, 'offline.body');
   });

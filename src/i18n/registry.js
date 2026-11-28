@@ -2,9 +2,17 @@
 export const locales = Object.freeze({
   en: { name: 'English', short: 'EN', dir: 'ltr', load: () => import('./en.js') },
   ko: { name: '한국어', short: 'KO', dir: 'ltr', load: () => import('./ko.js') },
-  ja: { name: '日本語', short: 'JA', dir: 'ltr', load: () => import('./ja.js') },
+  ja: { name: '日本語', short: 'JP', dir: 'ltr', load: () => import('./ja.js') },
   'zh-Hans': { name: '简体中文', short: '简中', dir: 'ltr', load: () => import('./zh-Hans.js') },
   'zh-Hant': { name: '繁體中文', short: '繁中', dir: 'ltr', load: () => import('./zh-Hant.js') },
+  th: { name: 'ไทย', short: 'TH', dir: 'ltr', load: () => import('./th.js') },
+  vi: { name: 'Tiếng Việt', short: 'VI', dir: 'ltr', load: () => import('./vi.js') },
+  id: { name: 'Bahasa Indonesia', short: 'ID', dir: 'ltr', load: () => import('./id.js') },
+  ms: { name: 'Bahasa Melayu', short: 'MS', dir: 'ltr', load: () => import('./ms.js') },
+  ar: { name: 'العربية', short: 'AR', dir: 'rtl', load: () => import('./ar.js') },
+  hi: { name: 'हिन्दी', short: 'HI', dir: 'ltr', load: () => import('./hi.js') },
+  mn: { name: 'Монгол', short: 'MN', dir: 'ltr', load: () => import('./mn.js') },
+  ru: { name: 'Русский', short: 'RU', dir: 'ltr', load: () => import('./ru.js') },
 });
 
 export function canonicalLocale(tag) {
@@ -132,4 +140,3 @@ export async function initLocale() {
     return setLocale('en', { persist: false });
   }
 }
-

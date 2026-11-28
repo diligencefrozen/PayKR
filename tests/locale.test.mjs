@@ -38,7 +38,7 @@ assert.equal(canonicalLocale('zh-Hans-TW'), 'zh-Hans');
 assert.equal(canonicalLocale('zh-Hant-CN'), 'zh-Hant');
 assert.equal(canonicalLocale('%2Fother'), null);
 assert.equal(canonicalLocale('__proto__'), null);
-assert.equal(negotiateLocale('fr', 'de', ['ru', 'ko-KR', 'en']), 'ko');
+assert.equal(negotiateLocale('fr', 'de', ['ru', 'ko-KR', 'en']), 'ru');
 assert.equal(negotiateLocale('ja', 'ko', ['en']), 'ja');
 assert.equal(negotiateLocale(null, 'ja', ['en']), 'ja');
 assert.equal(negotiateLocale(null, null, ['de']), 'en');
@@ -108,5 +108,5 @@ assert.equal(formatNumber(1200), '1,200');
 applyI18n();
 assert.equal(select.handlers.length, 1);
 console.log(
-  'PASS: five dictionaries, placeholders, guide bindings, locale negotiation, restricted storage, latest selection, page state and formatting',
+  'PASS: all registered dictionaries, placeholders, guide bindings, locale negotiation, restricted storage, latest selection, page state and formatting',
 );

@@ -16,7 +16,7 @@ const mime = {
   '.txt': 'text/plain; charset=utf-8',
 };
 const entries =
-  /^(?:(?:index|guide|online)(?:\.(?:ja|ko|zh-Hans|zh-Hant))?\.html|offline\.html|(?:theme|place-text|sw|pwa-assets)\.js|(?:shared|main|online|extensions)\.css|favicon\.svg|manifest\.webmanifest|sitemap\.xml|structured-data\.json|robots\.txt|forum\/index\.html|docs\/release-history\.txt)$/;
+  /^(?:(?:index|guide|online)(?:\.(?:[a-z]{2}|zh-Hans|zh-Hant))?\.html|(?:offline|terms)\.html|(?:theme|place-text|sw|pwa-assets)\.js|(?:shared|main|online|extensions)\.css|favicon\.svg|manifest\.webmanifest|sitemap\.xml|structured-data\.json|robots\.txt|forum\/index\.html|docs\/release-history\.txt)$/;
 const assets = /^(?:src|icons|assets|logo|logo_online|vendor\/koroman)\/[\w./-]+\.(?:js|json|css|svg|png)$/;
 
 export async function serve(port = 0, directory = root) {

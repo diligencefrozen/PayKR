@@ -42,7 +42,8 @@ export class KakaoProvider {
     if (this.map) return;
     this.sdk = await loadMaps();
     const sdk = this.sdk;
-    this.map = new sdk.Map(container, { center: new sdk.LatLng(center.lat, center.lng), level: 4 });
+    this.map = new sdk.Map(container, { center: new sdk.LatLng(center.lat, center.lng), level: 3 });
+    this.map.setCopyrightPosition(sdk.CopyrightPosition.BOTTOMRIGHT, true);
     this.places = new sdk.services.Places(this.map);
     this.markers = new Map();
     if (sdk.MarkerClusterer)
@@ -58,6 +59,10 @@ export class KakaoProvider {
       sw = b.getSouthWest(),
       ne = b.getNorthEast();
     return [sw.getLat(), sw.getLng(), ne.getLat(), ne.getLng()];
+  }
+  resetView(point) {
+    if (this.map.getLevel() !== 3) this.map.setLevel(3);
+    this.center(point);
   }
   center(point) {
     this.map.setCenter(new this.sdk.LatLng(point.lat, point.lng));
@@ -102,6 +107,10 @@ export class KakaoProvider {
     this.overlay?.setMap(null);
     for (const marker of this.markers.values()) marker.setMap(null);
     this.markers.clear();
+    this.addMarkers(places, select);
+  }
+  addMarkers(places, select) {
+    const added = [];
     for (const place of places) {
       const marker = new this.sdk.Marker({
         position: new this.sdk.LatLng(place.lat, place.lng),
@@ -114,9 +123,10 @@ export class KakaoProvider {
       });
       this.sdk.event.addListener(marker, 'mouseout', () => this.scheduleHide());
       this.markers.set(place.id, marker);
+      added.push(marker);
       if (!this.cluster) marker.setMap(this.map);
     }
-    this.cluster?.addMarkers([...this.markers.values()]);
+    if (added.length) this.cluster?.addMarkers(added);
   }
   select(place) {
     this.showOverlay(place);

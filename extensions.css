@@ -86,11 +86,11 @@ footer[data-footer] {
 #results-host .secondary {
   margin: 8px;
 }
-#detail .detail-card {
+.detail-card {
   display: grid;
   gap: 0.65rem;
 }
-.detail-card h2,
+#detail .detail-card h2,
 .detail-card .back-link {
   display: none;
 }
@@ -315,34 +315,29 @@ body[data-page-type='online'] > footer.wrap {
 #filter-panel { top: calc(var(--head-height) + 86px); max-height: calc(100dvh - var(--head-height) - 104px); }
 #area { top: calc(var(--head-height) + 88px); }
 #map-status { top: calc(var(--head-height) + 144px); pointer-events: none; }
-#map { top: var(--head-height); height: auto; }
+#map { top: 0; }
 #map-zoom { position: fixed; z-index: 9; right: 20px; top: calc(var(--head-height) + 90px); display: grid; border-radius: 16px; overflow: hidden; box-shadow: 0 3px 12px #17213c24; }
 #map-zoom button { width: 44px; height: 44px; border: 1px solid var(--line, #dbe2e6); background: var(--surface, white); font-size: 20px; }
-.evidence-filter { display: flex; align-items: center; justify-content: space-between; gap: .55rem; padding: .45rem 1rem; color: var(--subtext, #41546a); font-size: .84rem; }
-.evidence-filter select { max-width: 60%; min-width: 0; min-height: 44px; }
 .list-controls { display: flex; align-items: center; flex-wrap: wrap; padding: .35rem .75rem; gap: .2rem .6rem; }
-.list-controls .evidence-filter { flex: 1 1 12rem; padding: 0; }
 #results-host #source-switch { margin: 0; }
 .empty-filter { padding: 1rem; }
 .fallback-links { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 0 12px; }
 .fallback-links a { pointer-events: auto; display: inline-flex; align-items: center; min-height: 44px; color: var(--accent, #164d89); font-size: .875rem; }
 #sheet-mode { font-size: .78rem; color: var(--accent, #14558a); }
 @media (min-width: 769px) {
-  #map { left: 366px; width: auto; }
   #sidebar #place-sheet { display: none; }
   #sidebar #place-sheet.has-selection {
     display: block; position: static; width: 100%; border: 0; border-radius: 0;
     border-bottom: 1px solid var(--line, #dbe2e6); box-shadow: none; padding-top: 16px;
   }
   #sidebar #sheet-toggle { display: none; }
-  #sidebar #sheet-content { max-height: none; }
+  #sidebar #place-sheet, #sidebar #sheet-content { max-height: none; overflow: visible; overscroll-behavior: auto; }
 }
 @media (max-width: 768px) {
   .top-nav { display: none; }
   .header-theme { display: none; }
   .masthead .wrap { gap: .4rem; }
   .header-actions { gap: .45rem; min-width: 0; }
-  .header-actions #city { width: clamp(66px, 20vw, 100px); }
   .explorer .masthead .wrap { margin-left: max(14px, env(safe-area-inset-left)); margin-right: max(14px, env(safe-area-inset-right)); height: 49px; }
   .explorer { --head-height: calc(50px + env(safe-area-inset-top)); }
   .header-install { padding: .4rem .65rem; }
@@ -355,14 +350,13 @@ body[data-page-type='online'] > footer.wrap {
   .feedback-trigger { bottom: calc(var(--dock-height, 49px) + 12px); }
   #search-box-mobile { top: calc(var(--head-height) + 10px); }
   #mobile-categories { top: calc(var(--head-height) + 76px); }
-  #map { bottom: calc(var(--sheet-clearance) - 12px); }
-  #place-sheet { bottom: calc(var(--dock-height, 49px) + 8px); }
+  #map { height: auto; bottom: var(--dock-height, 49px); }
+  #place-sheet { bottom: calc(var(--dock-height, 49px) + 22px); }
   #sheet-toggle { height: 44px; flex-direction: column; gap: 4px; }
   .sheet-summary { padding-bottom: 10px; }
   #mobile-results { margin-top: 0; }
   #sheet-content { max-height: min(22dvh, 220px); }
   #place-sheet.has-selection #sheet-content { max-height: 33dvh; }
-  .evidence-filter { padding: 0; }
   #area { top: calc(var(--head-height) + 134px); white-space: nowrap; }
   #map-zoom { display: none; }
   #location-button { bottom: calc(var(--sheet-clearance) + 12px); left: 14px; right: auto; width: 44px; height: 44px; }
@@ -374,7 +368,7 @@ body[data-page-type='online'] > footer.wrap {
 @media (max-height: 500px) and (max-width: 768px) and (orientation: landscape) {
   #place-sheet { left: 54%; right: 8px; bottom: auto; top: calc(var(--head-height) + 6px); max-height: calc(100dvh - var(--head-height) - var(--dock-height, 49px) - 60px); overflow-y: auto; }
   #sheet-content, #place-sheet.has-selection #sheet-content { max-height: none; }
-  #map { left: 0; right: 47%; width: auto; bottom: var(--dock-height, 49px); }
+  #map { inset-inline: 0; width: 100%; }
   #search-box-mobile { left: 8px; right: 47%; top: calc(var(--head-height) + 6px); min-height: 46px; padding-block: 0; }
   #mobile-categories { right: 47%; top: calc(var(--head-height) + 55px); padding-left: 8px; }
   #map-failure { top: calc(var(--head-height) + 120px); bottom: auto; left: 6px; right: 47%; }
@@ -383,3 +377,62 @@ body[data-page-type='online'] > footer.wrap {
   #location-button { left: 54%; right: auto; }
 }
 #settings details > summary { display: list-item; align-content: center; min-height: 44px; cursor: pointer; }
+/* Map tiles extend behind the floating search tools. Keep the provider attribution visible between the mobile sheet and navigation. */
+[data-page-type="map"] .masthead {
+  background: transparent; border-bottom-color: transparent; box-shadow: none; pointer-events: none;
+}
+[data-page-type="map"] .masthead :is(.wordmark, .top-nav, .header-actions > *) {
+  pointer-events: auto; background-color: var(--surface, white);
+  border-radius: 18px; box-shadow: 0 2px 10px #17213c24;
+}
+[data-page-type="map"] .masthead .header-install { background-color: var(--active, #123f63); }
+[data-page-type="map"] .wordmark { padding: 6px 14px; }
+[data-page-type="map"] .top-nav { padding-inline: 8px; }
+#sidebar-content { min-height: 0; overscroll-behavior-y: contain; }
+.map-notes-links, .mobile-notes-links { display: flex; gap: 6px; }
+.map-notes-links { margin-top: 8px; pointer-events: none; }
+.mobile-notes-links { display: none; }
+:is(.map-notes-links,.mobile-notes-links) button {
+  pointer-events: auto; min-height: 36px; padding-inline: 14px; border: 1px solid var(--line,#dbe2e6);
+  border-radius: 18px; background: var(--surface,white); color: var(--text,#102f50); font: inherit; cursor: pointer;
+}
+@media (max-width: 768px) {
+  .mobile-notes-links { display: flex; padding-inline: 16px; margin-bottom: 4px; }
+  #place-sheet.has-selection .mobile-notes-links { display: none; }
+}
+:is(#settings,#notice-dialog,#releases-dialog) {
+  box-sizing: border-box; width: min(28rem, calc(100% - 24px)); max-height: 82dvh; overflow: auto;
+  padding: 20px; border-radius: 22px; box-shadow: 0 14px 45px #17213c33;
+}
+.settings-group { display: grid; padding-block: 6px; border-top: 1px solid var(--line,#dbe2e6); }
+.settings-group :is(a, button, label) { display: flex; align-items: center; min-height: 46px; gap: 8px;
+  padding-inline: 8px; border: none; background: transparent; text-decoration: none;
+  text-align: start; color: inherit; font: inherit; }
+.settings-group label { justify-content: space-between; }
+.settings-group :is(a,button):hover, .archive-years summary:hover { background: var(--tint,#f2f6fa); }
+.settings-group a::after, .settings-group [data-notes]::after { content: '›'; margin-inline-start: auto; }
+#cache-status:empty { display: none; }
+.archive-years details { border-block-start: 1px solid var(--line,#dbe2e6); }
+.archive-years summary { cursor: pointer; padding: 12px 4px; font-weight: 700; }
+.archive-years ol { list-style: none; margin: 0; padding: 0 12px; }
+.archive-years li { padding-block: 8px; }
+.archive-years time { font-weight: 650; color: var(--accent,#14558a); }
+.archive-years p { margin: .3rem 0; line-height: 1.55; }
+.notice-list { padding-inline-start: 1.4rem; line-height: 1.6; }
+.notice-list li + li { margin-top: .65rem; }
+
+/* Keep the original café artwork visible against dark road tiles. */
+:root[data-scheme="dark"] #map img[src$="/cafe.png"] {
+  filter: drop-shadow(0 0 1px white) drop-shadow(0 0 2px white);
+}
+#marker-dialog {
+  width: min(32rem, 100%); max-width: 100%; max-height: 100dvh;
+  padding: 0 20px max(20px, env(safe-area-inset-bottom)); overflow-y: auto;
+}
+#marker-dialog form {
+  position: sticky; top: 0; z-index: 1; display: flex; justify-content: flex-end;
+  padding-block: max(8px, env(safe-area-inset-top)) 8px; margin: 0; background: var(--surface, white);
+}
+@media (max-width: 768px) {
+  #marker-dialog { inset: 0; margin: 0; width: 100%; height: 100dvh; border: 0; border-radius: 0; }
+}

@@ -25,19 +25,27 @@
   <link rel="alternate" hreflang="ja" href="https://diligencefrozen.github.io/PayKR/index.ja.html">
   <link rel="alternate" hreflang="zh-Hans" href="https://diligencefrozen.github.io/PayKR/index.zh-Hans.html">
   <link rel="alternate" hreflang="zh-Hant" href="https://diligencefrozen.github.io/PayKR/index.zh-Hant.html">
+  <link rel="alternate" hreflang="th" href="https://diligencefrozen.github.io/PayKR/index.th.html">
+  <link rel="alternate" hreflang="vi" href="https://diligencefrozen.github.io/PayKR/index.vi.html">
+  <link rel="alternate" hreflang="id" href="https://diligencefrozen.github.io/PayKR/index.id.html">
+  <link rel="alternate" hreflang="ms" href="https://diligencefrozen.github.io/PayKR/index.ms.html">
+  <link rel="alternate" hreflang="ar" href="https://diligencefrozen.github.io/PayKR/index.ar.html">
+  <link rel="alternate" hreflang="hi" href="https://diligencefrozen.github.io/PayKR/index.hi.html">
+  <link rel="alternate" hreflang="mn" href="https://diligencefrozen.github.io/PayKR/index.mn.html">
+  <link rel="alternate" hreflang="ru" href="https://diligencefrozen.github.io/PayKR/index.ru.html">
   <link rel="alternate" hreflang="x-default" href="https://diligencefrozen.github.io/PayKR/">
   <script type="application/ld+json">{
   "@context":"https://schema.org",
   "@type":"WebSite",
   "name":"PayKR",
   "url":"https://diligencefrozen.github.io/PayKR/",
-  "inLanguage":["en","ko","ja","zh-Hans","zh-Hant"],
+  "inLanguage":["en","ko","ja","zh-Hans","zh-Hant","th","vi","id","ms","ar","hi","mn","ru"],
   "description":"Explore locations and check the available evidence for Apple Pay in Korea."
 }</script>
 </head>
 <body data-page-type="map" class="explorer"><header data-header><a class="skip" href="#main-content" data-i18n="common.skip">본문 바로가기</a><div class="masthead"><div class="wrap"><a class="wordmark" href="./index.ko.html" data-page="./">Pay<span>KR</span></a>
     <nav class="top-nav" data-i18n-aria-label="common.navigation" aria-label="주요 메뉴"><a href="./index.ko.html" data-page="./" aria-current="page" data-i18n="nav.explore">지도</a><a href="./online.ko.html" data-page="./online.html"  data-i18n="nav.online">온라인 사용처</a><a href="./guide.ko.html" data-page="./guide.html"  data-i18n="nav.guide">여행 가이드</a><button type="button" data-more aria-haspopup="dialog" data-i18n="nav.more">더 보기</button></nav>
-    <div class="header-actions"><select id="city" class="language" data-i18n-aria-label="map.city" aria-label="도시 선택"><option value="seoul" data-i18n="city.seoul">서울</option><option value="busan" data-i18n="city.busan">부산</option><option value="incheon" data-i18n="city.incheon">인천</option><option value="jeju" data-i18n="city.jeju">제주</option></select><select data-locale data-compact class="language" data-i18n-aria-label="common.language" aria-label="언어"><option value="en">EN</option><option value="ko" selected>KO</option><option value="ja">JA</option><option value="zh-Hans">简中</option><option value="zh-Hant">繁中</option></select>
+    <div class="header-actions"><select data-locale data-compact class="language" data-i18n-aria-label="common.language" aria-label="언어"><option value="en">EN</option><option value="ko" selected>KO</option><option value="ja">JP</option><option value="zh-Hans">简中</option><option value="zh-Hant">繁中</option><option value="th">TH</option><option value="vi">VI</option><option value="id">ID</option><option value="ms">MS</option><option value="ar">AR</option><option value="hi">HI</option><option value="mn">MN</option><option value="ru">RU</option></select>
     <select class="header-theme theme-choice" data-theme-choice data-i18n-aria-label="theme.label" aria-label="화면 테마"><option value="system" data-i18n="theme.system">기기 설정</option><option value="light" data-i18n="theme.light">라이트</option><option value="dark" data-i18n="theme.dark">다크</option></select>
     <button class="header-install" data-install data-i18n="install.action" hidden>앱 설치</button></div></div></div></header><main id="main-content">
 
@@ -53,6 +61,7 @@
       </form>
     </div>
 
+    <div class="map-notes-links"><button data-notes="notice" data-i18n="map.notice">필독사항</button><button data-notes="releases" data-i18n="map.releases">패치노트</button></div>
     <div id="sidebar-content">
 
       <div id="search-results">
@@ -62,42 +71,12 @@
         </div>
         <div id="search-results-list"><div id="results-host" hidden>
           <div class="list-controls"><button type="button" id="source-switch" class="secondary" hidden></button>
-          <label class="evidence-filter"><span data-i18n="place.evidence">결제 정보</span><select id="evidence-filter" class="theme-choice"></select></label></div>
+          </div>
           <div id="results"></div><button class="secondary" id="more-results" hidden data-i18n="search.more">더 보기</button><button class="secondary" id="retry-search" hidden data-i18n="search.retry">다시 검색</button></div></div>
       </div>
 
 
-      <div id="sidebar-welcome">
-        <div id="apple-pay-notice" style="position: relative; right: auto; bottom: auto; margin-top: 20px;">
-          <img src="logo/applepay.png" alt="Apple Pay" width="30" height="15"><span data-i18n="map.sticker">애플페이 스티커를 찾아보세요.</span>
-        </div>
-        <div style="margin-top: 30px; padding: 0 10px; color: var(--subtext, #666); font-size: 14px; line-height: 1.6;">
-          <ul style="padding-left: 20px; margin-top: 10px;">
-            <li data-i18n="map.searchStep">검색창에 매장 이름을 입력하세요.</li>
-            <li data-i18n="map.categoryStep">업종을 누르면 해당 매장만 볼 수 있습니다.</li>
-            <li data-i18n="map.zoomStep">마우스 휠을 굴려 지도를 확대하거나 축소하세요.</li>
-          </ul>
-        </div>
-
-      </div>
       <aside data-slot="map" class="ad-space" id="sidebar-ad" hidden></aside>
-      <div class="sidebar-guides" id="sidebar-guides">
-        <div class="guide-buttons">
-          <button id="notice-button" type="button" aria-expanded="false" aria-controls="notice-panel" data-i18n="map.notice">이용 안내</button>
-          <button id="release-button" type="button" aria-expanded="false" aria-controls="release-panel" data-i18n="map.releases">업데이트 내역</button>
-        </div>
-        <section id="notice-panel" aria-labelledby="notice-button" hidden>
-          <ul>
-            <li data-i18n="notice.location">‘내 주변’을 누르면 가까운 매장을 찾습니다.</li>
-            <li data-i18n="notice.building">같은 건물에 있는 매장은 지도에서 겹쳐 보일 수 있습니다.</li>
-            <li data-i18n="notice.marker">지도에서 매장을 누르면 주소와 결제 정보를 볼 수 있습니다.</li>
-            <li data-i18n="notice.source">목록에 있는 브랜드라도 결제 가능 여부는 지점마다 다를 수 있습니다.</li>
-          </ul>
-        </section>
-        <section id="release-panel" aria-labelledby="release-button" hidden>
-<ol id="release-list" class="release-list"></ol>
-</section>
-      </div>
     </div>
   </div>
 
@@ -144,27 +123,38 @@
       <div aria-live="polite"><h1 id="place-title" data-i18n="place.emptyTitle">주변 매장</h1><p id="place-subtitle" data-i18n="place.emptyHint">지도에서 매장을 눌러 주소와 결제 정보를 확인하세요.</p></div>
       <button id="place-clear" class="icon-button" data-i18n-aria-label="place.clear" aria-label="선택 해제" hidden>×</button>
     </div>
+    <div class="mobile-notes-links"><button data-notes="notice" data-i18n="map.notice">필독사항</button><button data-notes="releases" data-i18n="map.releases">패치노트</button></div>
     <div id="sheet-content" hidden>
       <div id="detail"></div>
       <div id="mobile-results" data-i18n-aria-label="search.results" aria-label="검색 결과"></div>
       <aside class="ad-space" id="place-ad" data-slot="map-mobile" hidden></aside>
     </div>
   </section>
+  <dialog id="marker-dialog" data-i18n-aria-label="place.info" aria-label="장소 정보">
+    <form method="dialog"><button autofocus data-i18n="common.close">닫기</button></form>
+    <div id="marker-detail"></div>
+  </dialog>
   <p id="map-status" role="status" hidden></p>
   <div class="map-load-error" id="map-failure" hidden><p data-i18n="map.unavailable">지도를 불러올 수 없습니다.</p>
     <div class="fallback-links"><button id="retry-map" data-i18n="common.retry">다시 시도</button>
-    <a id="city-map" target="_blank" rel="noopener noreferrer" data-i18n="place.details">카카오맵에서 보기</a>
+    <a id="city-map" target="_blank" rel="noopener noreferrer" data-i18n="common.map">지도 보기</a>
     <button id="browse-brands" data-i18n="map.browse">브랜드 둘러보기</button></div></div>
 
 </main><footer data-footer><div class="app-dock"><div data-pwa-panel></div><nav class="bottom-nav" data-i18n-aria-label="common.navigation" aria-label="주요 메뉴"><a href="./index.ko.html" data-page="./" aria-current="page" data-i18n="nav.explore">지도</a><a href="./online.ko.html" data-page="./online.html"  data-i18n="nav.online">온라인 사용처</a><a href="./guide.ko.html" data-page="./guide.html"  data-i18n="nav.guide">여행 가이드</a><button type="button" data-more aria-haspopup="dialog" data-i18n="nav.more">더 보기</button></nav></div>
     <button class="feedback-trigger" id="feedback-open"><span data-i18n="feedback.open">의견 남기기</span></button>
-    <dialog id="settings" aria-labelledby="settings-title"><h2 id="settings-title" data-i18n="nav.more">더 보기</h2>
+    <dialog id="settings" aria-labelledby="settings-title"><div class="feedback-heading"><h2 id="settings-title" data-i18n="nav.more">더 보기</h2>
+    <form method="dialog"><button class="feedback-close" data-i18n-aria-label="common.close" aria-label="닫기">×</button></form></div><div class="settings-group">
       <label class="setting-row"><span data-i18n="theme.label">화면 테마</span><select data-theme-choice>
       <option value="system" data-i18n="theme.system">기기 설정</option><option value="light" data-i18n="theme.light">라이트</option><option value="dark" data-i18n="theme.dark">다크</option></select></label>
-      <a href="guide.ko.html#privacy" data-page="guide.html#privacy" data-i18n="common.privacy">개인정보 안내</a>
-      <a href="./docs/release-history.txt" data-i18n="common.history">지난 업데이트 (한국어·영어)</a><button data-install data-i18n="install.action" hidden>앱 설치</button><button id="clear-cache" data-i18n="common.clearCache">저장된 목록 지우기</button><p id="cache-status" role="status"></p>
-      <button data-install-help data-i18n="install.iosGuide" hidden>홈 화면에 추가하는 방법</button>
-      <form method="dialog"><button data-i18n="common.close">닫기</button></form></dialog>
+      <button data-install data-i18n="install.action" hidden>앱 설치</button><button data-install-help data-i18n="install.iosGuide" hidden>홈 화면에 추가하는 방법</button></div>
+      <div class="settings-group"><button type="button" data-notes="notice" aria-haspopup="dialog" data-i18n="map.notice">필독사항</button><button type="button" data-notes="releases" aria-haspopup="dialog" data-i18n="map.releases">패치노트</button><a href="./terms.html" hreflang="ko" data-i18n="common.terms">PayKR 서비스 이용약관</a></div>
+      <div class="settings-group"><button id="clear-cache" data-i18n="common.clearCache">저장된 목록 지우기</button><p id="cache-status" role="status"></p></div>
+    </dialog>
+    <dialog id="notice-dialog" aria-labelledby="notice-title"><div class="feedback-heading"><h2 id="notice-title" data-i18n="map.notice">필독사항</h2>
+    <form method="dialog"><button class="feedback-close" data-i18n-aria-label="common.close" aria-label="닫기">×</button></form></div>
+      <ul class="notice-list"><li data-i18n="notice.location">지도를 열 때 위치 사용을 허용하면 가까운 매장을 업종에 관계없이 찾아볼 수 있습니다. ‘전체’를 누르면 원주종합버스터미널로 돌아갑니다.</li><li data-i18n="notice.building">같은 건물에 있는 매장은 지도에서 겹쳐 보일 수 있습니다.</li><li data-i18n="notice.marker">지도에서 매장을 누르면 주소와 결제 정보를 볼 수 있습니다.</li><li data-i18n="map.sticker">애플페이 스티커를 찾아보세요.</li><li data-i18n="notice.source">목록에 있는 브랜드라도 결제 가능 여부는 지점마다 다를 수 있습니다.</li></ul></dialog>
+    <dialog id="releases-dialog" aria-labelledby="releases-title"><div class="feedback-heading"><h2 id="releases-title" data-i18n="map.releases">패치노트</h2>
+    <form method="dialog"><button class="feedback-close" data-i18n-aria-label="common.close" aria-label="닫기">×</button></form></div><div class="archive-years" id="release-archive"></div></dialog>
     <dialog id="feedback-dialog" aria-labelledby="feedback-title">
       <div class="feedback-heading"><h2 id="feedback-title" data-i18n="feedback.title">의견 남기기</h2>
       <form method="dialog"><button class="feedback-close" data-i18n-aria-label="common.close" aria-label="닫기">×</button></form></div>

@@ -3,6 +3,6 @@
   "@type":"WebSite",
   "name":"PayKR",
   "url":"https://diligencefrozen.github.io/PayKR/",
-  "inLanguage":["en","ko","ja","zh-Hans","zh-Hant"],
+  "inLanguage":["en","ko","ja","zh-Hans","zh-Hant","th","vi","id","ms","ar","hi","mn","ru"],
   "description":"Explore locations and check the available evidence for Apple Pay in Korea."
 }

@@ -35,10 +35,11 @@ function kakaoFixture() {
   class MapView {
     constructor(_, options) {
       this.setCenter(options.center);
-      this.level = 4;
+      this.level = options.level;
       f.maps++;
       f.map = this;
     }
+    setCopyrightPosition(position) { this.copyright = position; }
     setCenter(p) {
       this.center = p;
     }
@@ -97,6 +98,7 @@ function kakaoFixture() {
     maps: {
       load: (fn) => fn(),
       Map: MapView,
+      CopyrightPosition: { BOTTOMRIGHT: 'bottomright' },
       LatLng: Point,
       LatLngBounds: Bounds,
       Marker,
@@ -161,24 +163,38 @@ await withBrowser(async (browser, base) => {
   await page.goto(base + '?lang=en');
   await page.waitForFunction(()=>fixture.maps===1);
   assert.equal(await page.evaluate(() => fixture.maps), 1);
-  assert.equal(await page.evaluate(() => fixture.gps.length), 0);
+  await page.waitForFunction(() => fixture.gps.length === 1);
+  assert.equal(await page.evaluate(() => fixture.map.center.lat), 37.34487430629196);
   await page.locator('#mobile-results .search-result-item').first().waitFor();
   assert(await page.locator('#area').isVisible());
-  await page.locator('#city').selectOption('busan');
-  await page.waitForFunction(() => fixture.map.center.lat === 35.1587);
-  await page.locator('#mobile-results .search-result-item').first().waitFor();
-  await page.locator('#evidence-filter').selectOption('verified');
-  assert.equal(await page.locator('#results .search-result-item').count(), 0);
-  assert.equal(await page.evaluate(() => fixture.markers.filter(marker => marker.map).length), 0);
-  await page.locator('#evidence-filter').selectOption('all');
+  assert.equal(await page.locator('#city, #evidence-filter').count(), 0);
+  await page.evaluate(() => fixture.gps[0].ok({coords: {latitude: 37.5665, longitude: 126.978}}));
+  await page.waitForFunction(() => fixture.map.center.lat === 37.5665);
+  const expected = await page.evaluate(async () => (await (await fetch('./src/data/stores.json')).json()).map(row => row.names.ko));
+  await page.waitForFunction(names => names.every(name => fixture.calls.some(call => call.keyword === name && call.page === 2)), expected);
+  await page.evaluate(() => fixture.map.setLevel(6));
+  await page.locator('#mobile-categories [data-category="all"]').click();
+  assert.equal(await page.evaluate(() => fixture.map.level), 3);
+  await page.waitForFunction(() => fixture.map.center.lat === 37.34487430629196);
   await page.locator('#results .search-result-item').first().waitFor();
+  await page.evaluate(() => fixture.markers.findLast(marker => marker.map && marker.events?.click).events.click());
+  await page.locator('#marker-dialog[open] h2').waitFor();
+  assert.equal((await page.locator('#marker-dialog').boundingBox()).height, 844);
+  assert(await page.locator('#marker-detail a[href="https://place.map.kakao.com/123"]').isVisible());
+  await page.locator('#marker-dialog form button').click();
+  assert(await page.locator('#marker-dialog').isHidden());
   await page.locator('#source-switch').click();
   await page.locator('#results .badge.brand_listed').first().waitFor();
   assert.match(await page.locator('#place-title').innerText(), /brand directory/i);
   await page.locator('#source-switch').click();
   await page.locator('#results [data-id="123"]').waitFor();
   await page.locator('#location-button').click();
-  await page.waitForFunction(() => fixture.gps.length === 1);
+  await page.waitForFunction(() => fixture.gps.length === 2);
+  await page.evaluate(() => fixture.gps[1].fail({code: 1}));
+  await page.waitForFunction(() => !document.querySelector('#location-button').disabled);
+  assert.equal(await page.evaluate(() => fixture.map.center.lat), 37.34487430629196);
+  await page.locator('#location-button').click();
+  await page.waitForFunction(() => fixture.gps.length === 3);
   await page.locator('#search-input-mobile').fill('Starbucks');
   await page.locator('#search-input-mobile').press('Enter');
   await page.waitForFunction(() => fixture.calls.some((c) => c.keyword === '스타벅스'));
@@ -189,7 +205,7 @@ await withBrowser(async (browser, base) => {
     await page.getByRole('link', { name: 'Directions', exact: true }).getAttribute('href'),
     'https://map.kakao.com/link/to/123',
   );
-  await page.evaluate(() => fixture.gps[0].ok({ coords: { latitude: 35, longitude: 129 } }));
+  await page.evaluate(() => fixture.gps[2].ok({ coords: { latitude: 37.5665, longitude: 126.978 } }));
   assert.equal(await page.evaluate(() => fixture.map.center.lat), 37.55);
   await page.locator('[data-locale]:visible').selectOption('ko');
   await page.waitForFunction(() => document.documentElement.lang === 'ko');
@@ -205,7 +221,7 @@ await withBrowser(async (browser, base) => {
   await page.locator('#sidebar #detail .badge').waitFor();
   assert.equal(await page.locator('#detail .evidence').count(), 0);
   await page.locator('#zoom-in').click();
-  assert.equal(await page.evaluate(() => fixture.map.level), 3);
+  assert.equal(await page.evaluate(() => fixture.map.level), 2);
   await page.setViewportSize({width:390,height:844});
   await page.locator('#feedback-open').click();
   await page.locator('#open-discord').click();
@@ -272,6 +288,8 @@ await withBrowser(async (browser, base) => {
     [390, 844, 'en', 'light'],
     [390, 844, 'ko', 'light'],
     [430, 932, 'ja', 'dark'],
+    [390, 844, 'ar', 'dark'],
+    [1280, 900, 'ru', 'light'],
     [768, 1024, 'zh-Hant', 'light'],
     [1280, 800, 'ko', 'dark'],
     [1280, 800, 'en', 'light'],
@@ -290,9 +308,9 @@ await withBrowser(async (browser, base) => {
     assert(await nav.isVisible());
     assert.equal(await nav.locator('a, button').count(), 4);
     assert.equal(await nav.locator('[aria-current]').getAttribute('data-page'), './');
-    assert(await view.locator('#city').isVisible());
+    assert.equal(await view.locator('#city').count(), 0);
     if (height > 500) await view.locator('#results .search-result-item').first().waitFor();
-    for (const target of ['#city', '#retry-map', '#city-map', '#feedback-open', ...(mobile ? ['.bottom-nav [data-more]'] : [])]) {
+    for (const target of ['[data-locale]', '#retry-map', '#city-map', '#feedback-open', ...(mobile ? ['.bottom-nav [data-more]'] : [])]) {
       assert(await view.locator(target).evaluate(node => {
         const box = node.getBoundingClientRect();
         return node.contains(document.elementFromPoint(box.x + box.width / 2, box.y + box.height / 2));
@@ -320,6 +338,11 @@ await withBrowser(async (browser, base) => {
   assert(await view.locator('#detail .badge').isVisible());
   await view.setViewportSize({width:1280,height:900});
   await view.locator('#sidebar #detail .badge').waitFor();
+  const sidebar = view.locator('#sidebar-content');
+  assert(await sidebar.evaluate(node => node.scrollHeight > node.clientHeight));
+  await view.locator('#sidebar #sheet-content').hover();
+  await view.mouse.wheel(0, 340);
+  await view.waitForFunction(() => document.querySelector('#sidebar-content').scrollTop > 0);
   await view.locator('#place-clear').click();
   await view.setViewportSize({width:390,height:844});
   await view.locator('#feedback-open').click();
@@ -330,6 +353,10 @@ await withBrowser(async (browser, base) => {
   await view.keyboard.press('Escape');
   assert(await view.locator('#feedback-open').evaluate(node => node === document.activeElement));
   await view.locator('.bottom-nav [data-more]').click();
+  await view.locator('#settings [data-notes="releases"]').click();
+  await view.locator('#release-archive time').first().waitFor();
+  assert(await view.locator('#release-archive p[lang="ko"]').count() > 30);
+  await view.keyboard.press('Escape');
   await view.locator('#settings [data-install]').click();
   assert(await view.evaluate(() => window.installActivated));
   assert(await view.locator('.header-install').isHidden());
@@ -367,6 +394,10 @@ await withBrowser(async (browser, base) => {
     await view.locator(nav + ' [data-page="./"]').click();
     await view.locator('#map-failure').waitFor();
     assert.deepEqual(await view.locator('.masthead').boundingBox(), header);
+    const mapBox = await view.locator('#map').boundingBox();
+    assert.equal(mapBox.x, 0);
+    assert.equal(mapBox.y, 0);
+    assert.equal(mapBox.width, width);
     if (width > 768)
       assert(await view.evaluate(() => document.querySelector('.top-nav').getBoundingClientRect().right <= document.querySelector('.header-actions').getBoundingClientRect().left));
     assert.deepEqual(await search.boundingBox(), directoryBox, 'map/directory search position at ' + width);

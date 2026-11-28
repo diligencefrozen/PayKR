@@ -41,6 +41,7 @@
       </form>
     </div>
 
+    <div class="map-notes-links"><button data-notes="notice" data-i18n="map.notice"></button><button data-notes="releases" data-i18n="map.releases"></button></div>
     <div id="sidebar-content">
 
       <div id="search-results">
@@ -50,42 +51,12 @@
         </div>
         <div id="search-results-list"><div id="results-host" hidden>
           <div class="list-controls"><button type="button" id="source-switch" class="secondary" hidden></button>
-          <label class="evidence-filter"><span data-i18n="place.evidence"></span><select id="evidence-filter" class="theme-choice"></select></label></div>
+          </div>
           <div id="results"></div><button class="secondary" id="more-results" hidden data-i18n="search.more"></button><button class="secondary" id="retry-search" hidden data-i18n="search.retry"></button></div></div>
       </div>
 
 
-      <div id="sidebar-welcome">
-        <div id="apple-pay-notice" style="position: relative; right: auto; bottom: auto; margin-top: 20px;">
-          <img src="logo/applepay.png" alt="Apple Pay" width="30" height="15"><span data-i18n="map.sticker">스티커를 꼭 확인하세요!</span>
-        </div>
-        <div style="margin-top: 30px; padding: 0 10px; color: var(--subtext, #666); font-size: 14px; line-height: 1.6;">
-          <ul style="padding-left: 20px; margin-top: 10px;">
-            <li data-i18n="map.searchStep">검색창에 매장명을 입력하세요</li>
-            <li data-i18n="map.categoryStep">카테고리 버튼을 클릭하세요</li>
-            <li data-i18n="map.zoomStep">마우스 휠로 지도를 확대/축소하세요</li>
-          </ul>
-        </div>
-
-      </div>
       <aside data-slot="map" class="ad-space" id="sidebar-ad" hidden></aside>
-      <div class="sidebar-guides" id="sidebar-guides">
-        <div class="guide-buttons">
-          <button id="notice-button" type="button" aria-expanded="false" aria-controls="notice-panel" data-i18n="map.notice">필독사항</button>
-          <button id="release-button" type="button" aria-expanded="false" aria-controls="release-panel" data-i18n="map.releases">패치노트</button>
-        </div>
-        <section id="notice-panel" aria-labelledby="notice-button" hidden>
-          <ul>
-            <li data-i18n="notice.location">지도를 열 때 위치 접근을 허용하면 주변 편의점, 카페, 마트·슈퍼, 제과·디저트 매장과 음식점을 표시합니다. 현재 위치 버튼으로 다시 시도하거나 매장명·주소로 검색할 수 있습니다.</li>
-            <li data-i18n="notice.building">같은 건물에 있는 여러 매장이 지도에서 한곳에 표시될 수 있습니다.</li>
-            <li data-i18n="notice.marker">지도 마커를 클릭하면 매장 주소와 상세 정보를 볼 수 있습니다.</li>
-            <li data-i18n="notice.source">업종 분류는 현대카드의 Apple Pay 안내를 참고했습니다.</li>
-          </ul>
-        </section>
-        <section id="release-panel" aria-labelledby="release-button" hidden>
-<ol id="release-list" class="release-list"></ol>
-</section>
-      </div>
     </div>
   </div>
 
@@ -132,16 +103,21 @@
       <div aria-live="polite"><h1 id="place-title" data-i18n="place.emptyTitle">이 지역의 장소 찾기</h1><p id="place-subtitle" data-i18n="place.emptyHint">지도에서 장소를 선택하면 상세 정보가 표시됩니다.</p></div>
       <button id="place-clear" class="icon-button" data-i18n-aria-label="place.clear" aria-label="장소 선택 해제" hidden>×</button>
     </div>
+    <div class="mobile-notes-links"><button data-notes="notice" data-i18n="map.notice"></button><button data-notes="releases" data-i18n="map.releases"></button></div>
     <div id="sheet-content" hidden>
       <div id="detail"></div>
       <div id="mobile-results" data-i18n-aria-label="search.results" aria-label="장소 검색 결과"></div>
       <aside class="ad-space" id="place-ad" data-slot="map-mobile" hidden></aside>
     </div>
   </section>
+  <dialog id="marker-dialog" data-i18n-aria-label="place.info">
+    <form method="dialog"><button autofocus data-i18n="common.close"></button></form>
+    <div id="marker-detail"></div>
+  </dialog>
   <p id="map-status" role="status" hidden></p>
   <div class="map-load-error" id="map-failure" hidden><p data-i18n="map.unavailable"></p>
     <div class="fallback-links"><button id="retry-map" data-i18n="common.retry"></button>
-    <a id="city-map" target="_blank" rel="noopener noreferrer" data-i18n="place.details"></a>
+    <a id="city-map" target="_blank" rel="noopener noreferrer" data-i18n="common.map"></a>
     <button id="browse-brands" data-i18n="map.browse"></button></div></div>
 
 </main><footer data-footer></footer></body></html>

@@ -346,6 +346,12 @@ if (process.argv.includes('--browser')) {
     assert(response.fromServiceWorker());
     await page.waitForFunction(() => document.documentElement.lang === 'ko');
     assert.match(await page.locator('blockquote').first().textContent(), /애플페이/);
+    response = await page.goto(base + 'guide.ar.html');
+    assert(response.fromServiceWorker());
+    assert.equal(await page.locator('html').getAttribute('dir'), 'rtl');
+    response = await page.goto(base + 'terms.html');
+    assert(response.fromServiceWorker());
+    assert.equal(await page.locator('h2[id^="article-"]').count(), 17);
     response = await page.goto(base + 'guide.html?lang=zh-Hant');
     assert(response.fromServiceWorker());
     await page.waitForFunction(() => document.documentElement.lang === 'zh-Hant');

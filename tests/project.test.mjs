@@ -16,7 +16,7 @@ for (const [lang, { load }] of Object.entries(locales)) {
     );
     for (const [, key] of html.matchAll(/data-i18n(?:-(?:placeholder|aria-label|content|title))?="([^"]+)"/g))
       assert(Object.hasOwn(dict, key), key);
-    assert.equal((html.match(/hreflang=/g) || []).length, 6);
+    assert.equal((html.match(/<link rel="alternate" hreflang=/g) || []).length, Object.keys(locales).length + 1);
     for (const [, path] of html.matchAll(/(?:href|src)="\.\/([^"#?]+)"/g)) await read(path);
     assert(!/oncontextmenu|pagead2\.googlesyndication\.com|cdn\.jsdelivr\.net/.test(html));
   }
@@ -28,5 +28,5 @@ for (const file of views)
     file,
   );
 console.log(
-  'PASS: 15 crawlable entries, reciprocal alternates, translation bindings, local paths and view boundaries',
+  'PASS: Localized crawlable entries, reciprocal alternates, translation bindings, local paths and view boundaries',
 );

@@ -1,11 +1,6 @@
 import { inKorea } from './location.js';
 import { normalize, placeRecord, brandMatches, paymentFor } from '../models/payment.js';
-export const cities = {
-  seoul: { lat: 37.5636, lng: 126.9826 },
-  busan: { lat: 35.1587, lng: 129.1604 },
-  incheon: { lat: 37.4563, lng: 126.7052 },
-  jeju: { lat: 33.4996, lng: 126.5312 },
-};
+export const wonjuTerminal = Object.freeze({ lat: 37.34487430629196, lng: 127.93071437137233 });
 const areas = {
   명동: ['Myeongdong', '明洞', 'ミョンドン'],
   홍대: ['Hongdae', '弘大', 'ホンデ'],
@@ -68,7 +63,7 @@ export class SearchService {
       this.drain();
     });
   }
-  async search({ input = '', brand = null, category = 'all', bounds = null, offset = 0, page = 1 }) {
+  async search({ input = '', brand = null, category = 'all', bounds = null, offset = 0, page = 1, nearby = false }) {
     this.cancel();
     const epoch = this.epoch;
     const brands = await this.catalog.query('stores', category);
@@ -87,7 +82,22 @@ export class SearchService {
     const jobs = input
       ? [{ keyword: keywordFor(input, brands), brand }]
       : batch.map((brand) => ({ keyword: brand.names.ko, brand }));
-    const results = await Promise.allSettled(jobs.map((j) => this.request(j.keyword, bounds, page)));
+    const pages = async ({ keyword }) => {
+      const rows = [];
+      for (let next = page; epoch === this.epoch; next++) {
+        let response;
+        try { response = await this.request(keyword, bounds, next); }
+        catch (error) {
+          if (!rows.length) throw error;
+          return { rows, partial: true };
+        }
+        if (!response) break;
+        rows.push(...response.rows);
+        if (!nearby || !response.more || next >= 3) return { rows, more: response.more };
+      }
+      return { rows };
+    };
+    const results = await Promise.allSettled(jobs.map(pages));
     if (epoch !== this.epoch) return null;
     const places = new Map();
     let errors = 0,
@@ -100,6 +110,7 @@ export class SearchService {
       }
       const response = result.value;
       if (!response) return;
+      if (response.partial) errors++;
       if (response.more) {
         if (input && page < 3) more = true;
         else limited = true;
@@ -120,7 +131,7 @@ export class SearchService {
     return {
       items: [...places.values()],
       errors,
-      failed: errors === jobs.length && errors > 0,
+      failed: !places.size && errors === jobs.length && errors > 0,
       limited,
       more: input ? more : offset + batch.length < brands.length,
     };

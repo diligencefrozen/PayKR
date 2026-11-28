@@ -42,7 +42,7 @@ export function placeRow(place, choose, position, format, index) {
 }
 export function detailContent(record, { brand, format, position, back, find }) {
   const panel = el('div', undefined, 'detail-card');
-  panel.append(button(t('place.back'), back, 'back-link'));
+  if (back) panel.append(button(t('place.back'), back, 'back-link'));
   const claim = record.claim;
   const name = brand ? brandName(record) : format?.name(record.name) || record.name;
   panel.append(el('h2', name), badge(claim, t), el('p', t('place.channelStore')));

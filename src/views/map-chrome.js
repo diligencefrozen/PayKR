@@ -1,6 +1,6 @@
 import { $, button, el } from './dom.js';
 import { categoryIcon } from './category-icons.js';
-import { t, getLocale, pageLink } from '../i18n/registry.js';
+import { t, pageLink } from '../i18n/registry.js';
 import { positionChat } from '../services/feedback.js';
 
 const icons = {
@@ -14,11 +14,6 @@ const icons = {
 export function mapChrome({ category, locate, report, submit, render, edit }) {
   const filter = $('filter-panel'),
     media = matchMedia('(max-width:768px)');
-  const help = document.createElement('details');
-  const summary = el('summary', t('map.how'));
-  summary.dataset.i18n = 'map.how';
-  help.append(summary, $('sidebar-welcome'), $('sidebar-guides'));
-  $('settings').querySelector('form').before(help);
   const inputs = [$('search-input'), $('search-input-mobile')];
   let opener;
   function setFilter(open, focus = false) {
@@ -114,37 +109,6 @@ export function mapChrome({ category, locate, report, submit, render, edit }) {
   new ResizeObserver(layout).observe(document.querySelector('.app-dock'));
   new ResizeObserver(layout).observe(document.querySelector('.masthead'));
   window.visualViewport?.addEventListener('resize', layout);
-  const guides = [...document.querySelectorAll('.guide-buttons button')];
-  guides.forEach(
-    (b) =>
-      (b.onclick = async () => {
-        const opening = b.getAttribute('aria-expanded') !== 'true';
-        for (const node of guides) {
-          const show = node === b && opening;
-          node.setAttribute('aria-expanded', String(show));
-          $(node.getAttribute('aria-controls')).hidden = !show;
-        }
-        if (opening && b.id === 'release-button') {
-          const archive = $('release-list');
-          try {
-            const response = await fetch(new URL('../data/release-history.json', import.meta.url));
-            if (!response.ok) throw Error();
-            const records = await response.json();
-            archive.replaceChildren(
-              ...records.map((r) => {
-                const item = el('li');
-                item.append(el('b', r.date), el('span', getLocale() === 'ko' ? r.ko : r.en));
-                return item;
-              }),
-            );
-          } catch {
-            const link = el('a', t('common.history'));
-            link.href = './docs/release-history.txt';
-            archive.replaceChildren(link);
-          }
-        }
-      }),
-  );
   layout();
   return { sync, controls, setFilter, layout, mobile: () => media.matches };
 }

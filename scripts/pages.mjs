@@ -59,7 +59,7 @@ for (const [name, type] of Object.entries(pages)) {
         /<html[^>]*>/,
         '<html lang="' +
           lang +
-          '" dir="ltr"' +
+          '" dir="' + locales[lang].dir + '"' +
           (lang === 'en' ? '' : ' data-entry-locale="' + lang + '"') +
           '>',
       )
@@ -167,4 +167,4 @@ await output(
     sitemap.join('\n') +
     '\n</urlset>\n',
 );
-console.log('15 localized Pages entries and sitemap verified');
+console.log(languages.length * Object.keys(pages).length + ' localized Pages entries and sitemap verified');

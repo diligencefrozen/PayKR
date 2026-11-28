@@ -4,7 +4,7 @@ const root = fileURLToPath(new URL('../', import.meta.url));
 const jobs = [
   ['scripts/pages.mjs', '--check'],
   ['scripts/pwa-assets.mjs', '--check'],
-  ...['map-ui', 'directory', 'cache', 'ads', 'locale', 'project', 'seo', 'pwa', 'merchants', 'sync-mock', 'merchant-cache', 'spatial-cache'].map((name) => [
+  ...['map-ui', 'directory', 'cache', 'ads', 'locale', 'project', 'seo', 'pwa', 'merchants', 'sync-mock', 'merchant-cache', 'spatial-cache', 'merchant-quality'].map((name) => [
     'tests/' + name + '.test.mjs',
   ]),
 ];

@@ -3,9 +3,9 @@ on:
   workflow_dispatch:
     inputs:
       mode:
-        description: 'auto (choose mode), initial (resume baseline), or delta'
+        description: 'auto, initial (baseline), quality (opt-in v2 rescan), or delta'
         type: choice
-        options: [auto, initial, delta]
+        options: [auto, initial, quality, delta]
         default: auto
       max_pages:
         description: 'Maximum API pages per execution'

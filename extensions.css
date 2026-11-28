@@ -325,13 +325,23 @@ body[data-page-type='online'] > footer.wrap {
 .fallback-links a { pointer-events: auto; display: inline-flex; align-items: center; min-height: 44px; color: var(--accent, #164d89); font-size: .875rem; }
 #sheet-mode { font-size: .78rem; color: var(--accent, #14558a); }
 @media (min-width: 769px) {
+  #sidebar { --list-width: clamp(238px, 30vw, 350px); width: var(--list-width); }
+  #sidebar-content { flex: 1 1 auto; }
+  .desktop-category-wrapper { left: calc(32px + clamp(238px, 30vw, 350px)); }
   #sidebar #place-sheet { display: none; }
   #sidebar #place-sheet.has-selection {
-    display: block; position: static; width: 100%; border: 0; border-radius: 0;
-    border-bottom: 1px solid var(--line, #dbe2e6); box-shadow: none; padding-top: 16px;
+    display: flex; flex-direction: column; position: fixed;
+    top: var(--detail-top, calc(var(--head-height) + 132px)); bottom: 16px;
+    left: calc(24px + var(--list-width)); right: auto;
+    width: clamp(306px, 34vw, 420px); max-height: none;
+    border: 1px solid var(--line, #dbe2e6); border-radius: 14px;
+    box-shadow: 0 4px 22px #17213c20; padding-top: 0; pointer-events: auto;
   }
   #sidebar #sheet-toggle { display: none; }
-  #sidebar #place-sheet, #sidebar #sheet-content { max-height: none; overflow: visible; overscroll-behavior: auto; }
+  #sidebar .sheet-summary { flex: none; padding: 18px 20px 16px; border-bottom: 1px solid var(--line,#dbe2e6); }
+  #sidebar #sheet-content { flex: 1; min-height: 0; max-height: none; overflow-y: auto; overscroll-behavior: contain; padding: 18px 20px; }
+  #sidebar #place-sheet #mobile-results { display: none; }
+  #sidebar #results-host .search-result-item.active { box-shadow: inset 3px 0 var(--accent,#164d89); }
 }
 @media (max-width: 768px) {
   .top-nav { display: none; }
@@ -429,7 +439,7 @@ body[data-page-type='online'] > footer.wrap {
   width: min(32rem, 100%); max-width: 100%; max-height: 100dvh;
   padding: 0 20px max(20px, env(safe-area-inset-bottom)); overflow-y: auto;
 }
-#marker-dialog form {
+#marker-dialog > form {
   position: sticky; top: 0; z-index: 1; display: flex; justify-content: flex-end;
   padding-block: max(8px, env(safe-area-inset-top)) 8px; margin: 0; background: var(--surface, white);
 }
@@ -454,3 +464,11 @@ body[data-page-type='online'] > footer.wrap {
 .paykr-community-list article{padding:.7rem 0;border-bottom:1px solid currentColor}
 .paykr-community-list small{display:block;opacity:.8}
 .paykr-community-list p{white-space:pre-wrap}
+
+/* Independent merchant detail and clear section hierarchy. */
+.detail-actions a { flex: 1 1 auto; justify-content: center; padding: 8px; border: 1px solid var(--line,#dbe2e6); border-radius: 8px; text-decoration: none; font-size: .85rem; }
+.paykr-community { border-color: var(--line,#dbe2e6); }
+.paykr-community input,.paykr-community textarea,.paykr-community select { border-color: var(--line,#dbe2e6); }
+.paykr-community :disabled { opacity: .58; cursor: not-allowed; }
+.paykr-community .community-notice { background: var(--tint,#edf3fc); border-radius: 8px; padding: 12px; font-size: .85rem; line-height: 1.55; }
+.paykr-community .community-unavailable { display: grid; gap: .6rem; }

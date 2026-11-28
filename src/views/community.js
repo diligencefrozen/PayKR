@@ -5,7 +5,18 @@ import { communityConfig } from '../config/community.js';
 const words={ko:['이용자 제보','애플페이로 결제하셨나요?','결제 성공','결제 실패','검토된 제보','댓글','익명 닉네임','댓글을 입력해 주세요.','등록','가맹점 정보 오류 제보','폐업','이전','정보 오류','기타','상세 내용을 입력해 주세요.','검토 대기 중입니다. 승인 후 공개됩니다.','연결할 수 없습니다. 다시 시도해 주세요.','새로고침','공개 댓글이 없습니다.','공공데이터 가맹점에서만 제보할 수 있습니다.','커뮤니티 서비스 연결 준비 중','요청이 너무 많습니다. 잠시 후 다시 시도해 주세요.','브라우저 저장소를 허용해야 익명 제보가 가능합니다.','익명 제보는 결제 보증이 아닙니다.','내 제보','검토 대기','공개','불러오는 중…'],en:['Community reports','Did you pay with Apple Pay?','Payment succeeded','Payment failed','Reviewed reports','Comments','Anonymous nickname','Write a comment.','Submit','Report incorrect store information','Closed','Moved','Incorrect information','Other','Describe the issue.','Pending review. Visible after approval.','Could not connect. Please retry.','Refresh','No public comments yet.','Reports are available only for public-data merchants.','Community service setup in progress','Too many requests. Try again shortly.','Browser storage is required for anonymous reports.','Anonymous reports do not guarantee acceptance.','Your report','Pending','Published','Loading…']};
 export function renderCommunityPanel(record){
   const w=words[getLocale()==='ko'?'ko':'en']; const box=el('section',undefined,'paykr-community');box.append(el('h3',w[0]));
-  const id=communityId(record);if(!id||!communityConfig.apiBase){box.append(el('p',w[!id?19:20]));return box;}
+  const id=communityId(record);if(!id||!communityConfig.apiBase){
+    const notice=el('p', !id ? (getLocale()==='ko'?'이 매장은 아직 제보 가능한 공공데이터 가맹점과 연결되지 않았습니다.':'This store is not yet linked to an eligible public-data merchant.') : w[20], 'community-notice');
+    const disabled=el('div',undefined,'community-unavailable');
+    const actions=el('div',undefined,'paykr-community-actions');
+    for(const label of [w[2],w[3]]){const b=button(label,()=>{});b.disabled=true;actions.append(b);}
+    const nick=el('input');nick.placeholder=w[6];nick.disabled=true;nick.setAttribute('aria-label',w[6]);
+    const body=el('textarea');body.placeholder=w[7];body.disabled=true;body.setAttribute('aria-label',w[7]);
+    const submit=button(w[8],()=>{});submit.disabled=true;
+    const report=button(w[9],()=>{});report.disabled=true;
+    disabled.append(el('p',w[1]),actions,el('h3',w[5]),nick,body,submit,report);
+    box.append(notice,disabled);return box;
+  }
   const status=el('p');status.setAttribute('role','status');status.setAttribute('aria-live','polite');
   const result=el('p',w[27]);const mine=el('p');const actions=el('div',undefined,'paykr-community-actions');
   const commentList=el('div',undefined,'paykr-community-list');let busy=false, revision=0;

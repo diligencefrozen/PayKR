@@ -1,6 +1,14 @@
 import { communityConfig } from '../config/community.js';
 const TOKEN=/^[a-f0-9]{64}$/;
-export function communityId(record){return record?.source==='public'&&/^public:[A-Za-z0-9_-]{1,40}$/.test(record.id)?record.id.slice(7):null;}
+const PUBLIC_ID=/^public:[A-Za-z0-9_-]{1,40}$/;
+const KAKAO_ID=/^[1-9][0-9]{0,19}$/;
+export function communityId(record){
+  if(typeof record?.id!=='string')return null;
+  // Preserve existing public-data keys; legacy Kakao cache records have no source.
+  if(record.source==='public')return PUBLIC_ID.test(record.id)?record.id.slice(7):null;
+  if((record.source==='kakao'||record.source==null)&&KAKAO_ID.test(record.id))return 'kakao:'+record.id;
+  return null;
+}
 function token(create){
   try{
     let value=localStorage.getItem('paykr-community-actor-v1');

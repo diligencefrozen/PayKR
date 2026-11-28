@@ -82,6 +82,7 @@ export function placeRecord(row) {
     return null;
   return {
     id: String(row.id),
+    source: 'kakao',
     name: row.place_name,
     address: row.road_address_name || row.address_name || '',
     category: row.category_name || '',

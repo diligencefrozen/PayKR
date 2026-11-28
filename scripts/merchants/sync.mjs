@@ -7,7 +7,7 @@ const match=matcher(brands);
 const regions=['11','26','27','28','29','30','31','36','41','43','44','46','47','48','50','51','52'];
 const koreaDay=(ms=Date.now())=>new Date(ms+9*3600000).toISOString().slice(0,10);
 const plusDay=(day,n)=>new Date(Date.parse(day+'T00:00:00Z')+n*86400000).toISOString().slice(0,10);
-const mode=process.argv[2]||'delta';
+let mode=process.argv[2]||'auto';
 const {db,publicPage}=createClients();
 const maxPages=Number(process.env.PAYKR_MAX_PAGES||500);
 if(!Number.isInteger(maxPages)||maxPages<1||maxPages>5000)throw Error('Invalid PAYKR_MAX_PAGES');
@@ -38,6 +38,12 @@ async function scan(endpoint,params,start,onPage,delta=false){
     page++;
   }return false;
 }
+if(mode==='auto'||mode==='resume'){
+  const initial=await state('initial');
+  if(mode==='resume'&&initial?.complete){console.log('Initial import complete; no resume needed.');process.exit(0);}
+  mode=initial?.complete?'delta':'initial';
+  console.log('Selected sync mode:',mode);
+}
 await budget();
 if(mode==='initial'){
   let s=await state('initial')||{started:koreaDay(),region:0,page:1,complete:false};
@@ -65,7 +71,7 @@ if(mode==='initial'){
   }
   // Recheck yesterday after catch-up to accommodate late publication, without advancing cursor backwards.
   if(s.day>yesterday&&pages<maxPages)await scan('storeListByDate',{key:yesterday.replaceAll('-','')},1,async()=>{},true);
-}else throw Error('Use initial or delta');
+}else throw Error('Use auto, resume, initial or delta');
 console.log(JSON.stringify({pages,seen,matchedUpserts:saved,ignored,unknownChange}));
 await budget();
 if(unknownChange)console.warn('Unknown change codes skipped; review authoritative deletion semantics before changing inactive status.');

@@ -27,6 +27,7 @@ let dbCalls=0, kakaoCalls=0,params;
 const catalog={query:async(_,category='all')=>brands.filter(b=>category==='all'||b.categories.includes(category))};
 const kakaorow={place_name:row.name,category_name:'음식점 > 카페',road_address_name:row.address,x:row.lng,y:row.lat};
 const service=new MerchantSearch({url:'https://example.supabase.co',publishableKey:'sb_publishable_test'},catalog,{search:async()=>{kakaoCalls++;return {rows:[kakaorow]};}},[],async(url,options)=>{
+ if(url.endsWith('/rpc/paykr_merchant_version'))return new Response(JSON.stringify('1'));
  dbCalls++;params=JSON.parse(options.body);assert(url.endsWith('/rpc/paykr_search_merchants'));return new Response(JSON.stringify([row]));
 });
 const result=await service.search({bounds:[37,126,38,128],category:'편의점&카페'});
@@ -39,7 +40,7 @@ assert.equal(compareLive(place,[{...kakaorow,y:38}],brands),'uncertain');
 assert.equal(compareLive(place,[kakaorow,kakaorow],brands),'uncertain');
 const errorService=new MerchantSearch(service.config,catalog,service.provider,[],async()=>new Response('',{status:503}));
 await assert.rejects(errorService.search({}),/DB search unavailable/);assert.equal(kakaoCalls,1);
-let release;const delayed=new MerchantSearch(service.config,catalog,service.provider,[],()=>new Promise(r=>{release=r;}));
+let release;const delayed=new MerchantSearch(service.config,catalog,service.provider,[],(url)=>url.endsWith('/rpc/paykr_merchant_version')?Promise.resolve(new Response(JSON.stringify('1'))):new Promise(r=>{release=r;}));
 const old=delayed.search({});await new Promise(r=>setImmediate(r));delayed.cancel();release(new Response(JSON.stringify([row])));assert.equal(await old,null);
 let auth;
 const c=createClients({SUPABASE_URL:'https://example.supabase.co',SUPABASE_PUBLISHABLE_KEY:'sb_publishable_test'},async(_,o)=>{auth=o.headers;return new Response('[]');});

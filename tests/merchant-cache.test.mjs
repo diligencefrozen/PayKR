@@ -1,0 +1,32 @@
+import assert from 'node:assert/strict';
+import { MerchantCache } from '../src/infrastructure/cache/merchant-cache.js';
+import { shouldContinue, DB_AUTO_PAGES } from '../src/models/search-pagination.js';
+let now=1000, calls=0, writes=0, epoch=0;
+const disk=new Map(), storage={readSnapshot:async k=>({record:disk.get(k),epoch}),write:async(k,v,e)=>{if(e===epoch){writes++;disk.set(k,structuredClone(v));}},clear:async()=>{epoch++;disk.clear();}};
+const page=[{id:'x',brand_id:'store-1',name:'test',lat:37,lng:127}];
+const load=async()=>{calls++;return page;};
+const cache=new MerchantCache(storage,{clock:()=>now});
+const [a,b]=await Promise.all([cache.get('a',load,{persist:true}),cache.get('a',load,{persist:true})]);
+assert.deepEqual(a,b);assert.equal(calls,1);assert.equal(writes,1);assert.equal(cache.metrics.merged,1);
+await cache.get('a',load,{persist:true});assert.equal(cache.metrics.l1,1);
+const fresh=new MerchantCache(storage,{clock:()=>now});await fresh.get('a',load,{persist:true});assert.equal(fresh.metrics.l2,1);assert.equal(calls,1);
+await fresh.get('private',load);assert(!disk.has('private'));
+now+=86400000;const failed=async()=>{throw Error('offline');};assert.equal((await fresh.get('a',failed,{persist:true})).stale,true);
+now+=7*86400000;await assert.rejects(fresh.get('a',failed,{persist:true}));
+let emptyCalls=0;const empty=async()=>{emptyCalls++;return [];};await fresh.get('empty',empty,{persist:true});await fresh.get('empty',empty,{persist:true});assert.equal(emptyCalls,1);now+=600000;await assert.rejects(fresh.get('empty',failed,{persist:true}));
+const disabled=new MerchantCache({readSnapshot(){throw Error();},write(){throw Error();}},{clock:()=>now});assert.deepEqual((await disabled.get('a',load,{persist:true})).rows,page);
+await assert.rejects(disabled.get('bad',async()=>[{}]),/Invalid DB result/);
+let finish;const pending=fresh.get('pending',()=>new Promise(r=>finish=r),{persist:true});await new Promise(setImmediate);await fresh.clear();finish(page);await pending;assert(!disk.has('pending'));assert.equal(fresh.memory.size,0);
+const base={dbMode:true,nearby:false,all:true,area:true,input:'',more:true,failed:false,pages:1};assert(shouldContinue(base));assert(!shouldContinue({...base,pages:DB_AUTO_PAGES}));assert(!shouldContinue({...base,more:false}));assert(!shouldContinue({...base,failed:true}));assert(!shouldContinue({...base,input:'CU'}));assert(!shouldContinue({...base,all:false}));assert(shouldContinue({...base,nearby:true,all:false}));assert(!shouldContinue({...base,dbMode:false}));assert(shouldContinue({...base,dbMode:false,nearby:true}));
+console.log('PASS: L1/L2 cache, coalescing, TTL, stale fallback, private query, restricted storage, invalid payload, clear race and bounded automatic pagination');
+// Real search service with fake RPC: all-category query has no brand filter,
+// successive pages retain offsets and reuse the same exact cached queries.
+const {MerchantSearch}=await import('../src/services/merchant-search.js');
+const brands=[{id:'store-1',names:{ko:'CU'},aliases:[],icon:'logo/a.png'},{id:'store-2',names:{ko:'카페'},aliases:[],icon:'logo/b.png'}];
+const results=Array.from({length:125},(_,i)=>({id:String(i),brand_id:brands[i%2].id,name:'매장 '+i,lat:37,lng:127,category:i%2?'카페':'편의점',address:'서울'}));
+const offsets=[];let kakao=0;
+const search=new MerchantSearch({url:'https://example.supabase.co',publishableKey:'sb_publishable_test'},{query:async()=>brands},{search:async()=>{kakao++;return {rows:[]};}},[],async(_,o)=>{const p=JSON.parse(o.body);assert.equal(p.p_brand_ids,null);offsets.push(p.p_offset);return new Response(JSON.stringify(results.slice(p.p_offset,p.p_offset+p.p_limit)));});
+const args={category:'all',bounds:[36,126,38,128]};
+const first=await search.search({...args,offset:0});const second=await search.search({...args,offset:12});const third=await search.search({...args,offset:24});
+assert(first.more&&second.more&&!third.more);assert.equal(new Set([...first.items,...second.items,...third.items].map(x=>x.id)).size,125);assert.deepEqual(offsets,[0,60,120]);await search.search(args);assert.deepEqual(offsets,[0,60,120]);assert.equal(kakao,0);
+console.log('PASS: actual MerchantSearch pages, all brands, no Kakao calls and repeated query cache hit');

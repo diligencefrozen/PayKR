@@ -1,3 +1,4 @@
+import { shouldContinue } from '../models/search-pagination.js';
 import { mapChrome } from '../views/map-chrome.js';
 import { brandName } from '../views/brand-name.js';
 import { $ } from '../views/dom.js';
@@ -30,6 +31,7 @@ export function mapController({ provider, search, catalog, ads, report }) {
     expanded = false;
   let arrival = true, gpsIntent = 0, nearbyMode = false, locationError = '';
   let categories = [];
+  let autoLoading = false, gpsViewport = false;
   let browsing = true,
     statusTimer,
     lastStatus;
@@ -37,6 +39,7 @@ export function mapController({ provider, search, catalog, ads, report }) {
   const explored = () => document.dispatchEvent(new Event('paykr:explored'));
   function cancel() {
     revision++;
+    autoLoading = false;
     search.cancel();
   }
   function sheet(open) {
@@ -101,7 +104,7 @@ export function mapController({ provider, search, catalog, ads, report }) {
     const count = t(state.kind === 'places' ? 'search.count' : 'ecommerce.count', {
       count: state.rows.length,
     });
-    return [count, locationError && t(locationError), state.partial && t('search.partial'), state.limited && t('search.limit')]
+    return [count, locationError && t(locationError), state.stale && t('search.cached'), state.partial && t('search.partial'), state.limited && t('search.limit')]
       .filter(Boolean)
       .join(' · ');
   }
@@ -179,7 +182,7 @@ export function mapController({ provider, search, catalog, ads, report }) {
           verify: search.dbMode ? (p) => search.verify(p) : null,
         }),
       );
-    $('more-results').hidden = Boolean(selected) || !(isBrand ? rows.length < filtered.length : state.more);
+    $('more-results').hidden = autoLoading || Boolean(selected) || !(isBrand ? rows.length < filtered.length : state.more);
     $('retry-search').hidden = !(state.status === 'search.error' || state.partial);
     $('area').hidden = !live;
     $('map-zoom').hidden = !live;
@@ -226,9 +229,10 @@ export function mapController({ provider, search, catalog, ads, report }) {
       state = { kind: 'places', rows: [], status: 'search.loading' };
       provider.render([], choose);
     } else state.status = 'search.loading';
+    autoLoading = true;
     render();
     try {
-      let partial = Boolean(append && state.partial), limited = Boolean(append && state.limited);
+      let partial = Boolean(append && state.partial), limited = Boolean(append && state.limited), stale = Boolean(append && state.stale), pages = 0;
       const found = new Map((append ? state.rows : []).map(row => [row.id, row]));
       do {
         const result = await search.search({
@@ -239,6 +243,7 @@ export function mapController({ provider, search, catalog, ads, report }) {
           page,
           offset,
           nearby,
+          privateViewport: gpsViewport,
         });
         if (current !== revision || !result) return;
         const added = [];
@@ -253,13 +258,15 @@ export function mapController({ provider, search, catalog, ads, report }) {
         }
         const rows = [...found.values()];
         if (nearby && position) rows.sort((a, b) => metersBetween(position, a) - metersBetween(position, b));
+        pages++;
+        stale ||= Boolean(result.stale);
         partial ||= result.errors > 0;
         limited ||= result.limited;
         state = {
           kind: 'places',
           rows,
           status: rows.length ? null : nearby && !search.dbMode && result.more ? 'search.loading' : partial ? 'search.error' : 'search.none',
-          partial, limited,
+          partial, limited, stale,
           more: (!nearby || search.dbMode) && result.more,
         };
         provider.addMarkers(added, chooseMarker);
@@ -270,15 +277,19 @@ export function mapController({ provider, search, catalog, ads, report }) {
           state.more = true;
         }
         if (!selected) render();
-        if (search.dbMode || !nearby || !result.more) break;
+        if (!shouldContinue({dbMode:search.dbMode,nearby,all:category==='all',area:Boolean(scope),input:inputTerm,more:result.more,failed:result.failed,pages})) break;
         offset += 12;
       } while (current === revision);
       if (interaction) explored();
     } catch {
       if (current === revision) {
-        state.status = 'search.error';
+        state.status = state.rows.length ? null : 'search.error';
+        state.partial = true;
+        state.more = false;
         render();
       }
+    } finally {
+      if(current===revision){autoLoading=false; if(!selected)render();}
     }
   }
   function findBrand(brand) {
@@ -292,7 +303,8 @@ export function mapController({ provider, search, catalog, ads, report }) {
     supersedeLocation();
     if (value === 'all') {
       directoryMode = false;
-      if (live) provider.resetView(wonjuTerminal);
+      // Keep legacy behavior until DB search is activated. DB mode retains the viewport.
+      if (live && !search.dbMode) provider.resetView(wonjuTerminal);
     }
     brandContext = null;
     category = value;
@@ -328,6 +340,7 @@ export function mapController({ provider, search, catalog, ads, report }) {
       const p = await acquirePosition(navigator.geolocation);
       if (intent !== gpsIntent || !live) return;
       position = p;
+      gpsViewport = true;
 
       directoryMode = false;
       category = 'all';
@@ -426,14 +439,14 @@ export function mapController({ provider, search, catalog, ads, report }) {
   $('retry-search').onclick = () => run({ nearby: nearbyMode });
 
   $('more-results').onclick = () => {
-    if (state.status === 'search.loading') return;
+    if (autoLoading || state.status === 'search.loading') return;
     if (state.kind === 'brands') {
       brandLimit += 12;
       render();
     } else {
       if (inputTerm) page++;
       else offset += 12;
-      run({ append: true });
+      run({ append: true, nearby: nearbyMode });
     }
   };
   $('sheet-toggle').onclick = () => { sheet(!expanded); render(); };

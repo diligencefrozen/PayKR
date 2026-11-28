@@ -76,7 +76,8 @@ export function mapController({ provider, search, catalog, ads, report }) {
     if (state.kind === 'places' && live) provider.select(row);
     sheet(true);
     render();
-    panel.scrollIntoView({ block: 'nearest' });
+    if (chrome.mobile()) panel.scrollIntoView({ block: 'nearest' });
+    else $('sheet-content').scrollTop = 0;
     $('place-clear').focus({ preventScroll: true });
     explored();
   }

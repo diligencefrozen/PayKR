@@ -90,8 +90,12 @@ export function mapChrome({ category, locate, report, submit, render, edit }) {
   }
   function layout() {
     const sheet = $('place-sheet');
-    const sheetParent = media.matches ? $('main-content') : $('sidebar-content');
-    if (sheet.parentElement !== sheetParent) sheetParent.prepend(sheet);
+    const sheetParent = media.matches ? $('main-content') : $('sidebar');
+    if (sheet.parentElement !== sheetParent) sheetParent.append(sheet);
+    if (!media.matches) {
+      const top = Math.round($('sidebar-content').getBoundingClientRect().top);
+      sheet.style.setProperty('--detail-top', `${top}px`);
+    }
     const host = $('results-host'),
       mount = media.matches ? $('mobile-results') : $('search-results-list');
     if (host.parentElement !== mount) mount.append(host);
@@ -106,6 +110,7 @@ export function mapChrome({ category, locate, report, submit, render, edit }) {
     render();
   });
   new ResizeObserver(layout).observe($('place-sheet'));
+  new ResizeObserver(layout).observe($('sidebar-header'));
   new ResizeObserver(layout).observe(document.querySelector('.app-dock'));
   new ResizeObserver(layout).observe(document.querySelector('.masthead'));
   window.visualViewport?.addEventListener('resize', layout);

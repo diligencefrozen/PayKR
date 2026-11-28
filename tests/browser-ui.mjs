@@ -339,10 +339,13 @@ await withBrowser(async (browser, base) => {
   await view.setViewportSize({width:1280,height:900});
   await view.locator('#sidebar #detail .badge').waitFor();
   const sidebar = view.locator('#sidebar-content');
-  assert(await sidebar.evaluate(node => node.scrollHeight > node.clientHeight));
-  await view.locator('#sidebar #sheet-content').hover();
-  await view.mouse.wheel(0, 340);
-  await view.waitForFunction(() => document.querySelector('#sidebar-content').scrollTop > 0);
+  const detail = view.locator('#place-sheet');
+  const listBounds = await sidebar.boundingBox(), detailBounds = await detail.boundingBox();
+  assert(listBounds.x+listBounds.width <= detailBounds.x, 'detail must be beside list');
+  assert(Math.abs(listBounds.y-detailBounds.y)<=2, 'panels must align');
+  assert(await view.locator('#results .search-result-item').first().isVisible());
+  assert.equal(await detail.evaluate(node=>node.parentElement.id),'sidebar');
+  assert.equal(await view.locator('#sheet-content').evaluate(node=>getComputedStyle(node).overflowY),'auto');
   await view.locator('#place-clear').click();
   await view.setViewportSize({width:390,height:844});
   await view.locator('#feedback-open').click();

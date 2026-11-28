@@ -3,6 +3,7 @@ import { readFile, writeFile } from 'node:fs/promises';
 import { createHash } from 'node:crypto';
 import { locales, localizedPagePath } from '../src/i18n/registry.js';
 import { shellMarkup } from './shell-markup.mjs';
+import { buildSeoHead, directoryPages, resourceLinks } from './seo.mjs';
 import { categoryIcon } from '../src/views/category-icons.js';
 const base = 'https://diligencefrozen.github.io/PayKR/';
 const languages = Object.keys(locales);
@@ -60,7 +61,7 @@ for (const [name, type] of Object.entries(pages)) {
         '<html lang="' +
           lang +
           '" dir="' + locales[lang].dir + '"' +
-          (lang === 'en' ? '' : ' data-entry-locale="' + lang + '"') +
+          (' data-entry-locale="' + lang + '"') +
           '>',
       )
       .replace(/  <link rel="(?:canonical|alternate)"[^>]+>\n/g, '')
@@ -142,13 +143,8 @@ for (const [name, type] of Object.entries(pages)) {
             '</div>',
         );
     }
-    if (name === 'index')
-      html = html.replace(
-        '</head>',
-        '  <script type="application/ld+json">' +
-          (await readFile(new URL('../structured-data.json', import.meta.url), 'utf8')).trim() +
-          '</script>\n</head>',
-      );
+    html = html.replace('</head>', buildSeoHead({name, lang, url: canonical(name, lang), dict}) + '\n</head>');
+    html = html.replace('<!-- SEO_RESOURCES -->', resourceLinks(lang, name));
     await output(file(name, lang), html.trimEnd() + '\n');
     sitemap.push(
       '  <url><loc>' +
@@ -161,10 +157,15 @@ for (const [name, type] of Object.entries(pages)) {
     );
   }
 }
+for (const page of await directoryPages()) {
+  await output(page.file, page.html);
+  sitemap.push(page.sitemap);
+}
+sitemap.push('  <url><loc>' + base + 'terms.html</loc></url>');
 await output(
   'sitemap.xml',
   '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">\n' +
     sitemap.join('\n') +
     '\n</urlset>\n',
 );
-console.log(languages.length * Object.keys(pages).length + ' localized Pages entries and sitemap verified');
+console.log(languages.length * Object.keys(pages).length + ' localized app entries, 2 brand directories, terms and sitemap verified');

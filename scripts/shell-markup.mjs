@@ -21,7 +21,7 @@ export function shellMarkup(type) {
       <label class="setting-row"><span data-i18n="theme.label"></span><select data-theme-choice>
       <option value="system" data-i18n="theme.system"></option><option value="light" data-i18n="theme.light"></option><option value="dark" data-i18n="theme.dark"></option></select></label>
       <button data-install data-i18n="install.action" hidden></button><button data-install-help data-i18n="install.iosGuide" hidden></button></div>
-      <div class="settings-group">${notes}<a href="./terms.html" hreflang="ko" data-i18n="common.terms"></a></div>
+      <div class="settings-group">${notes}<a href="https://diligencefrozen.github.io/" lang="ko">PayKR · 한국어</a><a href="https://diligencefrozen.github.io/en/" lang="en">PayKR · English</a><a href="./brands.ko.html" lang="ko">애플페이 브랜드 목록</a><a href="./brands.html" lang="en">Apple Pay brand directory</a><a href="https://diligencefrozen.github.io/privacy.html" lang="ko">개인정보처리방침</a><a href="https://diligencefrozen.github.io/en/privacy.html" lang="en">Privacy policy</a><a href="./terms.html" hreflang="ko" data-i18n="common.terms"></a></div>
       <div class="settings-group"><button id="clear-cache" data-i18n="common.clearCache"></button><p id="cache-status" role="status"></p></div>
     </dialog>
     <dialog id="notice-dialog" aria-labelledby="notice-title">${heading('notice-title', 'map.notice')}

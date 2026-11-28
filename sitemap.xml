@@ -624,4 +624,15 @@
     <xhtml:link rel="alternate" hreflang="ru" href="https://diligencefrozen.github.io/PayKR/guide.ru.html"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://diligencefrozen.github.io/PayKR/guide.html"/>
   </url>
+  <url><loc>https://diligencefrozen.github.io/PayKR/brands.ko.html</loc>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://diligencefrozen.github.io/PayKR/brands.ko.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://diligencefrozen.github.io/PayKR/brands.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://diligencefrozen.github.io/PayKR/brands.html"/>
+  </url>
+  <url><loc>https://diligencefrozen.github.io/PayKR/brands.html</loc>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://diligencefrozen.github.io/PayKR/brands.ko.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://diligencefrozen.github.io/PayKR/brands.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://diligencefrozen.github.io/PayKR/brands.html"/>
+  </url>
+  <url><loc>https://diligencefrozen.github.io/PayKR/terms.html</loc></url>
 </urlset>

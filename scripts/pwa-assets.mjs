@@ -7,7 +7,7 @@ import { join } from 'node:path';
 const root = fileURLToPath(new URL('../', import.meta.url));
 const digest = (contents) => createHash('sha256').update(contents).digest('base64');
 const pages = (await readdir(root)).filter((file) =>
-  /^(?:(?:index|online|guide)(?:\.(?:[a-z]{2}|zh-Hans|zh-Hant))?|offline|terms)\.html$/.test(file),
+  /^(?:(?:index|online|guide)(?:\.(?:[a-z]{2}|zh-Hans|zh-Hant))?|brands(?:\.ko)?|offline|terms)\.html$/.test(file),
 );
 const files = [
   ...pages,
@@ -27,7 +27,7 @@ for (const page of pages) {
       [
         'extensions.css', 'shared.css',
         'main.css',
-        'online.css',
+        'online.css', 'seo.css',
         'theme.js',
         'place-text.js',
         'vendor/koroman/koroman.browser.js',

@@ -60,7 +60,6 @@ export function localizedPagePath(path, lang) {
 export function pageLink(path) {
   const url = new URL(localizedPagePath(path, current), location.href);
   if (url.origin !== location.origin) throw new TypeError('Expected a same-origin page link');
-  url.searchParams.set('lang', current);
   if (new URLSearchParams(location.search).get('adpreview') === '1') url.searchParams.set('adpreview', '1');
   return url.href;
 }
@@ -113,7 +112,12 @@ export async function setLocale(tag, { persist = true } = {}) {
   if (persist) {
     try { localStorage.setItem('paykr-language', current); } catch { /* Storage may be disabled. */ }
     const url = new URL(location.href);
-    url.searchParams.set('lang', current);
+    const alternate = document.querySelector('link[hreflang="' + current + '"]');
+    if (alternate) {
+      const target = new URL(alternate.href);
+      if (target.origin === url.origin) url.pathname = target.pathname;
+      url.searchParams.delete('lang');
+    } else url.searchParams.set('lang', current);
     history.replaceState(history.state, '', url);
   }
   document.documentElement.lang = current;
@@ -121,7 +125,8 @@ export async function setLocale(tag, { persist = true } = {}) {
   applyI18n();
   const canonical = document.querySelector('link[rel="canonical"]');
   const alternate = document.querySelector('link[hreflang="' + current + '"]');
-  if (canonical && alternate) canonical.href = alternate.href;
+  // Keep the server canonical stable during initialization; only update after a user changes the URL.
+  if (persist && canonical && alternate && new URL(alternate.href).pathname === location.pathname) canonical.href = alternate.href;
   const detail = { locale: current, language: current };
   window.dispatchEvent(new CustomEvent('localechange', { detail }));
   document.dispatchEvent(new CustomEvent('paykr:languagechange', { detail }));

@@ -1,5 +1,6 @@
 import { createTurso } from '../../../scripts/community/turso.mjs';
 const ID = /^[A-Za-z0-9_-]{1,40}$/;
+const KAKAO_ID = /^kakao:[1-9][0-9]{0,19}$/;
 const TOKEN = /^[a-f0-9]{64}$/;
 const val = row => row.map(v => v.value ?? null);
 const rows = result => (result.rows || []).map(val);
@@ -30,11 +31,12 @@ export function handler(fetcher=fetch) {return async (req,env)=>{
   if(!origin||origin!==env.ALLOWED_ORIGIN)return json({code:'ORIGIN'},403);
   if(req.method==='OPTIONS')return new Response(null,{status:204,headers});
   const url=new URL(req.url), match=url.pathname.match(/^\/api\/community\/([^/]+)$/);
-  if(!match||!ID.test(match[1]))return json({code:'INVALID_ID'},400);
+  let id;try{id=match&&decodeURIComponent(match[1]);}catch{return json({code:'INVALID_ID'},400);}
+  if(!id||(!ID.test(id)&&!KAKAO_ID.test(id)))return json({code:'INVALID_ID'},400);
+  const isKakao=KAKAO_ID.test(id);
   if(!['GET','POST'].includes(req.method))return json({code:'METHOD'},405);
-  const id=match[1];
   try{
-    if(!env.ACTOR_SECRET||env.ACTOR_SECRET.length<32||!env.SUPABASE_SERVICE_ROLE_KEY||!env.READ_LIMIT||!env.WRITE_LIMIT)throw Error('missing settings');
+    if(!env.ACTOR_SECRET||env.ACTOR_SECRET.length<32||(!isKakao&&!env.SUPABASE_SERVICE_ROLE_KEY)||!env.READ_LIMIT||!env.WRITE_LIMIT)throw Error('missing settings');
     const ip=req.headers.get('CF-Connecting-IP'); if(!ip)return json({code:'RATE_LIMIT'},429);
     const limiter=req.method==='GET'?env.READ_LIMIT:env.WRITE_LIMIT;
     if(!(await limiter.limit({key:'ip:'+ip})).success)return json({code:'RATE_LIMIT'},429);
@@ -42,7 +44,10 @@ export function handler(fetcher=fetch) {return async (req,env)=>{
     const actor=TOKEN.test(raw)?await actorId(env.ACTOR_SECRET,raw):null;
     if(req.method==='POST'&&!actor)return json({code:'AUTH_REQUIRED'},401);
     if(req.method==='POST'&&!(await limiter.limit({key:'actor:'+actor})).success)return json({code:'RATE_LIMIT'},429);
-    if(!await exists(env,id,fetcher))return json({code:'NOT_FOUND'},404);
+    if(!isKakao&&!await exists(env,id,fetcher))return json({code:'NOT_FOUND'},404);
+    // Store only a stable, domain-separated opaque key for Kakao places.
+    // Keep legacy public IDs intact; do not store Kakao result metadata.
+    if(isKakao)id='kakao:'+await actorId(env.ACTOR_SECRET,'place:'+id);
     const sql=createTurso({url:env.TURSO_DATABASE_URL,token:env.TURSO_AUTH_TOKEN,fetcher});
     if(req.method==='GET'){
       const counts=rows(await sql("SELECT outcome, count(*) FROM payment_reports WHERE merchant_id=? AND status='published' GROUP BY outcome",[id]));
@@ -60,7 +65,7 @@ export function handler(fetcher=fetch) {return async (req,env)=>{
       const nickname=typeof b.nickname==='string'?b.nickname.trim():'';
       if(!nickname||nickname.length>40)return json({code:'INVALID_BODY'},400);
       await sql('INSERT INTO comments(id,merchant_id,actor_id,nickname,body) VALUES(?,?,?,?,?)',[crypto.randomUUID(),id,actor,nickname,text]);
-    }else if(b.type==='merchant'&&['closed','moved','incorrect','other'].includes(b.kind)&&text.length>=1&&text.length<=1000){
+    }else if(!isKakao&&b.type==='merchant'&&['closed','moved','incorrect','other'].includes(b.kind)&&text.length>=1&&text.length<=1000){
       await sql('INSERT INTO merchant_reports(id,merchant_id,actor_id,kind,body) VALUES(?,?,?,?,?)',[crypto.randomUUID(),id,actor,b.kind,text]);
     }else return json({code:'INVALID_BODY'},400);
     return json({status:'pending'},201);
